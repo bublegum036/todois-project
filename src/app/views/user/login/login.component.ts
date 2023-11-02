@@ -20,5 +20,14 @@ export class LoginComponent {
     password: ['', [Validators.required]]
   })
 
+  resetClasses(control: FormControl): void {
+    if (control.invalid && (control.dirty || control.touched)) {
+      control.reset();
+    }
+  }
+
+  isInvalid(control: FormControl): boolean {
+    return control.invalid && (control.dirty || control.touched) ;
+  }
 
 }

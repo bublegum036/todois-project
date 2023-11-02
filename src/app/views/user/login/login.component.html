@@ -29,19 +29,17 @@
     <div class="login-form" [formGroup]="loginForm">
       <div class="login-form-input">
         <span class="p-float-label">
-          <input pInputText id="username"
-                 [ngClass]="{'ng-invalid ng-dirty': loginForm.get('userName')?.invalid &&(loginForm.get('userName')?.dirty || loginForm.get('userName')?.touched)? true : ' '}"
-                 formControlName="userName"
-          >
-          <label htmlFor="username">Имя пользователя</label>
+          <input pInputText id="userName"
+                 [ngClass]="{'ng-invalid ng-dirty': loginForm.get('userName')?.touched && (loginForm.get('userName')?.dirty || loginForm.get('userName')?.touched) ?  true : ''}"
+                 formControlName="userName">
+          <label htmlFor="userName">E-mail</label>
         </span>
       </div>
       <div class="login-form-input">
         <span class="p-float-label">
           <p-password id="password"
-
+                      [ngClass]="{'ng-invalid ng-dirty': loginForm.get('password')?.touched && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched) ?  true : ''}"
                       formControlName="password">
-
           </p-password>
           <label for="password">Пароль</label>
         </span>
