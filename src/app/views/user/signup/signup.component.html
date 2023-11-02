@@ -54,6 +54,8 @@
                       formControlName="password"></p-password>
           <label for="password">Пароль</label>
         </span>
+        <small class="signup-form-input-help"  *ngIf="signupForm.get('password')?.invalid && (signupForm.get('password')?.dirty || signupForm.get('password')?.touched) && signupForm.get('password')?.errors?.['required']">Введите пароль</small>
+        <small class="signup-form-input-help"  *ngIf="signupForm.get('password')?.errors?.['pattern']">Пароль должен содержать одну заглавную букву и одну цифру</small>
       </div>
       <div class="signup-form-input">
         <span class="p-float-label">
