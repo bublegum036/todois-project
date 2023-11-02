@@ -1,0 +1,39 @@
+.container {
+  .signup {
+    padding-top: 100px;
+    padding-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .signup-title {
+      font-size: 25px;
+      margin-bottom: 30px;
+    }
+
+    .signup-form {
+      .signup-form-input {
+        margin-bottom: 30px;
+      }
+
+      .signup-form-action {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 15px;
+      }
+    }
+
+
+    .signup-form-link {
+      a {
+        text-decoration: none;
+      }
+    }
+  }
+}
