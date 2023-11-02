@@ -34,6 +34,8 @@
                  formControlName="userName">
           <label htmlFor="userName">E-mail</label>
         </span>
+        <small class="login-form-input-help"  *ngIf="loginForm.get('userName')?.touched && (loginForm.get('userName')?.dirty || loginForm.get('userName')?.touched) && loginForm.get('userName')?.errors?.['required']">Введите ваш e-mail</small>
+        <small class="login-form-input-help"  *ngIf="loginForm.get('userName')?.errors?.['pattern']">E-mail должен быть типа test@mail.ru</small>
       </div>
       <div class="login-form-input">
         <span class="p-float-label">
@@ -43,6 +45,8 @@
           </p-password>
           <label for="password">Пароль</label>
         </span>
+        <small class="login-form-input-help" id="password-help" *ngIf="loginForm.get('password')?.touched && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched) && loginForm.get('password')?.errors?.['required']">Введите ваш пароль</small>
+
       </div>
       <div class="login-form-action">
         <p-button label="Войти" severity="warning"></p-button>

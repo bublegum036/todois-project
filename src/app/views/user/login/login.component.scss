@@ -19,7 +19,14 @@
 
     .login-form {
       .login-form-input {
-        margin-bottom: 30px;
+        margin-bottom: 25px;
+        text-align: center;
+
+
+        .login-form-input-help {
+          font-size: 10px;
+          color: #e24c4c;
+        }
       }
 
       .login-form-action {
