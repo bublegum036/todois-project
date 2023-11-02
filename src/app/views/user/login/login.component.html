@@ -30,14 +30,19 @@
       <div class="login-form-input">
         <span class="p-float-label">
           <input pInputText id="username"
-                 [ngClass]=""
-                 formControlName="userName">
+                 [ngClass]="{'ng-invalid ng-dirty': loginForm.get('userName')?.invalid &&(loginForm.get('userName')?.dirty || loginForm.get('userName')?.touched)? true : ''}"
+                 formControlName="userName"
+          >
           <label htmlFor="username">Имя пользователя</label>
         </span>
       </div>
       <div class="login-form-input">
         <span class="p-float-label">
-          <p-password id="password"  formControlName="password"></p-password>
+          <p-password id="password"
+
+                      formControlName="password">
+
+          </p-password>
           <label for="password">Пароль</label>
         </span>
       </div>

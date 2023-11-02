@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
-import {FormBuilder, Validators} from "@angular/forms";
+import {FormControl, Validators} from "@angular/forms";
+import {FormBuilder} from "@angular/forms";
 
 @Component({
   selector: 'login',
@@ -18,5 +19,6 @@ export class LoginComponent {
     userName: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]]
   })
+
 
 }
