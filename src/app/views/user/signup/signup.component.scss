@@ -20,6 +20,11 @@
     .signup-form {
       .signup-form-input {
         margin-bottom: 30px;
+
+        .signup-form-input-help {
+          font-size: 10px;
+          color: #e24c4c;
+        }
       }
 
       .signup-form-action {

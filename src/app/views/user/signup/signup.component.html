@@ -29,9 +29,12 @@
     <div class="signup-form">
       <div class="signup-form-input">
         <span class="p-float-label">
-          <input pInputText id="name">
-          <label htmlFor="name">Ваше имя</label>
+          <input pInputText id="firstName"
+                 [ngClass]="{'ng-invalid ng-dirty': signupForm.get('firstName')?.touched && (signupForm.get('firstName')?.dirty || signupForm.get('firstName')?.touched)&& signupForm.get('userName')?.errors?.['required'] ?  true : ''}"
+                 formControlName="firstName">
+          <label htmlFor="firstName">Ваше имя</label>
         </span>
+        <small class="signup-form-input-help"  *ngIf="signupForm.get('userName')?.touched && (signupForm.get('userName')?.dirty || signupForm.get('userName')?.touched) && signupForm.get('userName')?.errors?.['required']">Введите ваш e-mail</small>
       </div>
       <div class="signup-form-input">
         <span class="p-float-label">
