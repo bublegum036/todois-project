@@ -1,7 +1,4 @@
 import {Component} from '@angular/core';
-import {InputTextModule} from 'primeng/inputtext';
-import {PasswordModule} from 'primeng/password';
-import {ButtonModule} from 'primeng/button';
 import {Validators} from "@angular/forms";
 import {FormBuilder} from "@angular/forms";
 

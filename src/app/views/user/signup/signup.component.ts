@@ -1,8 +1,6 @@
-import { Component } from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
-import { InputTextModule } from 'primeng/inputtext';
-import { PasswordModule } from 'primeng/password';
-import { ButtonModule } from 'primeng/button';
+import {Component} from '@angular/core';
+import {Validators} from "@angular/forms";
+import {FormBuilder} from "@angular/forms";
 
 @Component({
   selector: 'signup',
@@ -15,9 +13,9 @@ export class SignupComponent {
   }
 
   signupForm = this.fb.group({
-    firstName: ['', [Validators.required, Validators.pattern('/^[а-яА-Яa-zA-Z\\s]+$/')]],
+    firstName: ['', [Validators.required, Validators.pattern('^[а-яА-Яa-zA-Z\\s]+$')]],
     email: ['', [Validators.required, Validators.pattern('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')]],
-    password: ['', [Validators.required, Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)]],
-    passwordRepeat: ['', [Validators.required, Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)]]
+    password: ['', [Validators.required, Validators.pattern('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$')]],
+    passwordRepeat: ['', [Validators.required, Validators.pattern('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$')]]
   })
 }

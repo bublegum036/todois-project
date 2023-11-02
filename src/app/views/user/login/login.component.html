@@ -30,11 +30,11 @@
       <div class="login-form-input">
         <span class="p-float-label">
           <input pInputText id="userName"
-                 [ngClass]="{'ng-invalid ng-dirty': loginForm.get('userName')?.touched && (loginForm.get('userName')?.dirty || loginForm.get('userName')?.touched) ?  true : ''}"
+                 [ngClass]="{'ng-invalid ng-dirty': loginForm.get('userName')?.invalid && (loginForm.get('userName')?.dirty || loginForm.get('userName')?.touched) ?  true : ''}"
                  formControlName="userName">
           <label htmlFor="userName">E-mail</label>
         </span>
-        <small class="login-form-input-help"  *ngIf="loginForm.get('userName')?.touched && (loginForm.get('userName')?.dirty || loginForm.get('userName')?.touched) && loginForm.get('userName')?.errors?.['required']">Введите ваш e-mail</small>
+        <small class="login-form-input-help"  *ngIf="loginForm.get('userName')?.invalid && (loginForm.get('userName')?.dirty || loginForm.get('userName')?.touched) && loginForm.get('userName')?.errors?.['required']">Введите ваш e-mail</small>
         <small class="login-form-input-help"  *ngIf="loginForm.get('userName')?.errors?.['pattern']">E-mail должен быть типа test@mail.ru</small>
       </div>
       <div class="login-form-input">

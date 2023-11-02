@@ -26,25 +26,32 @@
     <div class="signup-title">
       Зарегистрируйтесь в системе
     </div>
-    <div class="signup-form">
+    <div class="signup-form" [formGroup]="signupForm">
       <div class="signup-form-input">
         <span class="p-float-label">
           <input pInputText id="firstName"
-                 [ngClass]="{'ng-invalid ng-dirty': signupForm.get('firstName')?.touched && (signupForm.get('firstName')?.dirty || signupForm.get('firstName')?.touched)&& signupForm.get('userName')?.errors?.['required'] ?  true : ''}"
+                 [ngClass]="{'ng-invalid ng-dirty': signupForm.get('firstName')?.invalid && (signupForm.get('firstName')?.touched || signupForm.get('firstName')?.touched) ? true : ''}"
                  formControlName="firstName">
           <label htmlFor="firstName">Ваше имя</label>
         </span>
-        <small class="signup-form-input-help"  *ngIf="signupForm.get('userName')?.touched && (signupForm.get('userName')?.dirty || signupForm.get('userName')?.touched) && signupForm.get('userName')?.errors?.['required']">Введите ваш e-mail</small>
+        <small class="signup-form-input-help"  *ngIf="signupForm.get('firstName')?.invalid && (signupForm.get('firstName')?.dirty || signupForm.get('firstName')?.touched) && signupForm.get('firstName')?.errors?.['required']">Введите ваше имя</small>
+        <small class="signup-form-input-help"  *ngIf="signupForm.get('firstName')?.errors?.['pattern']">Имя должно содержать только буквы</small>
       </div>
       <div class="signup-form-input">
         <span class="p-float-label">
-          <input pInputText id="email">
+          <input pInputText id="email"
+                 [ngClass]="{'ng-invalid ng-dirty': signupForm.get('email')?.invalid && (signupForm.get('email')?.touched || signupForm.get('email')?.touched) ? true : ''}"
+                 formControlName="email">
           <label htmlFor="email">E-mail</label>
         </span>
+        <small class="signup-form-input-help"  *ngIf="signupForm.get('email')?.invalid && (signupForm.get('email')?.dirty || signupForm.get('email')?.touched) && signupForm.get('email')?.errors?.['required']">Введите ваш e-mail</small>
+        <small class="signup-form-input-help"  *ngIf="signupForm.get('email')?.errors?.['pattern']">E-mail должен быть типа test@mail.ru</small>
       </div>
       <div class="signup-form-input">
         <span class="p-float-label">
-          <p-password id="password"></p-password>
+          <p-password id="password"
+                      [ngClass]="{'ng-invalid ng-dirty': signupForm.get('password')?.invalid && (signupForm.get('password')?.touched || signupForm.get('password')?.touched) ? true : ''}"
+                      formControlName="password"></p-password>
           <label for="password">Пароль</label>
         </span>
       </div>

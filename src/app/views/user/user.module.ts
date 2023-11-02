@@ -7,6 +7,7 @@ import {PasswordModule} from "primeng/password";
 import {ButtonModule} from "primeng/button";
 import {SignupComponent} from './signup/signup.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import {RadioButtonModule} from "primeng/radiobutton";
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import {ReactiveFormsModule} from "@angular/forms";
     ButtonModule,
     UserRoutingModule,
     ReactiveFormsModule,
+    RadioButtonModule,
   ]
 })
 export class UserModule {
