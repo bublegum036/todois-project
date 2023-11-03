@@ -20,12 +20,13 @@
     .signup-form {
       .signup-form-input {
         margin-bottom: 30px;
+
         text-align: center;
 
         .signup-form-input-help {
           font-size: 10px;
           color: #e24c4c;
-          width: 224px;
+          max-width: 224px;
           display: block;
         }
       }

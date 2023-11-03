@@ -13,7 +13,7 @@ import {RadioButtonModule} from "primeng/radiobutton";
 @NgModule({
   declarations: [
     LoginComponent,
-    SignupComponent
+    SignupComponent,
   ],
   exports: [
     LoginComponent,

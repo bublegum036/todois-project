@@ -39,7 +39,7 @@
       </div>
       <div class="login-form-input">
         <span class="p-float-label">
-          <p-password id="password"
+          <p-password id="password" [feedback]="false"
                       [ngClass]="{'ng-invalid ng-dirty': loginForm.get('password')?.touched && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched) ?  true : ''}"
                       formControlName="password">
           </p-password>
@@ -49,7 +49,7 @@
 
       </div>
       <div class="login-form-action">
-        <p-button label="Войти" severity="warning"></p-button>
+        <p-button label="Войти" severity="warning" (click)="login()"></p-button>
       </div>
     </div>
     <div class="login-form-link">

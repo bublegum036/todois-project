@@ -24,19 +24,20 @@ export class SignupComponent {
 
 
   signUp() {
-    if (this.signupForm.valid && this.signupForm.value.firstName  && this.signupForm.value.email  && this.signupForm.value.password && this.signupForm.value.passwordRepeat) {
+    if (this.signupForm.valid && this.signupForm.value.firstName && this.signupForm.value.email && this.signupForm.value.password && this.signupForm.value.passwordRepeat) {
       const user: UserType = {
         userInfo: {
           name: this.signupForm.value.firstName,
           email: this.signupForm.value.email,
           password: this.signupForm.value.password,
         }
+
       }
       localStorage.setItem('user', JSON.stringify(user))
     }
 
     if (localStorage.getItem('user')) {
-      location.href =  'https://google.com'
+      location.href = 'https://google.com'
     }
   }
 }
