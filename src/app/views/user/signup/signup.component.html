@@ -80,7 +80,7 @@
                        *ngIf="signupForm.get('password')?.value && signupForm.get('password')?.value !== signupForm.get('passwordRepeat')?.value">Пароли должны совпадать</small>
             </div>
             <div class="signup-form-action">
-                <p-button label="Зарегистрироваться" severity="warning"></p-button>
+                <p-button label="Зарегистрироваться" severity="warning" (click)="signUp()"></p-button>
             </div>
         </div>
         <div class="signup-form-link">
