@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Validators} from "@angular/forms";
 import {FormBuilder} from "@angular/forms";
-import {UserType} from "../../../../types/user.type";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'login',
@@ -12,7 +12,8 @@ export class LoginComponent implements OnInit {
   loginUserName: string = '';
   loginPassword: string = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+              private router: Router) {
   }
 
   loginForm = this.fb.group({
@@ -22,16 +23,16 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     if (localStorage.getItem('user')) {
-      this.loginUserName = JSON.parse(localStorage.getItem('user') || '{}').userInfo.email;
-      this.loginPassword = JSON.parse(localStorage.getItem('user') || '{}').userInfo.password;
     }
   }
 
 
   login() {
     if (localStorage.getItem('user')) {
-      if (this.loginForm.value.userName === this.loginUserName && this.loginForm.value.password === this.loginPassword){
-        location.href = "https://ya.ru"
+      this.loginUserName = JSON.parse(localStorage.getItem('user') || '{}').userInfo.email;
+      this.loginPassword = JSON.parse(localStorage.getItem('user') || '{}').userInfo.password;
+      if (this.loginForm.value.userName === this.loginUserName && this.loginForm.value.password === this.loginPassword) {
+        this.router.navigate(['/main'])
       }
     }
   }
