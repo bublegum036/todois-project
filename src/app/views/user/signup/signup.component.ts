@@ -37,7 +37,7 @@ export class SignupComponent {
     }
 
     if (localStorage.getItem('user')) {
-      location.href = 'https://google.com'
+      this.router.navigate(['/'])
     }
   }
 }
