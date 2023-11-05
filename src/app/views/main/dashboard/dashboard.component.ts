@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MenuItem, MenuItemCommandEvent, PrimeIcons} from "primeng/api";
 
 @Component({
@@ -9,6 +9,7 @@ import {MenuItem, MenuItemCommandEvent, PrimeIcons} from "primeng/api";
 export class DashboardComponent implements OnInit {
   items: MenuItem[] = [];
   userName!: string;
+  @Input() visibleAddTask: boolean = false;
 
   constructor() {
   }
@@ -19,8 +20,9 @@ export class DashboardComponent implements OnInit {
       {
         label: 'Создать задачу',
         icon: 'pi pi-plus-circle',
-        // routerLink: ['/'],
-        //
+        command: (event: MenuItemCommandEvent) =>  {
+          this.showAddTasksModal()
+        }
       },
       {
         label: 'Все задачи',
@@ -39,5 +41,9 @@ export class DashboardComponent implements OnInit {
         icon: 'pi pi-sign-out',
       },
     ];
+  }
+
+  showAddTasksModal() {
+    this.visibleAddTask = true;
   }
 }
