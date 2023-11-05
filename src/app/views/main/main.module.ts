@@ -4,6 +4,7 @@ import {MainRoutingModule} from './main-routing.module';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {PanelMenuModule} from "primeng/panelmenu";
 import {AvatarModule} from "primeng/avatar";
+import {TieredMenuModule} from "primeng/tieredmenu";
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import {AvatarModule} from "primeng/avatar";
     CommonModule,
     MainRoutingModule,
     PanelMenuModule,
-    AvatarModule
+    AvatarModule,
+    TieredMenuModule
   ],
   exports: [DashboardComponent]
 })

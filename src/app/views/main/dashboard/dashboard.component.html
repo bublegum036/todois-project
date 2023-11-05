@@ -3,9 +3,10 @@
     <div class="dashboard-menu">
       <div class="dashboard-menu-avatar">
         <p-avatar icon="pi pi-user" styleClass="mr-2" shape="circle" size="large"></p-avatar>
+        <div class="dashboard-menu-avatar-name">{{userName}}</div>
       </div>
       <div class="card flex justify-content-center">
-        <p-panelMenu [model]="items" [style]="{'width':'300px'}"></p-panelMenu>
+        <p-tieredMenu [model]="items" [style]="{'width':'300px'}"></p-tieredMenu>
       </div>
     </div>
   </div>
