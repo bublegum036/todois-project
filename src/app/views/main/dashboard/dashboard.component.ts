@@ -9,7 +9,7 @@ import {MenuItem, MenuItemCommandEvent, PrimeIcons} from "primeng/api";
 export class DashboardComponent implements OnInit {
   items: MenuItem[] = [];
   userName!: string;
-  @Input() visibleAddTask: boolean = false;
+  visibleAddTask: boolean = false;
 
   constructor() {
   }

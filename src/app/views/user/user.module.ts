@@ -8,6 +8,7 @@ import {ButtonModule} from "primeng/button";
 import {SignupComponent} from './signup/signup.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {RadioButtonModule} from "primeng/radiobutton";
+import {SharedModule} from "../../shared/shared.module";
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import {RadioButtonModule} from "primeng/radiobutton";
   ],
   imports: [
     CommonModule,
+    SharedModule,
     InputTextModule,
     PasswordModule,
     ButtonModule,

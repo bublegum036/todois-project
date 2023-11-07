@@ -6,6 +6,7 @@ import {PanelMenuModule} from "primeng/panelmenu";
 import {AvatarModule} from "primeng/avatar";
 import {TieredMenuModule} from "primeng/tieredmenu";
 import {DialogModule} from "primeng/dialog";
+import {SharedModule} from "../../shared/shared.module";
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import {DialogModule} from "primeng/dialog";
     PanelMenuModule,
     AvatarModule,
     TieredMenuModule,
-    DialogModule
+    DialogModule,
+    SharedModule
   ],
   exports: [DashboardComponent]
 })
