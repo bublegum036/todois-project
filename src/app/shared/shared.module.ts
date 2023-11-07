@@ -5,6 +5,8 @@ import {RouterOutlet} from "@angular/router";
 import {TaskFormComponent} from './components/task-form/task-form.component';
 import {InputTextModule} from "primeng/inputtext";
 import { CalendarModule } from 'primeng/calendar';
+import {CascadeSelectModule} from "primeng/cascadeselect";
+import {TreeSelectModule} from "primeng/treeselect";
 
 
 
@@ -20,7 +22,9 @@ import { CalendarModule } from 'primeng/calendar';
     CommonModule,
     RouterOutlet,
     InputTextModule,
-    CalendarModule
+    CalendarModule,
+    CascadeSelectModule,
+    TreeSelectModule
   ]
 })
 export class SharedModule {

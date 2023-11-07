@@ -1,4 +1,3 @@
-<p>task-form works!</p>
 <div class="task-form">
   <div class="task-form-input">
     <span class="p-float-label">
@@ -14,7 +13,16 @@
   </div>
   <div class="task-form-input">
     <div class="card flex justify-content-center">
-      <p-calendar [showIcon]="true"></p-calendar>
+      <span class="p-float-label">
+      <p-calendar [showIcon]="true" id="calendar" dateFormat="dd.mm.yy"></p-calendar>
+        <label htmlFor="calendar">Дата</label>
+    </span>
     </div>
+  </div>
+  <div class="task-form-input">
+      <span class="p-float-label">
+        <p-treeSelect [options]="priority" ></p-treeSelect>
+        <label htmlFor="task-priority">Приоритет</label>
+    </span>
   </div>
 </div>
