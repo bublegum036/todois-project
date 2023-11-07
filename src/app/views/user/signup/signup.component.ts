@@ -31,13 +31,12 @@ export class SignupComponent {
           email: this.signupForm.value.email,
           password: this.signupForm.value.password,
         }
-
       }
       localStorage.setItem('user', JSON.stringify(user))
     }
 
     if (localStorage.getItem('user')) {
-      this.router.navigate(['/'])
+      this.router.navigate(['/dashboard'])
     }
   }
 }

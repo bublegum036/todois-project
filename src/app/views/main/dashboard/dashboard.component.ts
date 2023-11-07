@@ -31,6 +31,7 @@ export class DashboardComponent implements OnInit {
       {
         label: 'Категории задач',
         icon: 'pi pi-list',
+        routerLink: ['/task-category']
       },
       {
         label: 'Выполнено',

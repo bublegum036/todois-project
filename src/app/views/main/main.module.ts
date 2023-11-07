@@ -7,11 +7,13 @@ import {AvatarModule} from "primeng/avatar";
 import {TieredMenuModule} from "primeng/tieredmenu";
 import {DialogModule} from "primeng/dialog";
 import {SharedModule} from "../../shared/shared.module";
+import { TaskCategoryComponent } from './task-category/task-category.component';
 
 
 @NgModule({
   declarations: [
-    DashboardComponent
+    DashboardComponent,
+    TaskCategoryComponent
   ],
   imports: [
     CommonModule,
