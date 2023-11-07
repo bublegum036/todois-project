@@ -7,10 +7,12 @@ import {UserModule} from "./views/user/user.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MainModule} from "./views/main/main.module";
+import { LayoutComponent } from './views/layout/layout.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    LayoutComponent,
   ],
   imports: [
     BrowserModule,

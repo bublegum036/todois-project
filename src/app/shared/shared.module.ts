@@ -1,22 +1,19 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {LayoutComponent} from './components/layout/layout.component';
 import {RouterOutlet} from "@angular/router";
 import {TaskFormComponent} from './components/task-form/task-form.component';
 import {InputTextModule} from "primeng/inputtext";
-import { CalendarModule } from 'primeng/calendar';
+import {CalendarModule} from 'primeng/calendar';
 import {CascadeSelectModule} from "primeng/cascadeselect";
 import {TreeSelectModule} from "primeng/treeselect";
 
 
-
 @NgModule({
   declarations: [
-    LayoutComponent,
-    TaskFormComponent
+    TaskFormComponent,
   ],
   exports: [
-    TaskFormComponent
+    TaskFormComponent,
   ],
   imports: [
     CommonModule,
@@ -24,7 +21,7 @@ import {TreeSelectModule} from "primeng/treeselect";
     InputTextModule,
     CalendarModule,
     CascadeSelectModule,
-    TreeSelectModule
+    TreeSelectModule,
   ]
 })
 export class SharedModule {

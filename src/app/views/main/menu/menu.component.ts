@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MenuItem, MenuItemCommandEvent} from "primeng/api";
 
 @Component({

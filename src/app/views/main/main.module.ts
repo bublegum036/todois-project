@@ -7,8 +7,8 @@ import {AvatarModule} from "primeng/avatar";
 import {TieredMenuModule} from "primeng/tieredmenu";
 import {DialogModule} from "primeng/dialog";
 import {SharedModule} from "../../shared/shared.module";
-import { TaskCategoryComponent } from './task-category/task-category.component';
-import { MenuComponent } from './menu/menu.component';
+import {TaskCategoryComponent} from './task-category/task-category.component';
+import {MenuComponent} from './menu/menu.component';
 
 
 @NgModule({
@@ -24,9 +24,10 @@ import { MenuComponent } from './menu/menu.component';
     AvatarModule,
     TieredMenuModule,
     DialogModule,
-    SharedModule
+    SharedModule,
+
   ],
-  exports: [DashboardComponent]
+  exports: [DashboardComponent, MenuComponent]
 })
 export class MainModule {
 }
