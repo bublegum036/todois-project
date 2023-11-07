@@ -56,4 +56,9 @@ export class TaskFormComponent implements OnInit {
       },
     ]
   }
+
+
+  createTask() {
+    console.log(1)
+  }
 }
