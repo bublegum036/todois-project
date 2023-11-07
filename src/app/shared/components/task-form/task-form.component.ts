@@ -8,6 +8,7 @@ import {Component, OnInit} from '@angular/core';
 })
 export class TaskFormComponent implements OnInit {
   priority: any[] | undefined;
+  taskCategory: any[] | undefined;
 
 
   constructor() {
@@ -33,6 +34,26 @@ export class TaskFormComponent implements OnInit {
         icon: 'pi pi-arrow-down-right'
       },
     ]
-  }
 
+
+    this.taskCategory = [
+      {
+        label: 'Личные',
+        icon: 'pi pi-user'
+      },
+      {
+        label: 'Учеба',
+        icon: 'pi pi-desktop'
+
+      },
+      {
+        label: 'Работа',
+        icon: 'pi pi-truck'
+      },
+      {
+        label: 'Семья',
+        icon: 'pi pi-users'
+      },
+    ]
+  }
 }
