@@ -8,12 +8,14 @@ import {TieredMenuModule} from "primeng/tieredmenu";
 import {DialogModule} from "primeng/dialog";
 import {SharedModule} from "../../shared/shared.module";
 import { TaskCategoryComponent } from './task-category/task-category.component';
+import { MenuComponent } from './menu/menu.component';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
-    TaskCategoryComponent
+    TaskCategoryComponent,
+    MenuComponent
   ],
   imports: [
     CommonModule,
