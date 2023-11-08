@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
+import {TaskAddType} from "../../../../types/task-add.type";
 
 
 @Component({
@@ -80,21 +81,20 @@ export class TaskFormComponent implements OnInit {
     //   && this.taskForm.value.taskDeadline
     //   && this.taskForm.value.taskPriority
     //   && this.taskForm.value.taskCategory) {
+    //
+    //   const task: TaskAddType = {
+    //     taskName: this.taskForm.value.taskName,
+    //     taskDescription: this.taskForm.value.taskName,
+    //     taskDateSet: this.taskForm.value.taskDateSet = new Date().toLocaleDateString(),
+    //     taskDeadline: this.taskForm.value.taskDeadline = new Date().toLocaleDateString(),
+    //     taskPriority: this.taskForm.value.taskPriority,
+    //     taskCategory: this.taskForm.value.taskCategory
+    //   }
 
-      // const task: TaskType = {
-      //   taskName: this.taskForm.value.taskName,
-      //   taskDescription: this.taskForm.value.taskName,
-      //   taskDateSet: this.taskForm.value.taskDateSet,
-      //   taskDeadline: this.taskForm.value.taskDeadline,
-      //   taskPriority: this.taskForm.value.taskPriority,
-      //   taskCategory: this.taskForm.value.taskCategory
-      // }
-
+      // console.log(task)
       console.log(typeof this.taskForm.value.taskPriority)
       console.log(this.taskForm.value.taskPriority)
-      console.log(this.taskForm.value.taskPriority)
-      console.log(typeof this.taskForm.value.taskDateSet)
-      console.log(this.taskForm.value.taskDateSet)
+
     // }
   }
 }

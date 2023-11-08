@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {SortEvent} from "primeng/api";
-import {TaskType} from "../../../../types/task.type";
+import {TaskAddType} from "../../../../types/task-add.type";
 
 @Component({
   selector: 'tasks',
@@ -8,7 +8,7 @@ import {TaskType} from "../../../../types/task.type";
   styleUrls: ['./tasks.component.scss']
 })
 export class TasksComponent {
-  tasks!: TaskType[];
+  tasks!: TaskAddType[];
 
   constructor() {
   }

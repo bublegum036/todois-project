@@ -1,4 +1,4 @@
-export type TaskType = {
+export type TaskAddType = {
   taskName: string,
   taskDescription: string,
   taskDateSet: string,
