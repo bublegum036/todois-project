@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {TaskAddType} from "../../../../types/task-add.type";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -13,7 +14,7 @@ export class TaskFormComponent implements OnInit {
   taskCategory: any[] | undefined;
 
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,private router: Router) {
   }
 
   taskForm = this.fb.group({
@@ -91,6 +92,12 @@ export class TaskFormComponent implements OnInit {
         taskCategory: Object(this.taskForm.value.taskCategory).label
       }
 
+      if (!localStorage.getItem('tasks')){
+        localStorage.setItem('tasks', JSON.stringify([task]))
+        this.router.navigate(['/tasks'])
+      } else {
+//если есть массив
+      }
 
     }
   }
