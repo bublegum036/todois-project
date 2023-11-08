@@ -34,10 +34,6 @@ export class MenuComponent implements OnInit {
         icon: 'pi pi-list',
         routerLink: ['/task-category']
       },
-      // {
-      //   label: 'Выполнено',
-      //   icon: 'pi pi-check',
-      // },
       {
         label: 'Выйти',
         icon: 'pi pi-sign-out',

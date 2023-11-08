@@ -14,21 +14,29 @@
   <div class="task-form-input">
     <div class="card flex justify-content-center">
       <span class="p-float-label">
-      <p-calendar [showIcon]="true" id="calendar" dateFormat="dd.mm.yy"></p-calendar>
-        <label htmlFor="calendar">Дата</label>
-    </span>
+      <p-calendar [showIcon]="true" id="taskDateSet" dateFormat="dd.mm.yy"></p-calendar>
+        <label htmlFor="taskDateSet">Дата постановки</label>
+      </span>
+    </div>
+  </div>
+  <div class="task-form-input">
+    <div class="card flex justify-content-center">
+      <span class="p-float-label">
+      <p-calendar [showIcon]="true" id="taskDeadline" dateFormat="dd.mm.yy"></p-calendar>
+        <label htmlFor="taskDeadline">Срок выполнения</label>
+      </span>
     </div>
   </div>
   <div class="task-form-input">
       <span class="p-float-label">
         <p-treeSelect [options]="priority" ></p-treeSelect>
-        <label htmlFor="task-priority">Приоритет</label>
+        <label htmlFor="taskPriority">Приоритет</label>
     </span>
   </div>
   <div class="task-form-input">
       <span class="p-float-label">
         <p-treeSelect [options]="taskCategory" ></p-treeSelect>
-        <label htmlFor="task-priority">Категория</label>
+        <label htmlFor="taskCategory">Категория</label>
     </span>
   </div>
   <div class="task-form-action">

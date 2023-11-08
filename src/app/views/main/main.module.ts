@@ -8,14 +8,15 @@ import {DialogModule} from "primeng/dialog";
 import {SharedModule} from "../../shared/shared.module";
 import {TaskCategoryComponent} from './task-category/task-category.component';
 import {MenuComponent} from './menu/menu.component';
-import { TasksComponent } from './tasks/tasks.component';
+import {TasksComponent} from './tasks/tasks.component';
+import {TableModule} from 'primeng/table';
 
 
 @NgModule({
   declarations: [
     TaskCategoryComponent,
     MenuComponent,
-    TasksComponent
+    TasksComponent,
   ],
   imports: [
     CommonModule,
@@ -25,7 +26,7 @@ import { TasksComponent } from './tasks/tasks.component';
     TieredMenuModule,
     DialogModule,
     SharedModule,
-
+    TableModule
   ],
   exports: [MenuComponent, TasksComponent]
 })
