@@ -27,16 +27,17 @@ export class MenuComponent implements OnInit {
       {
         label: 'Все задачи',
         icon: 'pi pi-prime',
+        routerLink: ['/tasks']
       },
       {
         label: 'Категории задач',
         icon: 'pi pi-list',
         routerLink: ['/task-category']
       },
-      {
-        label: 'Выполнено',
-        icon: 'pi pi-check',
-      },
+      // {
+      //   label: 'Выполнено',
+      //   icon: 'pi pi-check',
+      // },
       {
         label: 'Выйти',
         icon: 'pi pi-sign-out',
