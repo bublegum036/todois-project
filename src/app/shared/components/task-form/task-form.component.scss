@@ -2,6 +2,14 @@
   .task-form-input {
     max-width: 250px;
     margin-top: 30px;
+
+    .task-form-input-help {
+      margin-top: 5px;
+      font-size: 10px;
+      color: #e24c4c;
+      max-width: 224px;
+      display: block;
+    }
   }
 
   .task-form-action {

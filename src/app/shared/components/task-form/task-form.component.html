@@ -3,15 +3,22 @@
     <span class="p-float-label">
         <input pInputText
                formControlName="taskName"
+               [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskName')?.invalid && (taskForm.get('taskName')?.dirty || taskForm.get('taskName')?.touched) ?  true : ''}"
                id="task-name"/>
         <label htmlFor="task-name">Название задачи</label>
     </span>
+    <small class="task-form-input-help" *ngIf="taskForm.get('taskName')?.errors?.['pattern']">Только буквы, цифры, знаки препинания</small>
+    <small class="task-form-input-help" *ngIf="taskForm.get('taskName')?.errors?.['maxLength']">Максимум 30 символов</small>
   </div>
   <div class="task-form-input">
     <span class="p-float-label">
         <input pInputText
                formControlName="taskDescription"
+               [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskDescription')?.invalid && (taskForm.get('taskDescription')?.dirty || taskForm.get('taskDescription')?.touched) ?  true : ''}"
                id="task-description"/>
+    <small class="task-form-input-help" *ngIf="taskForm.get('taskDescription')?.errors?.['pattern']">Только буквы, цифры, знаки препинания</small>
+    <small class="task-form-input-help" *ngIf="taskForm.get('taskDescription')?.errors?.['maxLength']">Максимум 30 символов</small>
+
         <label htmlFor="task-description">Описание задачи</label>
     </span>
   </div>
@@ -20,6 +27,7 @@
       <span class="p-float-label">
       <p-calendar [showIcon]="true"
                   formControlName="taskDateSet"
+                  [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskDateSet')?.invalid && (taskForm.get('taskDateSet')?.dirty || taskForm.get('taskDateSet')?.touched) ?  true : ''}"
                   id="taskDateSet" dateFormat="dd.mm.yy"></p-calendar>
         <label htmlFor="taskDateSet">Дата постановки</label>
       </span>
@@ -30,6 +38,7 @@
       <span class="p-float-label">
       <p-calendar [showIcon]="true"
                   formControlName="taskDeadline"
+                  [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskDeadline')?.invalid && (taskForm.get('taskDeadline')?.dirty || taskForm.get('taskDeadline')?.touched) ?  true : ''}"
                   id="taskDeadline" dateFormat="dd.mm.yy"></p-calendar>
         <label htmlFor="taskDeadline">Срок выполнения</label>
       </span>
@@ -39,6 +48,7 @@
       <span class="p-float-label">
         <p-treeSelect [options]="priority"
                       formControlName="taskPriority"
+                      [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskPriority')?.invalid && (taskForm.get('taskPriority')?.dirty || taskForm.get('taskPriority')?.touched )  ?  true : ''}"
         ></p-treeSelect>
         <label htmlFor="taskPriority">Приоритет</label>
     </span>
@@ -47,6 +57,7 @@
       <span class="p-float-label">
         <p-treeSelect [options]="taskCategory"
                       formControlName="taskCategory"
+                      [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskCategory')?.invalid && (taskForm.get('taskCategory')?.dirty || taskForm.get('taskCategory')?.touched) ?  true : ''}"
         ></p-treeSelect>
         <label htmlFor="taskCategory">Категория</label>
     </span>
