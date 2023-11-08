@@ -75,26 +75,23 @@ export class TaskFormComponent implements OnInit {
 
 
   createTask() {
-    // if (this.taskForm.valid && this.taskForm.value.taskName
-    //   && this.taskForm.value.taskDescription
-    //   && this.taskForm.value.taskDateSet
-    //   && this.taskForm.value.taskDeadline
-    //   && this.taskForm.value.taskPriority
-    //   && this.taskForm.value.taskCategory) {
-    //
-    //   const task: TaskAddType = {
-    //     taskName: this.taskForm.value.taskName,
-    //     taskDescription: this.taskForm.value.taskName,
-    //     taskDateSet: this.taskForm.value.taskDateSet = new Date().toLocaleDateString(),
-    //     taskDeadline: this.taskForm.value.taskDeadline = new Date().toLocaleDateString(),
-    //     taskPriority: this.taskForm.value.taskPriority,
-    //     taskCategory: this.taskForm.value.taskCategory
-    //   }
+    if (this.taskForm.valid && this.taskForm.value.taskName
+      && this.taskForm.value.taskDescription
+      && this.taskForm.value.taskDateSet
+      && this.taskForm.value.taskDeadline
+      && this.taskForm.value.taskPriority
+      && this.taskForm.value.taskCategory) {
 
-      // console.log(task)
-      console.log(typeof this.taskForm.value.taskPriority)
-      console.log(this.taskForm.value.taskPriority)
+      const task: TaskAddType = {
+        taskName: this.taskForm.value.taskName,
+        taskDescription: this.taskForm.value.taskName,
+        taskDateSet: this.taskForm.value.taskDateSet = new Date().toLocaleDateString(),
+        taskDeadline: this.taskForm.value.taskDeadline = new Date().toLocaleDateString(),
+        taskPriority: Object(this.taskForm.value.taskPriority).label,
+        taskCategory: Object(this.taskForm.value.taskCategory).label
+      }
 
-    // }
+
+    }
   }
 }
