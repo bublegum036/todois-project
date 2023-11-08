@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {FormBuilder, Validators} from "@angular/forms";
 
 
 @Component({
@@ -11,8 +12,19 @@ export class TaskFormComponent implements OnInit {
   taskCategory: any[] | undefined;
 
 
-  constructor() {
+  constructor(private fb: FormBuilder) {
   }
+
+  taskForm= this.fb.group({
+    taskName: ['', [Validators.required, Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
+    taskDescription: ['', [Validators.required, Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
+    taskDateSet: ['', [Validators.required]],
+    taskDeadline: ['', [Validators.required]],
+    taskPriority: ['', [Validators.required]],
+    taskCategory: ['', [Validators.required]],
+  })
+
+
 
   ngOnInit() {
     this.priority = [
@@ -59,6 +71,11 @@ export class TaskFormComponent implements OnInit {
 
 
   createTask() {
-    console.log(1)
+    console.log(this.taskForm.value.taskName)
+    console.log(this.taskForm.value.taskDescription)
+    console.log(this.taskForm.value.taskDateSet)
+    console.log(this.taskForm.value.taskDeadline)
+    console.log(this.taskForm.value.taskPriority)
+    console.log(this.taskForm.value.taskCategory)
   }
 }

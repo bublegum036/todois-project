@@ -5,5 +5,4 @@ export type TaskType = {
   taskDeadline: string,
   taskPriority: string,
   taskCategory: string
-
 }

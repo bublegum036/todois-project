@@ -1,20 +1,26 @@
-<div class="task-form">
+<div class="task-form" [formGroup]="taskForm">
   <div class="task-form-input">
     <span class="p-float-label">
-        <input pInputText id="task-name"/>
+        <input pInputText
+               formControlName="taskName"
+               id="task-name"/>
         <label htmlFor="task-name">Название задачи</label>
     </span>
   </div>
   <div class="task-form-input">
     <span class="p-float-label">
-        <input pInputText id="task-description"/>
+        <input pInputText
+               formControlName="taskDescription"
+               id="task-description"/>
         <label htmlFor="task-description">Описание задачи</label>
     </span>
   </div>
   <div class="task-form-input">
     <div class="card flex justify-content-center">
       <span class="p-float-label">
-      <p-calendar [showIcon]="true" id="taskDateSet" dateFormat="dd.mm.yy"></p-calendar>
+      <p-calendar [showIcon]="true"
+                  formControlName="taskDateSet"
+                  id="taskDateSet" dateFormat="dd.mm.yy"></p-calendar>
         <label htmlFor="taskDateSet">Дата постановки</label>
       </span>
     </div>
@@ -22,20 +28,26 @@
   <div class="task-form-input">
     <div class="card flex justify-content-center">
       <span class="p-float-label">
-      <p-calendar [showIcon]="true" id="taskDeadline" dateFormat="dd.mm.yy"></p-calendar>
+      <p-calendar [showIcon]="true"
+                  formControlName="taskDeadline"
+                  id="taskDeadline" dateFormat="dd.mm.yy"></p-calendar>
         <label htmlFor="taskDeadline">Срок выполнения</label>
       </span>
     </div>
   </div>
   <div class="task-form-input">
       <span class="p-float-label">
-        <p-treeSelect [options]="priority" ></p-treeSelect>
+        <p-treeSelect [options]="priority"
+                      formControlName="taskPriority"
+        ></p-treeSelect>
         <label htmlFor="taskPriority">Приоритет</label>
     </span>
   </div>
   <div class="task-form-input">
       <span class="p-float-label">
-        <p-treeSelect [options]="taskCategory" ></p-treeSelect>
+        <p-treeSelect [options]="taskCategory"
+                      formControlName="taskCategory"
+        ></p-treeSelect>
         <label htmlFor="taskCategory">Категория</label>
     </span>
   </div>

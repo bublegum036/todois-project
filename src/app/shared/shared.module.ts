@@ -6,6 +6,7 @@ import {InputTextModule} from "primeng/inputtext";
 import {CalendarModule} from 'primeng/calendar';
 import {CascadeSelectModule} from "primeng/cascadeselect";
 import {TreeSelectModule} from "primeng/treeselect";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import {TreeSelectModule} from "primeng/treeselect";
     CalendarModule,
     CascadeSelectModule,
     TreeSelectModule,
+    ReactiveFormsModule,
   ]
 })
 export class SharedModule {
