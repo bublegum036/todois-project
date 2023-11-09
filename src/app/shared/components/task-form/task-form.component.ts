@@ -81,7 +81,8 @@ export class TaskFormComponent implements OnInit {
 
 
   createTask() {
-    if (this.taskForm.valid && this.taskForm.value.taskName
+    if (this.taskForm.valid
+      && this.taskForm.value.taskName
       && this.taskForm.value.taskDescription
       && this.taskForm.value.taskDateSet
       && this.taskForm.value.taskDeadline
@@ -97,30 +98,27 @@ export class TaskFormComponent implements OnInit {
         taskCategory: Object(this.taskForm.value.taskCategory).label
       }
 
-
       if (!localStorage.getItem('tasks')) {
         localStorage.setItem('tasks', JSON.stringify([task]));
-        this.router.navigate(['/tasks']);
-        setTimeout(() => {
-          this.visibleChange.emit(false);
-        }, 2000);
-        this.messageService.add({severity: 'success', summary: 'Успешно!', detail: 'Задача успешно создана'})
+        this.closeAndCleanTaskForm()
       }
       if (localStorage.getItem('tasks')) {
         let tasksFromLS: TaskAddType[] = JSON.parse(localStorage.getItem('tasks') || '{}');
         let tasksArrayForLS: string = JSON.stringify(tasksFromLS.concat(task));
         localStorage.removeItem('tasks');
         localStorage.setItem('tasks', tasksArrayForLS);
-        this.messageService.add({severity: 'success', summary: 'Успешно!', detail: 'Задача успешно создана'})
-        setTimeout(() => {
-          this.visibleChange.emit(false);
-        }, 2000);
+        this.closeAndCleanTaskForm();
         console.log(localStorage.getItem('tasks'))
       } else {
         this.messageService.add({severity: 'error', summary: 'Ошибка', detail: 'Что-то пошло не так!'})
       }
     }
-
-
+  }
+  closeAndCleanTaskForm(){
+    this.messageService.add({severity: 'success', summary: 'Успешно!', detail: 'Задача успешно создана'})
+    setTimeout(() => {
+      this.visibleChange.emit(false);
+      this.taskForm.reset()
+    }, 4000);
   }
 }
