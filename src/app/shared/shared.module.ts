@@ -7,7 +7,9 @@ import {CalendarModule} from 'primeng/calendar';
 import {CascadeSelectModule} from "primeng/cascadeselect";
 import {TreeSelectModule} from "primeng/treeselect";
 import {ReactiveFormsModule} from "@angular/forms";
-import { DialogModule } from 'primeng/dialog';
+import {DialogModule} from 'primeng/dialog';
+import {RippleModule} from "primeng/ripple";
+import {ToastModule} from 'primeng/toast';
 
 
 @NgModule({
@@ -25,7 +27,9 @@ import { DialogModule } from 'primeng/dialog';
     CascadeSelectModule,
     TreeSelectModule,
     ReactiveFormsModule,
-    DialogModule
+    DialogModule,
+    RippleModule,
+    ToastModule
   ]
 })
 export class SharedModule {

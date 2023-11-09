@@ -8,6 +8,9 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MainModule} from "./views/main/main.module";
 import { LayoutComponent } from './views/layout/layout.component';
+import { ToastModule } from 'primeng/toast';
+import {MessageService} from "primeng/api";
+import {DialogModule} from "primeng/dialog";
 
 @NgModule({
   declarations: [
@@ -21,9 +24,12 @@ import { LayoutComponent } from './views/layout/layout.component';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    MainModule
+    MainModule,
+    ToastModule,
+
   ],
-  providers: [],
+  exports: [DialogModule],
+  providers: [MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

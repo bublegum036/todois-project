@@ -1,13 +1,15 @@
-import {booleanAttribute, Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
-import {TaskAddType} from "../../../../types/task-add.type";
 import {Router} from "@angular/router";
+import {MessageService} from "primeng/api";
+import {TaskAddType} from "../../../../types/task-add.type";
 
 
 @Component({
   selector: 'task-form',
   templateUrl: './task-form.component.html',
-  styleUrls: ['./task-form.component.scss']
+  styleUrls: ['./task-form.component.scss'],
+  providers: [MessageService]
 })
 export class TaskFormComponent implements OnInit {
   priority: any[] | undefined;
@@ -15,7 +17,9 @@ export class TaskFormComponent implements OnInit {
 
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private fb: FormBuilder,
+              private router: Router,
+              private messageService: MessageService) {
   }
 
   taskForm = this.fb.group({
@@ -98,16 +102,18 @@ export class TaskFormComponent implements OnInit {
         localStorage.setItem('tasks', JSON.stringify([task]));
         this.router.navigate(['/tasks']);
         this.visibleChange.emit(false)
-        this.visibleChange.emit(false)
-
-      } else {
+        this.messageService.add({severity: 'success', summary: 'Успешно!', detail: 'Задача успешно создана'})
+      }
+      if (localStorage.getItem('tasks')) {
         let tasksFromLS: TaskAddType[] = JSON.parse(localStorage.getItem('tasks') || '{}');
         let tasksArrayForLS: string = JSON.stringify(tasksFromLS.concat(task));
         localStorage.removeItem('tasks');
-        localStorage.setItem('tasks',tasksArrayForLS);
+        localStorage.setItem('tasks', tasksArrayForLS);
         this.visibleChange.emit(false);
-        this.visibleChange.emit(false)
+        this.messageService.add({severity: 'success', summary: 'Успешно!', detail: 'Задача успешно создана'})
         console.log(localStorage.getItem('tasks'))
+      } else {
+        this.messageService.add({severity: 'error', summary: 'Ошибка', detail: 'Что-то пошло не так!'})
       }
     }
   }
