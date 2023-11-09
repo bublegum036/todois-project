@@ -10,6 +10,7 @@ import {TaskCategoryComponent} from './task-category/task-category.component';
 import {MenuComponent} from './menu/menu.component';
 import {TasksComponent} from './tasks/tasks.component';
 import {TableModule} from 'primeng/table';
+import {ToastModule} from "primeng/toast";
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import {TableModule} from 'primeng/table';
     TieredMenuModule,
     DialogModule,
     SharedModule,
-    TableModule
+    TableModule,
+    ToastModule
   ],
   exports: [MenuComponent, TasksComponent]
 })

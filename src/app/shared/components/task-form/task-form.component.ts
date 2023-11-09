@@ -101,7 +101,9 @@ export class TaskFormComponent implements OnInit {
       if (!localStorage.getItem('tasks')) {
         localStorage.setItem('tasks', JSON.stringify([task]));
         this.router.navigate(['/tasks']);
-        this.visibleChange.emit(false)
+        setTimeout(() => {
+          this.visibleChange.emit(false);
+        }, 2000);
         this.messageService.add({severity: 'success', summary: 'Успешно!', detail: 'Задача успешно создана'})
       }
       if (localStorage.getItem('tasks')) {
@@ -109,12 +111,16 @@ export class TaskFormComponent implements OnInit {
         let tasksArrayForLS: string = JSON.stringify(tasksFromLS.concat(task));
         localStorage.removeItem('tasks');
         localStorage.setItem('tasks', tasksArrayForLS);
-        this.visibleChange.emit(false);
         this.messageService.add({severity: 'success', summary: 'Успешно!', detail: 'Задача успешно создана'})
+        setTimeout(() => {
+          this.visibleChange.emit(false);
+        }, 2000);
         console.log(localStorage.getItem('tasks'))
       } else {
         this.messageService.add({severity: 'error', summary: 'Ошибка', detail: 'Что-то пошло не так!'})
       }
     }
+
+
   }
 }
