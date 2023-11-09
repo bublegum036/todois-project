@@ -9,8 +9,8 @@
         <p-tieredMenu [model]="items" [style]="{'width':'300px'}"></p-tieredMenu>
       </div>
 
-      <p-dialog [(visible)]="addTaskVisible" header="Создать новую задачу" [style]="{ width: '400px', height: '50vh' }">
-        <task-form></task-form>
+      <p-dialog [(visible)]="addTaskVisible" (visibleChange)="closeTaskMenu($event)" header="Создать новую задачу" [style]="{ width: '400px', height: '50vh' }">
+        <task-form (visibleChange)="closeTaskMenu($event)"></task-form>
       </p-dialog>
     </div>
   </div>

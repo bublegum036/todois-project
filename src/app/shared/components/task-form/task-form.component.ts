@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {booleanAttribute, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {TaskAddType} from "../../../../types/task-add.type";
 import {Router} from "@angular/router";
@@ -13,6 +13,7 @@ export class TaskFormComponent implements OnInit {
   priority: any[] | undefined;
   taskCategory: any[] | undefined;
 
+  @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private fb: FormBuilder, private router: Router) {
   }
@@ -92,18 +93,22 @@ export class TaskFormComponent implements OnInit {
         taskCategory: Object(this.taskForm.value.taskCategory).label
       }
 
+
       if (!localStorage.getItem('tasks')) {
         localStorage.setItem('tasks', JSON.stringify([task]));
         this.router.navigate(['/tasks']);
+        this.visibleChange.emit(false)
+        this.visibleChange.emit(false)
+
       } else {
         let tasksFromLS: TaskAddType[] = JSON.parse(localStorage.getItem('tasks') || '{}');
         let tasksArrayForLS: string = JSON.stringify(tasksFromLS.concat(task));
         localStorage.removeItem('tasks');
         localStorage.setItem('tasks',tasksArrayForLS);
-        this.router.navigate(['/tasks']);
+        this.visibleChange.emit(false);
+        this.visibleChange.emit(false)
         console.log(localStorage.getItem('tasks'))
       }
-
     }
   }
 }

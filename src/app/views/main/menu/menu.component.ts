@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MenuItem, MenuItemCommandEvent} from "primeng/api";
 
 @Component({
@@ -11,6 +11,8 @@ export class MenuComponent implements OnInit {
   userName!: string;
   addTaskVisible: boolean = false;
 
+
+
   constructor() {
   }
 
@@ -20,8 +22,8 @@ export class MenuComponent implements OnInit {
       {
         label: 'Создать задачу',
         icon: 'pi pi-plus-circle',
-        command: (event: MenuItemCommandEvent) =>  {
-          this.addTaskVisible = true;
+        command: (event: MenuItemCommandEvent) => {
+          this.openAddTaskMenu()
         }
       },
       {
@@ -39,5 +41,13 @@ export class MenuComponent implements OnInit {
         icon: 'pi pi-sign-out',
       },
     ];
+  }
+
+  openAddTaskMenu() {
+    this.addTaskVisible = !this.addTaskVisible;
+  }
+
+  closeTaskMenu(value: boolean) {
+      this.addTaskVisible = value;
   }
 }
