@@ -14,7 +14,7 @@ export class TaskFormComponent implements OnInit {
   taskCategory: any[] | undefined;
 
 
-  constructor(private fb: FormBuilder,private router: Router) {
+  constructor(private fb: FormBuilder, private router: Router) {
   }
 
   taskForm = this.fb.group({
@@ -83,7 +83,7 @@ export class TaskFormComponent implements OnInit {
       && this.taskForm.value.taskPriority
       && this.taskForm.value.taskCategory) {
 
-      const task: TaskAddType = {
+      let task: TaskAddType = {
         taskName: this.taskForm.value.taskName,
         taskDescription: this.taskForm.value.taskName,
         taskDateSet: this.taskForm.value.taskDateSet = new Date().toLocaleDateString(),
@@ -92,11 +92,16 @@ export class TaskFormComponent implements OnInit {
         taskCategory: Object(this.taskForm.value.taskCategory).label
       }
 
-      if (!localStorage.getItem('tasks')){
-        localStorage.setItem('tasks', JSON.stringify([task]))
-        this.router.navigate(['/tasks'])
+      if (!localStorage.getItem('tasks')) {
+        localStorage.setItem('tasks', JSON.stringify([task]));
+        this.router.navigate(['/tasks']);
       } else {
-//если есть массив
+        let tasksFromLS: TaskAddType[] = JSON.parse(localStorage.getItem('tasks') || '{}');
+        let tasksArrayForLS: string = JSON.stringify(tasksFromLS.concat(task));
+        localStorage.removeItem('tasks');
+        localStorage.setItem('tasks',tasksArrayForLS);
+        this.router.navigate(['/tasks']);
+        console.log(localStorage.getItem('tasks'))
       }
 
     }
