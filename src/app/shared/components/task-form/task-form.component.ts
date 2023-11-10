@@ -98,7 +98,7 @@ export class TaskFormComponent implements OnInit {
         taskCategory: Object(this.taskForm.value.taskCategory).label
       }
 
-      if ((JSON.stringify(localStorage.getItem('tasks')))) {
+      if (!localStorage.getItem('tasks')) {
         localStorage.setItem('tasks', JSON.stringify([task]));
         this.closeAndCleanTaskForm()
       } else {

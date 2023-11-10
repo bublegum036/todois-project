@@ -11,6 +11,7 @@ import { LayoutComponent } from './views/layout/layout.component';
 import { ToastModule } from 'primeng/toast';
 import {MessageService} from "primeng/api";
 import {DialogModule} from "primeng/dialog";
+import {LocalStorageService} from "./shared/services/local-storage.service";
 
 @NgModule({
   declarations: [
@@ -29,7 +30,7 @@ import {DialogModule} from "primeng/dialog";
 
   ],
   exports: [DialogModule],
-  providers: [MessageService],
+  providers: [MessageService, LocalStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

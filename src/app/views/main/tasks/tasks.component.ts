@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {MessageService, SortEvent} from "primeng/api";
 import {TaskAddType} from "../../../../types/task-add.type";
-import {Observable, of} from "rxjs";
+import {Observable} from "rxjs";
+import {LocalStorageService} from "../../../shared/services/local-storage.service";
 
 @Component({
   selector: 'tasks',
@@ -9,48 +10,31 @@ import {Observable, of} from "rxjs";
   styleUrls: ['./tasks.component.scss'],
   providers: [MessageService]
 })
-export class TasksComponent implements OnInit {
-  tasks: TaskAddType[] = [];
+export class TasksComponent implements OnInit, OnChanges {
+  tasks: any = [];
 
-  constructor(private messageService: MessageService) {
+  constructor(private messageService: MessageService,
+              private ls: LocalStorageService) {
+
   }
 
   ngOnInit() {
-    this.getTasks().subscribe(data => {
-      if (!data) {
-        this.messageService.add({severity: 'error', summary: 'Ошибка данных', detail: 'Ошибка запроса данных'})
+    this.ls.getTasks().subscribe(data => {
+      if (data) {
+        this.tasks = data
       }
-
-      this.tasks = data as TaskAddType[];
     })
-
+    
+    
   }
 
-  getTasks(): Observable<TaskAddType[] | '{}'> {
-    const data = JSON.parse(localStorage.getItem('tasks') || '{}')
-    return of(data)
-  }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.ls.tasks$.subscribe(data => {
+      if(data) {
+        this.tasks = data
+      }
+    })
+  }
 }
 
-// this.tasks = [{
-//   taskName: 'Сделать таблицу',
-//   taskDescription: 'Создать таблицу в tasks.component',
-//   taskDateSet: '8.11.2023',
-//   taskDeadline: '8.11.2023',
-//   taskPriority: 'Высокий',
-//   taskCategory: 'Учеба',
-// },
-//   {
-//     taskName: 'Сделать таблицу',
-//     taskDescription: 'Создать таблицу в tasks.component',
-//     taskDateSet: '8.11.2023',
-//     taskDeadline: '8.11.2023',
-//     taskPriority: 'Высокий',
-//     taskCategory: 'Учеба',
-//   },
-// ]
-//request tasks from localStorage
-// this.productService.getProductsMini().then((data) => {
-//   this.products = data;
-// });
