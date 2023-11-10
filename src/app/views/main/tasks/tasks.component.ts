@@ -20,7 +20,7 @@ export class TasksComponent implements OnInit {
   ngOnInit() {
     this.ls.getTasks().subscribe(data => {
       if (data) {
-        this.tasks = data
+        this.tasks = data;
       }
     })
   }
