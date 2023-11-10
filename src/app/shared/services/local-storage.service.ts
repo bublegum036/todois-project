@@ -20,10 +20,4 @@ export class LocalStorageService {
     return of(this.tasksFromLS = tasks)
     this.tasks$.next(this.tasksFromLS)
   }
-
-  // saveTasks(tasks: TaskAddType[] | '{}'): void {
-  //   this.tasksFromLS = tasks;
-  //   localStorage.setItem('tasks', JSON.stringify(tasks));
-  //   this.tasks$.next(tasks);
-  // }
 }

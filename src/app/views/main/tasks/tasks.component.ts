@@ -10,7 +10,7 @@ import {LocalStorageService} from "../../../shared/services/local-storage.servic
   styleUrls: ['./tasks.component.scss'],
   providers: [MessageService]
 })
-export class TasksComponent implements OnInit, OnChanges {
+export class TasksComponent implements OnInit {
   tasks: any = [];
 
   constructor(private messageService: MessageService,
@@ -21,17 +21,6 @@ export class TasksComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.ls.getTasks().subscribe(data => {
       if (data) {
-        this.tasks = data
-      }
-    })
-    
-    
-  }
-
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.ls.tasks$.subscribe(data => {
-      if(data) {
         this.tasks = data
       }
     })
