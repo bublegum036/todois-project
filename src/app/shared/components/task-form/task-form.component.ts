@@ -98,19 +98,16 @@ export class TaskFormComponent implements OnInit {
         taskCategory: Object(this.taskForm.value.taskCategory).label
       }
 
-      if (!localStorage.getItem('tasks')) {
+      if ((JSON.stringify(localStorage.getItem('tasks')))) {
         localStorage.setItem('tasks', JSON.stringify([task]));
         this.closeAndCleanTaskForm()
-      }
-      if (localStorage.getItem('tasks')) {
+      } else {
         let tasksFromLS: TaskAddType[] = JSON.parse(localStorage.getItem('tasks') || '{}');
         let tasksArrayForLS: string = JSON.stringify(tasksFromLS.concat(task));
         localStorage.removeItem('tasks');
         localStorage.setItem('tasks', tasksArrayForLS);
         this.closeAndCleanTaskForm();
         console.log(localStorage.getItem('tasks'))
-      } else {
-        this.messageService.add({severity: 'error', summary: 'Ошибка', detail: 'Что-то пошло не так!'})
       }
     }
   }
