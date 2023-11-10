@@ -5,19 +5,26 @@ import {TaskAddType} from "../../../types/task-add.type";
 @Injectable({
   providedIn: 'root'
 })
-export class LocalStorageService {
 
-  private tasksFromLS: TaskAddType[] | '{}' = []
-  public tasks$: Subject<TaskAddType[] | '{}'> = new Subject<TaskAddType[] | '{}'>()
+export class LocalStorageService {
+  private tasks: TaskAddType[] | '{}' = []
+  public tasks$: Subject<TaskAddType[] | '{}'> = new Subject<TaskAddType[] | '{}'>
+
+  tasksFromLS: TaskAddType[] | '{}' = []
 
   constructor() { 
-    this.tasksFromLS = JSON.parse(localStorage.getItem('tasks')|| '{}')
+    this.tasks = JSON.parse(localStorage.getItem('tasks')|| '{}')
   }
 
 
   getTasks(): Observable<TaskAddType[] | '{}'> {
     const tasks = JSON.parse(localStorage.getItem('tasks') || '{}')
-    return of(this.tasksFromLS = tasks)
-    this.tasks$.next(this.tasksFromLS)
+    return of(this.tasks = tasks)
   }
+
+  saveTasks(tasks: TaskAddType[] | '{}'): void {
+    localStorage.getItem('tasks');
+    this.tasks$.next(tasks);
+  }
+
 }

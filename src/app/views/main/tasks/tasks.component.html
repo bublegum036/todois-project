@@ -1,6 +1,6 @@
 <section class="tasks">
   <h2>Все задачи</h2>
-  <div class="tasks-table">
+  <div class="tasks-table" *ngIf="tasks && tasks.length>0">
     <p-table [value]="tasks" [customSort]="true" [tableStyle]="{'min-width': '90rem'}">
       <ng-template pTemplate="header">
         <tr>

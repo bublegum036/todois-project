@@ -3,6 +3,7 @@ import {FormBuilder, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {MessageService} from "primeng/api";
 import {TaskAddType} from "../../../../types/task-add.type";
+import { LocalStorageService } from '../../services/local-storage.service';
 
 
 @Component({
@@ -19,7 +20,8 @@ export class TaskFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private router: Router,
-              private messageService: MessageService) {
+              private messageService: MessageService,
+              private ls: LocalStorageService) {
   }
 
   taskForm = this.fb.group({
@@ -100,22 +102,23 @@ export class TaskFormComponent implements OnInit {
 
       if (!localStorage.getItem('tasks')) {
         localStorage.setItem('tasks', JSON.stringify([task]));
-        this.closeAndCleanTaskForm()
+        this.closeAndCleanTaskForm();
       } else {
         let tasksFromLS: TaskAddType[] = JSON.parse(localStorage.getItem('tasks') || '{}');
-        let tasksArrayForLS: string = JSON.stringify(tasksFromLS.concat(task));
+        let tasksArrayForLS: string = JSON.stringify(tasksFromLS.concat([task]));
         localStorage.removeItem('tasks');
         localStorage.setItem('tasks', tasksArrayForLS);
         this.closeAndCleanTaskForm();
         console.log(localStorage.getItem('tasks'))
       }
+      this.ls.saveTasks(JSON.parse(localStorage.getItem('tasks') || '{}') )
     }
   }
   closeAndCleanTaskForm(){
     this.messageService.add({severity: 'success', summary: 'Успешно!', detail: 'Задача успешно создана'})
     setTimeout(() => {
       this.visibleChange.emit(false);
-      this.taskForm.reset()
+      this.taskForm.reset();
     }, 4000);
   }
 }

@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MessageService, SortEvent} from "primeng/api";
 import {TaskAddType} from "../../../../types/task-add.type";
 import {Observable} from "rxjs";
@@ -11,18 +11,22 @@ import {LocalStorageService} from "../../../shared/services/local-storage.servic
   providers: [MessageService]
 })
 export class TasksComponent implements OnInit {
-  tasks: any = [];
+  tasks: TaskAddType[] = [];
 
   constructor(private messageService: MessageService,
               private ls: LocalStorageService) {
   }
 
   ngOnInit() {
-    this.ls.getTasks().subscribe(data => {
-      if (data) {
-        this.tasks = data;
-      }
+    this.ls.getTasks().subscribe((data: TaskAddType[] | '{}') => {
+      this.tasks = data as TaskAddType[]
+    })
+
+
+    this.ls.tasks$.subscribe((data: TaskAddType[] | '{}') => {
+      this.tasks = data as TaskAddType[]
     })
   }
+
 }
 
