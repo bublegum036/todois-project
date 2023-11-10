@@ -92,7 +92,7 @@ export class TaskFormComponent implements OnInit {
       let task: TaskAddType = {
         taskName: this.taskForm.value.taskName,
         taskDescription: this.taskForm.value.taskName,
-        taskDateSet: this.taskForm.value.taskDateSet = new Date().toLocaleDateString(),
+        taskDateSet: this.taskForm.value.taskDateSet,
         taskDeadline: this.taskForm.value.taskDeadline = new Date().toLocaleDateString(),
         taskPriority: Object(this.taskForm.value.taskPriority).label,
         taskCategory: Object(this.taskForm.value.taskCategory).label

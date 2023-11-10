@@ -15,7 +15,6 @@ export class TasksComponent implements OnInit {
 
   constructor(private messageService: MessageService,
               private ls: LocalStorageService) {
-
   }
 
   ngOnInit() {
