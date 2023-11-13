@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { LocalStorageService } from '../../services/local-storage.service';
 import { MessageService } from 'primeng/api';
+import { CategoryAddType } from 'src/types/category-add.type';
 
 @Component({
   selector: 'category-add-form',
@@ -27,13 +28,15 @@ export class CategoryAddFormComponent {
     if (this.categoryAddTask.valid
       && this.categoryAddTask.value.categoryName) {
 
-      let category: string = this.categoryAddTask.value.categoryName;
+      let category: CategoryAddType = {
+        categoryName: this.categoryAddTask.value.categoryName
+      }
 
       if (!localStorage.getItem('categories')) {
         localStorage.setItem('categories', JSON.stringify([category]));
         this.closeAndCleanAddCategoryAddTaskForm();
       } else {
-        let categoryFromLS: string[] = JSON.parse(localStorage.getItem('categories') || '{}');
+        let categoryFromLS: CategoryAddType[] = JSON.parse(localStorage.getItem('categories') || '{}');
         let tasksArrayForLS: string = JSON.stringify(categoryFromLS.concat([category]));
         localStorage.removeItem('categories');
         localStorage.setItem('categories', tasksArrayForLS);

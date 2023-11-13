@@ -6,5 +6,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./task-category.component.scss']
 })
 export class TaskCategoryComponent {
+  categoties: any | undefined;
+
+  constructor() {
+    this.categoties = JSON.parse(localStorage.getItem('categories') || '')
+   }
+
+
 
 }
