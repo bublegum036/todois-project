@@ -8,7 +8,7 @@
         <label htmlFor="task-name">Название задачи</label>
     </span>
     <small class="task-form-input-help" *ngIf="taskForm.get('taskName')?.errors?.['pattern']">Только буквы, цифры, знаки препинания</small>
-    <small class="task-form-input-help" *ngIf="taskForm.get('taskName')?.errors?.['maxLength']">Максимум 30 символов</small>
+    <small class="task-form-input-help" *ngIf="taskForm.get('taskName')?.hasError('maxlength')">Максимум 30 символов</small>
   </div>
   <div class="task-form-input">
     <span class="p-float-label">
@@ -17,7 +17,7 @@
                [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskDescription')?.invalid && (taskForm.get('taskDescription')?.dirty || taskForm.get('taskDescription')?.touched) ?  true : ''}"
                id="task-description"/>
     <small class="task-form-input-help" *ngIf="taskForm.get('taskDescription')?.errors?.['pattern']">Только буквы, цифры, знаки препинания</small>
-    <small class="task-form-input-help" *ngIf="taskForm.get('taskDescription')?.errors?.['maxLength']">Максимум 30 символов</small>
+    <small class="task-form-input-help" *ngIf="taskForm.get('taskDescription')?.hasError('maxlength')">Максимум 30 символов</small>
 
         <label htmlFor="task-description">Описание задачи</label>
     </span>

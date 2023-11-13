@@ -1,1 +1,18 @@
-<p>category-add-form works!</p>
+<div class="category-add-form" [formGroup]="categoryAddTask">
+    <div class="category-add-form-input">
+        <span class="p-float-label">
+            <input pInputText formControlName="categoryName"
+                [ngClass]="{'ng-invalid ng-dirty': categoryAddTask.get('categoryName')?.invalid && (categoryAddTask.get('categoryName')?.dirty || categoryAddTask.get('categoryName')?.touched) ?  true : ''}"
+                id="task-name" />
+            <label htmlFor="task-name">Название категории</label>
+        </span>
+        <small class="category-add-form-input-help" *ngIf="categoryAddTask.get('categoryName')?.errors?.['pattern']">Только буквы,
+            цифры, знаки препинания</small>
+        <small class="category-add-form-input-help" *ngIf="categoryAddTask.get('categoryName')?.hasError('maxlength')">Максимум 20
+            символов</small>
+    </div>
+    <div class="category-add-form-action">
+        <p-button pRipple label="Создать категорию" severity="warning" (click)="createCategory()"></p-button>
+        <p-toast></p-toast>
+      </div>
+</div>

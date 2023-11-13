@@ -66,6 +66,4 @@ export class MenuComponent implements OnInit {
   closeAddCategory(value: boolean) {
       this.addCategoryVisible = value;
   }
-
-
 }

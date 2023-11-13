@@ -9,6 +9,7 @@ import {TaskAddType} from "../../../types/task-add.type";
 export class LocalStorageService {
   private tasks: TaskAddType[] | '{}' = []
   public tasks$: Subject<TaskAddType[] | '{}'> = new Subject<TaskAddType[] | '{}'>
+  public categories$: Subject<string[] | '{}'> = new Subject<string[] | '{}'>
 
   tasksFromLS: TaskAddType[] | '{}' = []
 
@@ -26,5 +27,8 @@ export class LocalStorageService {
     localStorage.getItem('tasks');
     this.tasks$.next(tasks);
   }
-
+  saveCategories(categories: string[] | '{}'): void {
+    localStorage.getItem('categories');
+    this.categories$.next(categories);
+  }
 }

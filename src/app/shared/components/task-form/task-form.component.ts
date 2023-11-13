@@ -1,6 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
-import {Router} from "@angular/router";
 import {MessageService} from "primeng/api";
 import {TaskAddType} from "../../../../types/task-add.type";
 import { LocalStorageService } from '../../services/local-storage.service';
@@ -19,7 +18,6 @@ export class TaskFormComponent implements OnInit {
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private fb: FormBuilder,
-              private router: Router,
               private messageService: MessageService,
               private ls: LocalStorageService) {
   }
@@ -63,20 +61,16 @@ export class TaskFormComponent implements OnInit {
     this.taskCategory = [
       {
         label: 'Личные',
-        icon: 'pi pi-user'
       },
       {
         label: 'Учеба',
-        icon: 'pi pi-desktop'
 
       },
       {
         label: 'Работа',
-        icon: 'pi pi-truck'
       },
       {
         label: 'Семья',
-        icon: 'pi pi-users'
       },
     ]
   }
@@ -113,6 +107,8 @@ export class TaskFormComponent implements OnInit {
       }
       this.ls.saveTasks(JSON.parse(localStorage.getItem('tasks') || '{}') )
     }
+
+  
   }
   closeAndCleanTaskForm(){
     this.messageService.add({severity: 'success', summary: 'Успешно!', detail: 'Задача успешно создана'})
