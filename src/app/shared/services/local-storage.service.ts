@@ -25,7 +25,6 @@ export class LocalStorageService {
     return of(this.tasks = tasks)
   }
 
-
   getCategories(): Observable<CategoryAddType[] | '{}'> {
     const categories = JSON.parse(localStorage.getItem('categories') || '{}')
     return of(this.categories = categories)

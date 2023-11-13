@@ -1,7 +1,7 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
-import {MessageService} from "primeng/api";
-import {TaskAddType} from "../../../../types/task-add.type";
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormBuilder, Validators } from "@angular/forms";
+import { MessageService } from "primeng/api";
+import { TaskAddType } from "../../../../types/task-add.type";
 import { LocalStorageService } from '../../services/local-storage.service';
 
 
@@ -18,8 +18,8 @@ export class TaskFormComponent implements OnInit {
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private fb: FormBuilder,
-              private messageService: MessageService,
-              private ls: LocalStorageService) {
+    private messageService: MessageService,
+    private ls: LocalStorageService) {
   }
 
   taskForm = this.fb.group({
@@ -58,21 +58,31 @@ export class TaskFormComponent implements OnInit {
     ]
 
 
-    this.taskCategory = [
-      {
-        label: 'Личные',
-      },
-      {
-        label: 'Учеба',
+    this.ls.getCategories().subscribe(data => {
+      if (data) {
+        this.taskCategory = data as any
+      }
+      console.log(this.taskCategory)
+    })
 
-      },
-      {
-        label: 'Работа',
-      },
-      {
-        label: 'Семья',
-      },
-    ]
+    this.ls.categories$.subscribe((data: any[] | '{}') => {
+      this.taskCategory = data as any[]
+    })
+
+    // this.taskCategory = [
+    //   {
+    //     label: 'Личные',
+    //   },
+    //   {
+    //     label: 'Учеба',
+    //   },
+    //   {
+    //     label: 'Работа',
+    //   },
+    //   {
+    //     label: 'Семья',
+    //   },
+    // ]
   }
 
 
@@ -105,13 +115,13 @@ export class TaskFormComponent implements OnInit {
         this.closeAndCleanTaskForm();
         console.log(localStorage.getItem('tasks'))
       }
-      this.ls.saveTasks(JSON.parse(localStorage.getItem('tasks') || '{}') )
+      this.ls.saveTasks(JSON.parse(localStorage.getItem('tasks') || '{}'))
     }
 
-  
+
   }
-  closeAndCleanTaskForm(){
-    this.messageService.add({severity: 'success', summary: 'Успешно!', detail: 'Задача успешно создана'})
+  closeAndCleanTaskForm() {
+    this.messageService.add({ severity: 'success', summary: 'Успешно!', detail: 'Задача успешно создана' })
     setTimeout(() => {
       this.visibleChange.emit(false);
       this.taskForm.reset();

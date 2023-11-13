@@ -1,3 +1,4 @@
 export type CategoryAddType = {
-  categoryName: string
+  categoryName?: string
+  label?: string
 }

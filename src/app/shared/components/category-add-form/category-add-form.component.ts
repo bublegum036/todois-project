@@ -29,7 +29,8 @@ export class CategoryAddFormComponent {
       && this.categoryAddTask.value.categoryName) {
 
       let category: CategoryAddType = {
-        categoryName: this.categoryAddTask.value.categoryName
+        categoryName: this.categoryAddTask.value.categoryName,
+        label: this.categoryAddTask.value.categoryName
       }
 
       if (!localStorage.getItem('categories')) {
