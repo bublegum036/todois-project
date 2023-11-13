@@ -11,6 +11,7 @@ import {MenuComponent} from './menu/menu.component';
 import {TasksComponent} from './tasks/tasks.component';
 import {TableModule} from 'primeng/table';
 import {ToastModule} from "primeng/toast";
+import { CategoryAddFormComponent } from 'src/app/shared/components/category-add-form/category-add-form.component';
 
 
 @NgModule({
@@ -28,7 +29,7 @@ import {ToastModule} from "primeng/toast";
     DialogModule,
     SharedModule,
     TableModule,
-    ToastModule
+    ToastModule,
   ],
   exports: [MenuComponent, TasksComponent]
 })

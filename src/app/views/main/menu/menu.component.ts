@@ -10,6 +10,7 @@ export class MenuComponent implements OnInit {
   items: MenuItem[] = [];
   userName!: string;
   addTaskVisible: boolean = false;
+  addCategoryVisible: boolean = false;
 
 
 
@@ -24,6 +25,13 @@ export class MenuComponent implements OnInit {
         icon: 'pi pi-plus-circle',
         command: (event: MenuItemCommandEvent) => {
           this.openAddTaskMenu()
+        }
+      },
+      {
+        label: 'Создать категорию',
+        icon: 'pi pi-plus-circle',
+        command: (event: MenuItemCommandEvent) => {
+          this.openAddCategoryMenu()
         }
       },
       {
@@ -47,7 +55,17 @@ export class MenuComponent implements OnInit {
     this.addTaskVisible = !this.addTaskVisible;
   }
 
+  openAddCategoryMenu() {
+    this.addCategoryVisible = !this.addCategoryVisible;
+  }
+
   closeTaskMenu(value: boolean) {
       this.addTaskVisible = value;
   }
+
+  closeAddCategory(value: boolean) {
+      this.addCategoryVisible = value;
+  }
+
+
 }

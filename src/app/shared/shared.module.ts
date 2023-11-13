@@ -10,14 +10,17 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {DialogModule} from 'primeng/dialog';
 import {RippleModule} from "primeng/ripple";
 import {ToastModule} from 'primeng/toast';
+import { CategoryAddFormComponent } from './components/category-add-form/category-add-form.component';
 
 
 @NgModule({
   declarations: [
     TaskFormComponent,
+    CategoryAddFormComponent,
   ],
   exports: [
     TaskFormComponent,
+    CategoryAddFormComponent,
   ],
   imports: [
     CommonModule,

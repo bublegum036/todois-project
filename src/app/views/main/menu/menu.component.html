@@ -12,6 +12,11 @@
       <p-dialog [(visible)]="addTaskVisible" (visibleChange)="closeTaskMenu($event)" header="Создать новую задачу" [style]="{ width: '400px', height: '50vh' }">
         <task-form (visibleChange)="closeTaskMenu($event)"></task-form>
       </p-dialog>
+
+      
+      <p-dialog [(visible)]="addCategoryVisible" (visibleChange)="closeAddCategory($event)" header="Создать катеорию задач" [style]="{ width: '400px', height: '50vh' }">
+        <category-add-form (visibleChange)="closeAddCategory($event)"></category-add-form>
+      </p-dialog>
     </div>
   </div>
 </section>
