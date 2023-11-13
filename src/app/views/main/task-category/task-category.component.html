@@ -1,19 +1,23 @@
 <section class="task-category">
   <h2>Категории задач</h2>
 <div class="task-category-table">
-  <p-table [value]="categoties" [tableStyle]="{ 'min-width': '50rem' }">
+  <p-table [value]="categoties" responsiveLayout="stack"  [tableStyle]="{ 'min-width': '80%' }">
     <ng-template pTemplate="header">
         <tr>
-            <th>Название категории</th>
-            <th></th>
-            <th></th>
+            <th style="width:60%">Название категории</th>
+            <th style="width:10%"></th>
+            <th style="width:10%"></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-category>
         <tr>
             <td>{{category.categoryName}}</td>
-            <td>Редактировать</td>
-            <td>Удалить</td>
+            <td>
+                <p-button (click)="editCategory()" icon="pi pi-pencil" severity="info"></p-button>
+            </td>
+            <td>
+                <p-button (click)="removeCategory()" icon="pi pi-trash" severity="danger"></p-button>
+            </td>
         </tr>
     </ng-template>
 </p-table>

@@ -25,4 +25,11 @@ ngOnInit() {
   })
 }
 
+editCategory(){
+  console.log('bl')
+}
+
+removeCategory(){
+  console.log('bl')
+}
 }

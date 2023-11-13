@@ -57,32 +57,15 @@ export class TaskFormComponent implements OnInit {
       },
     ]
 
-
     this.ls.getCategories().subscribe(data => {
       if (data) {
         this.taskCategory = data as any
       }
-      console.log(this.taskCategory)
     })
 
     this.ls.categories$.subscribe((data: any[] | '{}') => {
       this.taskCategory = data as any[]
     })
-
-    // this.taskCategory = [
-    //   {
-    //     label: 'Личные',
-    //   },
-    //   {
-    //     label: 'Учеба',
-    //   },
-    //   {
-    //     label: 'Работа',
-    //   },
-    //   {
-    //     label: 'Семья',
-    //   },
-    // ]
   }
 
 
