@@ -12,6 +12,7 @@ import { ToastModule } from 'primeng/toast';
 import {MessageService} from "primeng/api";
 import {DialogModule} from "primeng/dialog";
 import {LocalStorageService} from "./shared/services/local-storage.service";
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import {LocalStorageService} from "./shared/services/local-storage.service";
     AppRoutingModule,
     MainModule,
     ToastModule,
+    ConfirmDialogModule
 
   ],
   exports: [DialogModule],

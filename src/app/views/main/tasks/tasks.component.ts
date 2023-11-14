@@ -1,20 +1,22 @@
-import {Component, OnInit} from '@angular/core';
-import {MessageService, SortEvent} from "primeng/api";
-import {TaskAddType} from "../../../../types/task-add.type";
-import {Observable} from "rxjs";
-import {LocalStorageService} from "../../../shared/services/local-storage.service";
+import { Component, OnInit } from '@angular/core';
+import { ConfirmEventType, ConfirmationService, MessageService, SortEvent } from "primeng/api";
+import { TaskAddType } from "../../../../types/task-add.type";
+import { Observable } from "rxjs";
+import { LocalStorageService } from "../../../shared/services/local-storage.service";
+
 
 @Component({
   selector: 'tasks',
   templateUrl: './tasks.component.html',
   styleUrls: ['./tasks.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService, ConfirmationService]
 })
 export class TasksComponent implements OnInit {
   tasks: TaskAddType[] = [];
 
   constructor(private messageService: MessageService,
-              private ls: LocalStorageService) {
+    private ls: LocalStorageService,
+    private confirmationService: ConfirmationService) {
   }
 
   ngOnInit() {
@@ -29,12 +31,48 @@ export class TasksComponent implements OnInit {
   }
 
 
+
   editTask() {
-    console.log('bl')
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to proceed?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted' });
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({ severity: 'warn', summary: 'Cancelled', detail: 'You have cancelled' });
+            break;
+        }
+      }
+    });
   }
 
   removeTask() {
-    console.log('bl')
+    this.confirmationService.confirm({
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({ severity: 'warn', summary: 'Cancelled', detail: 'You have cancelled' });
+            break;
+        }
+      }
+    });
   }
+
 }
 
