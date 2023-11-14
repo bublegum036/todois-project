@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService, SortEvent } from "primeng/api";
 import { TaskAddType } from "../../../../types/task-add.type";
-import { Observable } from "rxjs";
 import { LocalStorageService } from "../../../shared/services/local-storage.service";
 
 
@@ -45,7 +44,7 @@ export class TasksComponent implements OnInit {
 
 
 
-  editTask(rowData: any) {
+  editTask() {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to proceed?',
       header: 'Confirmation',
@@ -66,7 +65,7 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  removeTask(task: TaskAddType) {
+  removeTask() {
     this.confirmationService.confirm({
       message: 'Do you want to delete this record?',
       header: 'Delete Confirmation',
