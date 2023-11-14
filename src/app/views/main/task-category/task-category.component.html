@@ -5,8 +5,7 @@
     <ng-template pTemplate="header">
         <tr>
             <th style="width:60%">Название категории</th>
-            <th style="width:5%"></th>
-            <th style="width:5%"></th>
+            <th style="width:30%"></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-category>
@@ -14,8 +13,6 @@
             <td>{{category.categoryName}}</td>
             <td>
                 <p-button (click)="editCategory()" icon="pi pi-pencil" severity="info"></p-button>
-            </td>
-            <td>
                 <p-button (click)="removeCategory()" icon="pi pi-trash" severity="danger"></p-button>
             </td>
         </tr>

@@ -22,3 +22,27 @@
   border-color: #D97706;
 }
 
+
+.p-datatable .p-datatable-thead > tr > th {
+  padding: 8px;
+  font-size: 12px;
+}
+
+.p-datatable-tbody>tr>td {
+  font-size: 13px;
+  text-align: center;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  padding: 0.3rem 0.3rem;
+}
+
+.p-ripple.p-element.p-button.p-component.p-button-icon-only.p-button-info,
+.p-ripple.p-element.p-button.p-component.p-button-icon-only.p-button-danger {
+  width: 25px;
+  height: 25px;
+}
+
+.p-ripple.p-element.p-button.p-component.p-button-icon-only.p-button-info {
+  margin-right: 8px;
+}

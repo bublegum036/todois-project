@@ -7,29 +7,29 @@ import { CategoryAddType } from 'src/types/category-add.type';
   templateUrl: './task-category.component.html',
   styleUrls: ['./task-category.component.scss']
 })
-export class TaskCategoryComponent implements OnInit{
+export class TaskCategoryComponent implements OnInit {
   categoties: any | undefined;
 
   constructor(private ls: LocalStorageService) {
-    
-   }
 
-ngOnInit() {
-  this.ls.getCategories().subscribe(data => {
-    this.categoties = data
-  })
+  }
+
+  ngOnInit() {
+    this.ls.getCategories().subscribe(data => {
+      this.categoties = data
+    })
 
 
-  this.ls.categories$.subscribe((data: CategoryAddType[] | '{}') => {
-    this.categoties = data as CategoryAddType[]
-  })
-}
+    this.ls.categories$.subscribe((data: CategoryAddType[] | '{}') => {
+      this.categoties = data as CategoryAddType[]
+    })
+  }
 
-editCategory(){
-  console.log('bl')
-}
+  editCategory() {
+    console.log('bl')
+  }
 
-removeCategory(){
-  console.log('bl')
-}
+  removeCategory() {
+    console.log('bl')
+  }
 }

@@ -27,5 +27,14 @@ export class TasksComponent implements OnInit {
       this.tasks = data as TaskAddType[]
     })
   }
+
+
+  editTask() {
+    console.log('bl')
+  }
+
+  removeTask() {
+    console.log('bl')
+  }
 }
 

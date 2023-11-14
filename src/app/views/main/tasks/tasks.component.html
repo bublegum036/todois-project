@@ -1,7 +1,7 @@
 <section class="tasks">
   <h2>Все задачи</h2>
   <div class="tasks-table" *ngIf="tasks && tasks.length>0">
-    <p-table [value]="tasks" [customSort]="true" [tableStyle]="{'min-width': '90rem'}">
+    <p-table [value]="tasks" [resizableColumns]="true" [customSort]="true" [tableStyle]="{'min-width': '100%'}">
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="taskName" style="width:20%">Название задачи
@@ -22,6 +22,8 @@
           <th pSortableColumn="taskCategory" style="width:15%">Категория
             <p-sortIcon field="taskCategory"></p-sortIcon>
           </th>
+          <th pSortableColumn="Actions" style="width:15%"></th>
+          <th pSortableColumn="Actions" style="width:15%"></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-task>
@@ -32,6 +34,10 @@
           <td>{{task.taskDeadline}}</td>
           <td>{{task.taskPriority}}</td>
           <td>{{task.taskCategory}}</td>
+          <td>
+            <p-button (click)="editTask()" icon="pi pi-pencil" severity="info"></p-button>
+            <p-button (click)="removeTask()" icon="pi pi-trash" severity="danger"></p-button>
+          </td>
         </tr>
       </ng-template>
     </p-table>
