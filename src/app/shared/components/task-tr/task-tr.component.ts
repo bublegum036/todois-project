@@ -10,7 +10,8 @@ import { LocalStorageService } from '../../services/local-storage.service';
   providers: [MessageService, ConfirmationService]
 })
 export class TaskTrComponent {
-@Input() task!: TaskAddType;
+@Input() col!: any;
+@Input() task!: any;
 
 
 constructor(private messageService: MessageService,
@@ -18,7 +19,7 @@ constructor(private messageService: MessageService,
   private confirmationService: ConfirmationService) {
 }
 
-editTask() {
+editTask(task:any) {
   this.confirmationService.confirm({
     message: 'Are you sure that you want to proceed?',
     header: 'Confirmation',
@@ -39,7 +40,7 @@ editTask() {
   });
 }
 
-removeTask() {
+removeTask(task:any) {
   this.confirmationService.confirm({
     message: 'Do you want to delete this record?',
     header: 'Delete Confirmation',

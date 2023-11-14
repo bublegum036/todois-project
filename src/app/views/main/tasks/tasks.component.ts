@@ -39,13 +39,13 @@ export class TasksComponent implements OnInit {
       { field: 'taskDeadline', header: 'Срок выполнения' },
       { field: 'taskPriority', header: 'Приоритет' },
       { field: 'taskCategory', header: 'Категория' },
-      { field: 'Actions', header: 'Действия' }
+      // { field: 'Actions', header: 'Действия' }/
     ];
   }
 
 
 
-  editTask() {
+  editTask(rowData: any) {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to proceed?',
       header: 'Confirmation',
@@ -66,7 +66,7 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  removeTask() {
+  removeTask(task: TaskAddType) {
     this.confirmationService.confirm({
       message: 'Do you want to delete this record?',
       header: 'Delete Confirmation',

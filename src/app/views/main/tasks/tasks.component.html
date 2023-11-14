@@ -1,17 +1,29 @@
 <section class="tasks">
   <h2>Все задачи</h2>
   <div class="tasks-table" *ngIf="tasks && tasks.length>0">
-    <p-table [value]="tasks" [columns]="column" [resizableColumns]="true" [customSort]="true" [tableStyle]="{'min-width': '100%'}">
+    <p-table [value]="tasks" [columns]="column" [resizableColumns]="true" [customSort]="true"
+      [tableStyle]="{'min-width': '100%'}">
       <ng-template pTemplate="header" let-columns>
         <tr>
           <th *ngFor="let column of columns">{{column.header}}</th>
+          <th>Действия</th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-task>
-          <task-tr *ngFor="let task of tasks" [task]="task"></task-tr>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+          <td *ngFor="let col of columns">
+            {{ rowData[col.field] }}
+          </td>
+          <td>
+            <p-button (click)="editTask(rowData)" icon="pi pi-pencil" severity="info"></p-button>
+            <p-button (click)="removeTask(rowData)" icon="pi pi-trash" severity="danger"></p-button>
+          </td>
+        </tr>
       </ng-template>
     </p-table>
   </div>
+
   <p-toast></p-toast>
+  <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
 </section>
 <!--(sortFunction)="customSort($event)"-->
