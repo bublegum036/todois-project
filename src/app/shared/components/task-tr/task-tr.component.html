@@ -1,0 +1,14 @@
+<tr>
+    <td>{{task.taskName}}</td>
+    <td>{{task.taskDescription}}</td>
+    <td>{{task.taskDateSet}}</td>
+    <td>{{task.taskDeadline}}</td>
+    <td>{{task.taskPriority}}</td>
+    <td>{{task.taskCategory}}</td>
+    <td>
+        <p-toast></p-toast>
+        <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+        <p-button (click)="editTask()" icon="pi pi-pencil" severity="info"></p-button>
+        <p-button (click)="removeTask()" icon="pi pi-trash" severity="danger"></p-button>
+    </td>
+</tr>

@@ -1,46 +1,14 @@
 <section class="tasks">
   <h2>Все задачи</h2>
   <div class="tasks-table" *ngIf="tasks && tasks.length>0">
-    <p-table [value]="tasks" [resizableColumns]="true" [customSort]="true" [tableStyle]="{'min-width': '100%'}">
-      <ng-template pTemplate="header">
+    <p-table [value]="tasks" [columns]="column" [resizableColumns]="true" [customSort]="true" [tableStyle]="{'min-width': '100%'}">
+      <ng-template pTemplate="header" let-columns>
         <tr>
-          <th pSortableColumn="taskName" style="width:20%">Название задачи
-            <p-sortIcon field="taskName"></p-sortIcon>
-          </th>
-          <th pSortableColumn="taskDescription" style="width:20%">Описание задачи
-            <p-sortIcon field="taskDescription"></p-sortIcon>
-          </th>
-          <th pSortableColumn="taskDateSet" style="width:15%">Дата постановки
-            <p-sortIcon field="taskDateSet"></p-sortIcon>
-          </th>
-          <th pSortableColumn="taskDeadline" style="width:15%">Срок выполнения
-            <p-sortIcon field="taskDeadline"></p-sortIcon>
-          </th>
-          <th pSortableColumn="taskPriority" style="width:15%">Приоритет
-            <p-sortIcon field="taskPriority"></p-sortIcon>
-          </th>
-          <th pSortableColumn="taskCategory" style="width:15%">Категория
-            <p-sortIcon field="taskCategory"></p-sortIcon>
-          </th>
-          <th pSortableColumn="Actions" style="width:15%"></th>
-          <th pSortableColumn="Actions" style="width:15%"></th>
+          <th *ngFor="let column of columns">{{column.header}}</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-task>
-        <tr>
-          <td>{{task.taskName}}</td>
-          <td>{{task.taskDescription}}</td>
-          <td>{{task.taskDateSet}}</td>
-          <td>{{task.taskDeadline}}</td>
-          <td>{{task.taskPriority}}</td>
-          <td>{{task.taskCategory}}</td>
-          <td>
-            <p-toast></p-toast>
-            <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
-            <p-button (click)="editTask()" icon="pi pi-pencil" severity="info"></p-button>
-            <p-button (click)="removeTask()" icon="pi pi-trash" severity="danger"></p-button>
-          </td>
-        </tr>
+          <task-tr *ngFor="let task of tasks" [task]="task"></task-tr>
       </ng-template>
     </p-table>
   </div>

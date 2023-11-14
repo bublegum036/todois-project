@@ -11,6 +11,8 @@ import {DialogModule} from 'primeng/dialog';
 import {RippleModule} from "primeng/ripple";
 import {ToastModule} from 'primeng/toast';
 import { CategoryAddFormComponent } from './components/category-add-form/category-add-form.component';
+import { TaskTrComponent } from './components/task-tr/task-tr.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 
 @NgModule({
@@ -32,7 +34,8 @@ import { CategoryAddFormComponent } from './components/category-add-form/categor
     ReactiveFormsModule,
     DialogModule,
     RippleModule,
-    ToastModule
+    ToastModule,
+    ConfirmDialogModule,
   ]
 })
 export class SharedModule {

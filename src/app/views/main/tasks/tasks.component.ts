@@ -13,11 +13,14 @@ import { LocalStorageService } from "../../../shared/services/local-storage.serv
 })
 export class TasksComponent implements OnInit {
   tasks: TaskAddType[] = [];
+  column: { field: string, header: string }[] | undefined = [];
 
   constructor(private messageService: MessageService,
     private ls: LocalStorageService,
     private confirmationService: ConfirmationService) {
   }
+
+
 
   ngOnInit() {
     this.ls.getTasks().subscribe((data: TaskAddType[] | '{}') => {
@@ -28,6 +31,16 @@ export class TasksComponent implements OnInit {
     this.ls.tasks$.subscribe((data: TaskAddType[] | '{}') => {
       this.tasks = data as TaskAddType[]
     })
+
+    this.column = [
+      { field: 'taskName', header: 'Название задачи' },
+      { field: 'taskDescription', header: 'Описание задачи' },
+      { field: 'taskDateSet', header: 'Дата постановки' },
+      { field: 'taskDeadline', header: 'Срок выполнения' },
+      { field: 'taskPriority', header: 'Приоритет' },
+      { field: 'taskCategory', header: 'Категория' },
+      { field: 'Actions', header: 'Действия' }
+    ];
   }
 
 

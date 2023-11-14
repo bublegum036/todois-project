@@ -13,6 +13,7 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from "primeng/toast";
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TaskTrComponent } from 'src/app/shared/components/task-tr/task-tr.component';
 
 
 
@@ -22,6 +23,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     TaskCategoryComponent,
     MenuComponent,
     TasksComponent,
+    TaskTrComponent
   ],
   imports: [
     CommonModule,
