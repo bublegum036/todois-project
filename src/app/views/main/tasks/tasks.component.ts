@@ -44,7 +44,7 @@ export class TasksComponent implements OnInit {
 
 
 
-  editTask() {
+  editTask(task: any) {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to proceed?',
       header: 'Confirmation',
@@ -65,7 +65,8 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  removeTask() {
+  removeTask(task:any) {
+    console.log(task)
     this.confirmationService.confirm({
       message: 'Do you want to delete this record?',
       header: 'Delete Confirmation',

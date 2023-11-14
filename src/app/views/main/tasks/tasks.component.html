@@ -9,14 +9,14 @@
           <th>Действия</th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <ng-template pTemplate="body"  let-currentTask let-columns="columns">
         <tr>
           <td *ngFor="let col of columns">
-            {{ rowData[col.field] }}
+            {{ currentTask[col.field] }}
           </td>
           <td>
-            <p-button (click)="editTask()" icon="pi pi-pencil" severity="info"></p-button>
-            <p-button (click)="removeTask()" icon="pi pi-trash" severity="danger"></p-button>
+            <p-button (click)="editTask(currentTask)" icon="pi pi-pencil" severity="info"></p-button>
+            <p-button (click)="removeTask(currentTask)" icon="pi pi-trash" severity="danger"></p-button>
           </td>
         </tr>
       </ng-template>
