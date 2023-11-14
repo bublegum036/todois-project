@@ -14,6 +14,7 @@ import { LocalStorageService } from '../../services/local-storage.service';
 export class TaskFormComponent implements OnInit {
   priority: any[] | undefined;
   taskCategory: any[] | undefined;
+  taskId: number = 1;
 
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -84,17 +85,21 @@ export class TaskFormComponent implements OnInit {
         taskDateSet: new Date(this.taskForm.value.taskDateSet).toLocaleDateString(),
         taskDeadline: new Date(this.taskForm.value.taskDeadline).toLocaleDateString(),
         taskPriority: Object(this.taskForm.value.taskPriority).label,
-        taskCategory: Object(this.taskForm.value.taskCategory).label
+        taskCategory: Object(this.taskForm.value.taskCategory).label,
+        taskId: this.taskId
       }
 
       if (!localStorage.getItem('tasks')) {
         localStorage.setItem('tasks', JSON.stringify([task]));
+        this.taskId++
         this.closeAndCleanTaskForm();
+        console.log(localStorage.getItem('tasks'))
       } else {
         let tasksFromLS: TaskAddType[] = JSON.parse(localStorage.getItem('tasks') || '{}');
         let tasksArrayForLS: string = JSON.stringify(tasksFromLS.concat([task]));
         localStorage.removeItem('tasks');
         localStorage.setItem('tasks', tasksArrayForLS);
+        this.taskId++
         this.closeAndCleanTaskForm();
         console.log(localStorage.getItem('tasks'))
       }

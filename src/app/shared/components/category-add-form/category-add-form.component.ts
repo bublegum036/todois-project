@@ -10,6 +10,7 @@ import { CategoryAddType } from 'src/types/category-add.type';
   styleUrls: ['./category-add-form.component.scss']
 })
 export class CategoryAddFormComponent {
+  categoryId: number = 1;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 
@@ -30,17 +31,21 @@ export class CategoryAddFormComponent {
 
       let category: CategoryAddType = {
         categoryName: this.categoryAddTask.value.categoryName,
-        label: this.categoryAddTask.value.categoryName
+        label: this.categoryAddTask.value.categoryName,
+        categoryId: this.categoryId,
       }
 
       if (!localStorage.getItem('categories')) {
         localStorage.setItem('categories', JSON.stringify([category]));
+        this.categoryId++
         this.closeAndCleanAddCategoryAddTaskForm();
+        console.log(JSON.parse(localStorage.getItem('categories') || ''));
       } else {
         let categoryFromLS: CategoryAddType[] = JSON.parse(localStorage.getItem('categories') || '{}');
         let tasksArrayForLS: string = JSON.stringify(categoryFromLS.concat([category]));
         localStorage.removeItem('categories');
         localStorage.setItem('categories', tasksArrayForLS);
+        this.categoryId++
         this.closeAndCleanAddCategoryAddTaskForm();
         console.log(JSON.parse(localStorage.getItem('categories') || ''));
       }
@@ -48,8 +53,8 @@ export class CategoryAddFormComponent {
     }
   }
 
-  closeAndCleanAddCategoryAddTaskForm(){
-    this.messageService.add({severity: 'success', summary: 'Успешно!', detail: 'Категория успешно создана'})
+  closeAndCleanAddCategoryAddTaskForm() {
+    this.messageService.add({ severity: 'success', summary: 'Успешно!', detail: 'Категория успешно создана' })
     setTimeout(() => {
       this.visibleChange.emit(false);
       this.categoryAddTask.reset();

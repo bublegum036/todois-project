@@ -1,6 +1,6 @@
 <section class="task-category">
   <h2>Категории задач</h2>
-<div class="task-category-table">
+<div class="task-category-table" *ngIf="categoties && categoties.length>0">
   <p-table [value]="categoties" responsiveLayout="stack"  [tableStyle]="{ 'min-width': '80%' }">
     <ng-template pTemplate="header">
         <tr>
