@@ -1,7 +1,7 @@
 <section class="task-category">
     <h2>Категории задач</h2>
-    <div class="task-category-table" *ngIf="categoties && categoties.length>0">
-        <p-table [value]="categoties" responsiveLayout="stack" [tableStyle]="{ 'min-width': '80%' }">
+    <div class="task-category-table" *ngIf="categories && categories.length>0">
+        <p-table [value]="categories" responsiveLayout="stack" [tableStyle]="{ 'min-width': '80%' }">
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width:60%">Название категории</th>
@@ -19,6 +19,7 @@
             </ng-template>
         </p-table>
         <p-toast></p-toast>
-  <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Да" acceptIcon=" " rejectLabel="Нет" rejectIcon=" "></p-confirmDialog>
+        <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Да" acceptIcon=" " rejectLabel="Нет"
+            rejectIcon=" "></p-confirmDialog>
     </div>
 </section>

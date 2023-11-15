@@ -10,7 +10,7 @@ import { CategoryAddType } from 'src/types/category-add.type';
   providers: [MessageService, ConfirmationService]
 })
 export class TaskCategoryComponent implements OnInit {
-  categoties: any | undefined;
+  categories: CategoryAddType[] = [];
 
   constructor(private ls: LocalStorageService,
     private messageService: MessageService,
@@ -19,12 +19,11 @@ export class TaskCategoryComponent implements OnInit {
 
   ngOnInit() {
     this.ls.getCategories().subscribe(data => {
-      this.categoties = data
+      this.categories = data as CategoryAddType[];
     })
 
-
     this.ls.categories$.subscribe((data: CategoryAddType[] | '{}') => {
-      this.categoties = data as CategoryAddType[]
+      this.categories = data as CategoryAddType[]
     })
   }
 
@@ -32,9 +31,9 @@ export class TaskCategoryComponent implements OnInit {
 
   }
 
-  removeCategory(category: any) {
+  removeCategory(category: CategoryAddType) {
     console.log(category)
-    let indexCategoryInArray: number = this.categoties.findIndex((categoryFromLS: any) => categoryFromLS.categoryId === category.categoryId);
+    let indexCategoryInArray: number = this.categories.findIndex(categoryFromLS => categoryFromLS.categoryId === category.categoryId);
     console.log(indexCategoryInArray)
     this.confirmationService.confirm({
       message: 'Вы действительно хотите удалить данную категорию?',
@@ -42,8 +41,8 @@ export class TaskCategoryComponent implements OnInit {
       icon: 'pi pi-info-circle',
       accept: () => {
         if (indexCategoryInArray !== -1) {
-          this.categoties.splice(indexCategoryInArray, 1);
-          let tasksArrayForLS = JSON.stringify(this.categoties)
+          this.categories.splice(indexCategoryInArray, 1);
+          let tasksArrayForLS = JSON.stringify([this.categories])
           localStorage.removeItem('categoties');
           localStorage.setItem('categoties', tasksArrayForLS);
         }

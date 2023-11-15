@@ -47,7 +47,7 @@ export class CategoryAddFormComponent implements OnInit {
         localStorage.setItem('categories', JSON.stringify([category]));
         this.saveCategoryNewId();
         this.closeAndCleanAddCategoryAddTaskForm();
-        console.log(JSON.parse(localStorage.getItem('categories') || ''));
+        console.log(localStorage.getItem('categories'));
       } else {
         let categoryFromLS: CategoryAddType[] = JSON.parse(localStorage.getItem('categories') || '{}');
         let tasksArrayForLS: string = JSON.stringify(categoryFromLS.concat([category]));
