@@ -12,7 +12,6 @@
             символов</small>
     </div>
     <div class="category-add-form-action">
-        <p-button pRipple label="Создать категорию" severity="warning" (click)="createCategory()"></p-button>
-        <p-toast></p-toast>
+        <p-button [disabled]="!categoryAddTask.valid" label="Создать категорию" severity="warning" (click)="createCategory()"></p-button>
       </div>
 </div>

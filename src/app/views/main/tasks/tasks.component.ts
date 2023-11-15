@@ -4,6 +4,7 @@ import { TaskAddType } from "../../../../types/task-add.type";
 import { LocalStorageService } from "../../../shared/services/local-storage.service";
 
 
+
 @Component({
   selector: 'tasks',
   templateUrl: './tasks.component.html',
@@ -16,7 +17,8 @@ export class TasksComponent implements OnInit {
 
   constructor(private messageService: MessageService,
     private ls: LocalStorageService,
-    private confirmationService: ConfirmationService) {
+    private confirmationService: ConfirmationService,
+    ) {
   }
 
 
@@ -31,6 +33,7 @@ export class TasksComponent implements OnInit {
       this.tasks = data as TaskAddType[]
     })
 
+    
     this.column = [
       { field: 'taskName', header: 'Название задачи' },
       { field: 'taskDescription', header: 'Описание задачи' },
@@ -45,42 +48,33 @@ export class TasksComponent implements OnInit {
 
 
   editTask(task: any) {
-    this.confirmationService.confirm({
-      message: 'Are you sure that you want to proceed?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted' });
-      },
-      reject: (type: ConfirmEventType) => {
-        switch (type) {
-          case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
-            break;
-          case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: 'Cancelled', detail: 'You have cancelled' });
-            break;
-        }
-      }
-    });
+
   }
 
-  removeTask(task:any) {
-    console.log(task)
+  removeTask(task: any) {
+    
+    let indexTaskInArray: number = this.tasks.findIndex(taskFromLS => taskFromLS.taskId === task.taskId);
+    console.log(indexTaskInArray)
     this.confirmationService.confirm({
-      message: 'Do you want to delete this record?',
-      header: 'Delete Confirmation',
+      message: 'Вы действительно хотите удалить данную задачу?',
+      header: 'Удаление',
       icon: 'pi pi-info-circle',
       accept: () => {
-        this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
+        if (indexTaskInArray !== -1) {
+          this.tasks.splice(indexTaskInArray, 1);
+          let tasksArrayForLS = JSON.stringify(this.tasks)
+          localStorage.removeItem('tasks');
+          localStorage.setItem('tasks', tasksArrayForLS);
+        }
+        this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Задача удалена' });
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+            this.messageService.add({ severity: 'error', summary: 'Отклонено', detail: 'Вы отменили удаление задачи' });
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: 'Cancelled', detail: 'You have cancelled' });
+            this.messageService.add({ severity: 'warn', summary: 'Отмена', detail: 'Отменено' });
             break;
         }
       }

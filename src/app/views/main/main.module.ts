@@ -27,14 +27,15 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     CommonModule,
     MainRoutingModule,
     PanelMenuModule,
+    SharedModule,
     AvatarModule,
     TieredMenuModule,
     DialogModule,
-    SharedModule,
     TableModule,
     ToastModule,
     ButtonModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    ToastModule
   ],
   exports: [MenuComponent, TasksComponent]
 })

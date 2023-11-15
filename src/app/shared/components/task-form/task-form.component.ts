@@ -3,24 +3,27 @@ import { FormBuilder, Validators } from "@angular/forms";
 import { MessageService } from "primeng/api";
 import { TaskAddType } from "../../../../types/task-add.type";
 import { LocalStorageService } from '../../services/local-storage.service';
+import { IdService } from '../../services/id.service';
 
 
 @Component({
   selector: 'task-form',
   templateUrl: './task-form.component.html',
-  styleUrls: ['./task-form.component.scss'],
-  providers: [MessageService]
+  styleUrls: ['./task-form.component.scss']
 })
 export class TaskFormComponent implements OnInit {
   priority: any[] | undefined;
   taskCategory: any[] | undefined;
-  taskId: number = 1;
+  taskId: number = 0;
 
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+
   constructor(private fb: FormBuilder,
     private messageService: MessageService,
-    private ls: LocalStorageService) {
+    private ls: LocalStorageService,
+    private idService: IdService) {
+
   }
 
   taskForm = this.fb.group({
@@ -58,15 +61,23 @@ export class TaskFormComponent implements OnInit {
       },
     ]
 
-    this.ls.getCategories().subscribe(data => {
-      if (data) {
-        this.taskCategory = data as any
-      }
-    })
+    this.ls.getCategories()
+      .subscribe(data => {
+        if (data) {
+          this.taskCategory = data as any
+        }
+      })
 
-    this.ls.categories$.subscribe((data: any[] | '{}') => {
-      this.taskCategory = data as any[]
-    })
+    this.ls.categories$
+      .subscribe((data: any[] | '{}') => {
+        this.taskCategory = data as any[]
+      })
+
+
+    this.idService.taskId$
+      .subscribe(taskId => {
+        this.taskId = taskId
+      })
   }
 
 
@@ -91,7 +102,7 @@ export class TaskFormComponent implements OnInit {
 
       if (!localStorage.getItem('tasks')) {
         localStorage.setItem('tasks', JSON.stringify([task]));
-        this.taskId++
+        this.saveNewId()
         this.closeAndCleanTaskForm();
         console.log(localStorage.getItem('tasks'))
       } else {
@@ -99,20 +110,23 @@ export class TaskFormComponent implements OnInit {
         let tasksArrayForLS: string = JSON.stringify(tasksFromLS.concat([task]));
         localStorage.removeItem('tasks');
         localStorage.setItem('tasks', tasksArrayForLS);
-        this.taskId++
+        this.saveNewId()
         this.closeAndCleanTaskForm();
         console.log(localStorage.getItem('tasks'))
       }
       this.ls.saveTasks(JSON.parse(localStorage.getItem('tasks') || '{}'))
     }
-
-
   }
+
   closeAndCleanTaskForm() {
     this.messageService.add({ severity: 'success', summary: 'Успешно!', detail: 'Задача успешно создана' })
     setTimeout(() => {
       this.visibleChange.emit(false);
       this.taskForm.reset();
     }, 4000);
+  }
+
+  saveNewId() {
+    this.idService.saveTaskId()
   }
 }

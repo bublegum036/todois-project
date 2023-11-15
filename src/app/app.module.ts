@@ -13,6 +13,7 @@ import { MessageService } from "primeng/api";
 import { DialogModule } from "primeng/dialog";
 import { LocalStorageService } from "./shared/services/local-storage.service";
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { IdService } from './shared/services/id.service';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     ConfirmDialogModule
   ],
   exports: [DialogModule],
-  providers: [MessageService, LocalStorageService],
+  providers: [MessageService, LocalStorageService, IdService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

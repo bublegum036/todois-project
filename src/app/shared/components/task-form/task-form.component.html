@@ -1,34 +1,35 @@
 <div class="task-form" [formGroup]="taskForm">
   <div class="task-form-input">
     <span class="p-float-label">
-        <input pInputText
-               formControlName="taskName"
-               [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskName')?.invalid && (taskForm.get('taskName')?.dirty || taskForm.get('taskName')?.touched) ?  true : ''}"
-               id="task-name"/>
-        <label htmlFor="task-name">Название задачи</label>
+      <input pInputText formControlName="taskName"
+        [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskName')?.invalid && (taskForm.get('taskName')?.dirty || taskForm.get('taskName')?.touched) ?  true : ''}"
+        id="task-name" />
+      <label htmlFor="task-name">Название задачи</label>
     </span>
-    <small class="task-form-input-help" *ngIf="taskForm.get('taskName')?.errors?.['pattern']">Только буквы, цифры, знаки препинания</small>
-    <small class="task-form-input-help" *ngIf="taskForm.get('taskName')?.hasError('maxlength')">Максимум 30 символов</small>
+    <small class="task-form-input-help" *ngIf="taskForm.get('taskName')?.errors?.['pattern']">Только буквы, цифры, знаки
+      препинания</small>
+    <small class="task-form-input-help" *ngIf="taskForm.get('taskName')?.hasError('maxlength')">Максимум 30
+      символов</small>
   </div>
   <div class="task-form-input">
     <span class="p-float-label">
-        <input pInputText
-               formControlName="taskDescription"
-               [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskDescription')?.invalid && (taskForm.get('taskDescription')?.dirty || taskForm.get('taskDescription')?.touched) ?  true : ''}"
-               id="task-description"/>
-    <small class="task-form-input-help" *ngIf="taskForm.get('taskDescription')?.errors?.['pattern']">Только буквы, цифры, знаки препинания</small>
-    <small class="task-form-input-help" *ngIf="taskForm.get('taskDescription')?.hasError('maxlength')">Максимум 30 символов</small>
+      <input pInputText formControlName="taskDescription"
+        [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskDescription')?.invalid && (taskForm.get('taskDescription')?.dirty || taskForm.get('taskDescription')?.touched) ?  true : ''}"
+        id="task-description" />
+      <small class="task-form-input-help" *ngIf="taskForm.get('taskDescription')?.errors?.['pattern']">Только буквы,
+        цифры, знаки препинания</small>
+      <small class="task-form-input-help" *ngIf="taskForm.get('taskDescription')?.hasError('maxlength')">Максимум 30
+        символов</small>
 
-        <label htmlFor="task-description">Описание задачи</label>
+      <label htmlFor="task-description">Описание задачи</label>
     </span>
   </div>
   <div class="task-form-input">
     <div class="card flex justify-content-center">
       <span class="p-float-label">
-      <p-calendar [showIcon]="true"
-                  formControlName="taskDateSet"
-                  [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskDateSet')?.invalid && (taskForm.get('taskDateSet')?.dirty || taskForm.get('taskDateSet')?.touched) ?  true : ''}"
-                  id="taskDateSet" dateFormat="dd.mm.yy"></p-calendar>
+        <p-calendar [showIcon]="true" formControlName="taskDateSet"
+          [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskDateSet')?.invalid && (taskForm.get('taskDateSet')?.dirty || taskForm.get('taskDateSet')?.touched) ?  true : ''}"
+          id="taskDateSet" dateFormat="dd.mm.yy"></p-calendar>
         <label htmlFor="taskDateSet">Дата постановки</label>
       </span>
     </div>
@@ -36,36 +37,28 @@
   <div class="task-form-input">
     <div class="card flex justify-content-center">
       <span class="p-float-label">
-      <p-calendar [showIcon]="true"
-                  formControlName="taskDeadline"
-                  [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskDeadline')?.invalid && (taskForm.get('taskDeadline')?.dirty || taskForm.get('taskDeadline')?.touched) ?  true : ''}"
-                  id="taskDeadline" dateFormat="dd.mm.yy"></p-calendar>
+        <p-calendar [showIcon]="true" formControlName="taskDeadline"
+          [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskDeadline')?.invalid && (taskForm.get('taskDeadline')?.dirty || taskForm.get('taskDeadline')?.touched) ?  true : ''}"
+          id="taskDeadline" dateFormat="dd.mm.yy"></p-calendar>
         <label htmlFor="taskDeadline">Срок выполнения</label>
       </span>
     </div>
   </div>
   <div class="task-form-input">
-      <span class="p-float-label">
-        <p-treeSelect [options]="priority"
-                      formControlName="taskPriority"
-                      [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskPriority')?.invalid && (taskForm.get('taskPriority')?.dirty || taskForm.get('taskPriority')?.touched )  ?  true : ''}"
-        ></p-treeSelect>
-        <label htmlFor="taskPriority">Приоритет</label>
+    <span class="p-float-label">
+      <p-treeSelect [options]="priority" formControlName="taskPriority"
+        [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskPriority')?.invalid && (taskForm.get('taskPriority')?.dirty || taskForm.get('taskPriority')?.touched )  ?  true : ''}"></p-treeSelect>
+      <label htmlFor="taskPriority">Приоритет</label>
     </span>
   </div>
   <div class="task-form-input">
-      <span class="p-float-label">
-        <p-treeSelect [options]="taskCategory"
-                      formControlName="taskCategory"
-                      [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskCategory')?.invalid && (taskForm.get('taskCategory')?.dirty || taskForm.get('taskCategory')?.touched) ?  true : ''}"
-        ></p-treeSelect>
-        <label htmlFor="taskCategory">Категория</label>
+    <span class="p-float-label">
+      <p-treeSelect [options]="taskCategory" formControlName="taskCategory"
+        [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskCategory')?.invalid && (taskForm.get('taskCategory')?.dirty || taskForm.get('taskCategory')?.touched) ?  true : ''}"></p-treeSelect>
+      <label htmlFor="taskCategory">Категория</label>
     </span>
   </div>
   <div class="task-form-action">
-    <p-button pRipple label="Создать задачу" severity="warning" (click)="createTask()"></p-button>
-    <p-toast></p-toast>
+    <p-button [disabled]="!taskForm.valid" label="Создать задачу" severity="warning" (click)="createTask()"></p-button>
   </div>
 </div>
-
-
