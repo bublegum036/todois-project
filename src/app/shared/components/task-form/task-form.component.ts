@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from "@angular/forms";
 import { MessageService } from "primeng/api";
 import { TaskAddType } from "../../../../types/task-add.type";
@@ -15,7 +15,7 @@ export class TaskFormComponent implements OnInit {
   priority: any[] | undefined;
   taskCategory: any[] | undefined;
   taskId: number = 0;
-
+  taskForEdit: any;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 
@@ -37,6 +37,9 @@ export class TaskFormComponent implements OnInit {
 
 
   ngOnInit() {
+
+console.log(this.taskForEdit)
+
     this.priority = [
       {
         label: 'Высокий',
@@ -128,5 +131,10 @@ export class TaskFormComponent implements OnInit {
 
   saveNewId() {
     this.idService.saveTaskId()
+  }
+
+  saveEditTask(value: any) {
+    this.taskForEdit = value;
+    console.log(this.taskForEdit)
   }
 }

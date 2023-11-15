@@ -18,7 +18,7 @@
         id="task-description" />
       <small class="task-form-input-help" *ngIf="taskForm.get('taskDescription')?.errors?.['pattern']">Только буквы,
         цифры, знаки препинания</small>
-      <small class="task-form-input-help" *ngIf="taskForm.get('taskDescription')?.hasError('maxlength')">Максимум 30
+      <small class="task-form-input-help" *ngIf="taskForm.get('taskDescription')?.hasError('maxlength')">Максимум 256
         символов</small>
 
       <label htmlFor="task-description">Описание задачи</label>
@@ -59,6 +59,7 @@
     </span>
   </div>
   <div class="task-form-action">
+    <p-button [disabled]="!taskForm.valid" label="Создать задачу" severity="warning" (click)="createTask()"></p-button>
     <p-button [disabled]="!taskForm.valid" label="Создать задачу" severity="warning" (click)="createTask()"></p-button>
   </div>
 </div>

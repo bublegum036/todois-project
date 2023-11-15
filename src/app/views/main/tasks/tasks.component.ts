@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService, SortEvent } from "primeng/api";
 import { TaskAddType } from "../../../../types/task-add.type";
 import { LocalStorageService } from "../../../shared/services/local-storage.service";
@@ -13,15 +13,15 @@ import { LocalStorageService } from "../../../shared/services/local-storage.serv
 })
 export class TasksComponent implements OnInit {
   tasks: TaskAddType[] = [];
-  taskForEdit: any = null;
   editTaskVisible: boolean = false;
   column: { field: string, header: string }[] | undefined = [];
+
+  @Output() taskForEdit: EventEmitter<TaskAddType> = new EventEmitter<TaskAddType>();
 
   constructor(private messageService: MessageService,
     private ls: LocalStorageService,
     private confirmationService: ConfirmationService,
-  ) {
-  }
+  ) { }
 
 
 
@@ -43,17 +43,16 @@ export class TasksComponent implements OnInit {
       { field: 'taskDeadline', header: 'Срок выполнения' },
       { field: 'taskPriority', header: 'Приоритет' },
       { field: 'taskCategory', header: 'Категория' },
-      // { field: 'Actions', header: 'Действия' }/
     ];
   }
 
 
   editTask(task: any) {
-    this.taskForEdit = task
+    this.taskForEdit.emit(task)
     console.log(this.taskForEdit)
     this.editTaskVisible = !this.editTaskVisible;
-  }
 
+  }
 
   closeTaskMenu(value: boolean) {
     this.editTaskVisible = value;
