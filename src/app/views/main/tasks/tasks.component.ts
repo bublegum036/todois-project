@@ -52,7 +52,6 @@ export class TasksComponent implements OnInit {
   }
 
   removeTask(task: any) {
-    
     let indexTaskInArray: number = this.tasks.findIndex(taskFromLS => taskFromLS.taskId === task.taskId);
     console.log(indexTaskInArray)
     this.confirmationService.confirm({

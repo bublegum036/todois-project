@@ -18,7 +18,7 @@ export class TaskCategoryComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.ls.getCategories().subscribe(data => {
+    this.ls.getCategories().subscribe((data: CategoryAddType[] | '{}') => {
       this.categories = data as CategoryAddType[];
     })
 
@@ -31,7 +31,7 @@ export class TaskCategoryComponent implements OnInit {
 
   }
 
-  removeCategory(category: CategoryAddType) {
+  removeCategory(category: any) {
     console.log(category)
     let indexCategoryInArray: number = this.categories.findIndex(categoryFromLS => categoryFromLS.categoryId === category.categoryId);
     console.log(indexCategoryInArray)
@@ -42,9 +42,9 @@ export class TaskCategoryComponent implements OnInit {
       accept: () => {
         if (indexCategoryInArray !== -1) {
           this.categories.splice(indexCategoryInArray, 1);
-          let tasksArrayForLS = JSON.stringify([this.categories])
-          localStorage.removeItem('categoties');
-          localStorage.setItem('categoties', tasksArrayForLS);
+          let tasksArrayForLS = JSON.stringify(this.categories)
+          localStorage.removeItem('categories');
+          localStorage.setItem('categories', tasksArrayForLS);
         }
         this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Категория удалена' });
       },
