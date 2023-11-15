@@ -9,7 +9,7 @@
           <th>Действия</th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body"  let-currentTask let-columns="columns">
+      <ng-template pTemplate="body" let-currentTask let-columns="columns">
         <tr>
           <td *ngFor="let col of columns">
             {{ currentTask[col.field] }}
@@ -23,7 +23,16 @@
     </p-table>
   </div>
 
+  <p-dialog [(visible)]="editTaskVisible" (visibleChange)="closeTaskMenu($event)" header="Создать новую задачу"
+    [style]="{width: '30%', height: '90%' }">
+    <task-form (visibleChange)="closeTaskMenu($event)"></task-form>
+  </p-dialog>
+
   <p-toast></p-toast>
-  <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Да" acceptIcon=" " rejectLabel="Нет" rejectIcon=" "></p-confirmDialog>
+  <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Да" acceptIcon=" " rejectLabel="Нет"
+    rejectIcon=" "></p-confirmDialog>
 </section>
+
+
+
 <!--(sortFunction)="customSort($event)"-->

@@ -13,12 +13,14 @@ import { LocalStorageService } from "../../../shared/services/local-storage.serv
 })
 export class TasksComponent implements OnInit {
   tasks: TaskAddType[] = [];
+  taskForEdit: any = null;
+  editTaskVisible: boolean = false;
   column: { field: string, header: string }[] | undefined = [];
 
   constructor(private messageService: MessageService,
     private ls: LocalStorageService,
     private confirmationService: ConfirmationService,
-    ) {
+  ) {
   }
 
 
@@ -33,7 +35,7 @@ export class TasksComponent implements OnInit {
       this.tasks = data as TaskAddType[]
     })
 
-    
+
     this.column = [
       { field: 'taskName', header: 'Название задачи' },
       { field: 'taskDescription', header: 'Описание задачи' },
@@ -46,9 +48,15 @@ export class TasksComponent implements OnInit {
   }
 
 
-
   editTask(task: any) {
+    this.taskForEdit = task
+    console.log(this.taskForEdit)
+    this.editTaskVisible = !this.editTaskVisible;
+  }
 
+
+  closeTaskMenu(value: boolean) {
+    this.editTaskVisible = value;
   }
 
   removeTask(task: any) {
