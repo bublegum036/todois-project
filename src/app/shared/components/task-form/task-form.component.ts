@@ -16,7 +16,8 @@ export class TaskFormComponent implements OnInit {
   taskCategory: any[] | undefined;
   taskId: number = 0;
   taskForEdit: TaskAddType | '{}' = '{}';
-  taskForEditInLS: boolean = false;
+  isCreateButton: boolean = true;
+  isEditButton: boolean = false;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 
@@ -42,14 +43,16 @@ export class TaskFormComponent implements OnInit {
       this.taskForEdit = data
     })
 
-    this.ls.tasksForEdit$.subscribe((data: TaskAddType | '{}') => {
-      if (data as TaskAddType) {
-        this.taskForEditInLS = true;
-      }
-      if (data === null || data === undefined) {
-        this.taskForEditInLS = false;
-      }
+    this.ls.taskForEdit$.subscribe((data: TaskAddType | '{}') => {
       this.taskForEdit = data
+      if (this.taskForEdit as TaskAddType) {
+        this.isCreateButton =  true;
+        this.isEditButton =  false;
+      }
+      if (this.taskForEdit as '{}') {
+        this.isCreateButton = false;
+        this.isEditButton =  true;
+      }
       console.log(this.taskForEdit)
     })
 
@@ -137,7 +140,6 @@ export class TaskFormComponent implements OnInit {
 
 
   editTask() {
-    this.ls.removeEditTask()
   }
 
   closeAndCleanTaskForm() {
@@ -150,14 +152,5 @@ export class TaskFormComponent implements OnInit {
 
   saveNewId() {
     this.idService.saveTaskId()
-  }
-
-  taskForEditInLocaleStorage(taskForEdit: TaskAddType | '{}'): boolean {
-    if (taskForEdit === '{}') {
-      this.taskForEditInLS = false
-    } else {
-      this.taskForEditInLS = true
-    }
-    return this.taskForEditInLS
   }
 }

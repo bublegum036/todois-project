@@ -26,7 +26,7 @@ export class MenuComponent implements OnInit {
         icon: 'pi pi-plus-circle',
         command: (event: MenuItemCommandEvent) => {
           this.openAddTaskMenu();
-          this.ls.removeEditTask
+          this.ls.removeEditTask()
         }
       },
       {

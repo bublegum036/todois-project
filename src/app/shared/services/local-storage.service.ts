@@ -13,7 +13,7 @@ export class LocalStorageService {
   public tasks$: Subject<TaskAddType[] | '{}'> = new Subject<TaskAddType[] | '{}'>
   public categories$: Subject<CategoryAddType[] | '{}'> = new Subject<CategoryAddType[] | '{}'>
   private tasksForEdit: TaskAddType | '{}' = JSON.parse(localStorage.getItem('tasksForEdit') || '{}');
-  public tasksForEdit$: Subject<TaskAddType | '{}'> = new Subject<TaskAddType | '{}'>;
+  public taskForEdit$: Subject<TaskAddType | '{}'> = new Subject<TaskAddType | '{}'>;
 
   tasksFromLS: TaskAddType[] | '{}' = []
 
@@ -45,16 +45,16 @@ export class LocalStorageService {
 
 
   getEditTask(): Observable<TaskAddType | '{}'> {
-    const taskForEdit = JSON.parse(localStorage.getItem('tasksForEdit') || '{}');
+    const taskForEdit = JSON.parse(localStorage.getItem('taskForEdit') || '{}');
     return of(this.tasksForEdit = taskForEdit)
   }
 
   setEditTask(taskForEdit: TaskAddType | '{}') {
-    localStorage.setItem(' ', JSON.stringify(taskForEdit));
-    this.tasksForEdit$.next(taskForEdit);
+    localStorage.setItem('taskForEdit', JSON.stringify(taskForEdit));
+    this.taskForEdit$.next(taskForEdit);
   }
 
   removeEditTask() {
-    localStorage.removeItem('tasksForEdit')
+    localStorage.removeItem('taskForEdit');
   }
 }
