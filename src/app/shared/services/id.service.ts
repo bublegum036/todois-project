@@ -25,6 +25,6 @@ export class IdService {
     const categoryId = this.categoryId.getValue();
     const nextCategoryId = categoryId +1;
     this.categoryId.next(nextCategoryId)
-    localStorage.setItem('taskId', JSON.stringify(nextCategoryId));
+    localStorage.setItem('categoryId', JSON.stringify(nextCategoryId));
   }
 }
