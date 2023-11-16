@@ -15,8 +15,8 @@ export class TasksComponent implements OnInit {
   tasks: TaskAddType[] = [];
   editTaskVisible: boolean = false;
   column: { field: string, header: string }[] | undefined = [];
+  taskForEdit: any;
 
-  @Output() taskForEdit: EventEmitter<TaskAddType> = new EventEmitter<TaskAddType>();
 
   constructor(private messageService: MessageService,
     private ls: LocalStorageService,
@@ -48,10 +48,8 @@ export class TasksComponent implements OnInit {
 
 
   editTask(task: any) {
-    this.taskForEdit.emit(task)
-    console.log(this.taskForEdit)
+    this.taskForEdit = task
     this.editTaskVisible = !this.editTaskVisible;
-
   }
 
   closeTaskMenu(value: boolean) {

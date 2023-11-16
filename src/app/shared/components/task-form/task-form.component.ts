@@ -9,7 +9,7 @@ import { IdService } from '../../services/id.service';
 @Component({
   selector: 'task-form',
   templateUrl: './task-form.component.html',
-  styleUrls: ['./task-form.component.scss']
+  styleUrls: ['./task-form.component.scss'],
 })
 export class TaskFormComponent implements OnInit {
   priority: any[] | undefined;
@@ -22,7 +22,8 @@ export class TaskFormComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private messageService: MessageService,
     private ls: LocalStorageService,
-    private idService: IdService) {
+    private idService: IdService,
+    ) {
 
   }
 
@@ -37,9 +38,6 @@ export class TaskFormComponent implements OnInit {
 
 
   ngOnInit() {
-
-console.log(this.taskForEdit)
-
     this.priority = [
       {
         label: 'Высокий',
@@ -133,8 +131,6 @@ console.log(this.taskForEdit)
     this.idService.saveTaskId()
   }
 
-  saveEditTask(value: any) {
-    this.taskForEdit = value;
-    console.log(this.taskForEdit)
-  }
+
+
 }

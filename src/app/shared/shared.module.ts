@@ -14,6 +14,7 @@ import { CategoryAddFormComponent } from './components/category-add-form/categor
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 
+
 @NgModule({
   declarations: [
     TaskFormComponent,
@@ -34,7 +35,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     DialogModule,
     RippleModule,
     ToastModule,
-    ConfirmDialogModule,
+    ConfirmDialogModule
   ]
 })
 export class SharedModule {

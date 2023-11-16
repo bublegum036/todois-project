@@ -34,6 +34,7 @@ export class LocalStorageService {
     localStorage.getItem('tasks');
     this.tasks$.next(tasks);
   }
+  
   saveCategories(categories: CategoryAddType[] | '{}'): void {
     localStorage.getItem('categories');
     this.categories$.next(categories);

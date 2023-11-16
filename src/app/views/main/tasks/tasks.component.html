@@ -25,7 +25,7 @@
 
   <p-dialog [(visible)]="editTaskVisible" (visibleChange)="closeTaskMenu($event)" header="Редактировать задачу"
     [style]="{width: '30%', height: '90%' }">
-    <task-form (taskForEdit)="editTask($event)" (visibleChange)="closeTaskMenu($event)"></task-form>
+    <task-form (visibleChange)="closeTaskMenu($event)"></task-form>
   </p-dialog>
 
   <p-toast></p-toast>

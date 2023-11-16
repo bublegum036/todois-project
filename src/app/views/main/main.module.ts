@@ -35,7 +35,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     ToastModule,
     ButtonModule,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
   ],
   exports: [MenuComponent, TasksComponent]
 })
