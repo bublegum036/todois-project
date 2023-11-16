@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService, SortEvent } from "primeng/api";
 import { TaskAddType } from "../../../../types/task-add.type";
 import { LocalStorageService } from "../../../shared/services/local-storage.service";
-import { TaskEditService } from 'src/app/shared/services/task-edit.service';
 
 
 
@@ -10,7 +9,7 @@ import { TaskEditService } from 'src/app/shared/services/task-edit.service';
   selector: 'tasks',
   templateUrl: './tasks.component.html',
   styleUrls: ['./tasks.component.scss'],
-  providers: [MessageService, ConfirmationService, TaskEditService]
+  providers: [MessageService, ConfirmationService]
 })
 export class TasksComponent implements OnInit {
   tasks: TaskAddType[] = [];
@@ -22,7 +21,6 @@ export class TasksComponent implements OnInit {
   constructor(private messageService: MessageService,
     private ls: LocalStorageService,
     private confirmationService: ConfirmationService,
-    private taskEditService: TaskEditService
   ) { }
 
 
@@ -49,7 +47,7 @@ export class TasksComponent implements OnInit {
 
 
   editTask(task: TaskAddType) {
-    this.taskEditService.setEditTask(task);
+    this.ls.setEditTask(task);
     this.editTaskVisible = !this.editTaskVisible;
   }
 

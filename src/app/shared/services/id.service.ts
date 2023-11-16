@@ -10,7 +10,7 @@ export class IdService {
   public taskId$ = this.taskId.asObservable();
 
   private categoryId = new BehaviorSubject<number>(Number(localStorage.getItem('categoryId')) || 1);;
-  public categoryId$ =this.categoryId.asObservable();
+  public categoryId$ = this.categoryId.asObservable();
 
   constructor() { }
 
@@ -23,7 +23,7 @@ export class IdService {
 
   saveCategoryId() {
     const categoryId = this.categoryId.getValue();
-    const nextCategoryId = categoryId +1;
+    const nextCategoryId = categoryId + 1;
     this.categoryId.next(nextCategoryId)
     localStorage.setItem('categoryId', JSON.stringify(nextCategoryId));
   }

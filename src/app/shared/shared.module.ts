@@ -12,7 +12,6 @@ import { RippleModule } from "primeng/ripple";
 import { ToastModule } from 'primeng/toast';
 import { CategoryAddFormComponent } from './components/category-add-form/category-add-form.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { TaskEditService } from './services/task-edit.service';
 
 
 
@@ -38,7 +37,7 @@ import { TaskEditService } from './services/task-edit.service';
     ToastModule,
     ConfirmDialogModule
   ],
-  providers: [TaskEditService]
+  providers: []
 })
 export class SharedModule {
 }

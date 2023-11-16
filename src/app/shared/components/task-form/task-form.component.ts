@@ -1,10 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from "@angular/forms";
 import { MessageService } from "primeng/api";
 import { TaskAddType } from "../../../../types/task-add.type";
 import { LocalStorageService } from '../../services/local-storage.service';
 import { IdService } from '../../services/id.service';
-import { TaskEditService } from '../../services/task-edit.service';
 
 
 @Component({
@@ -17,6 +16,7 @@ export class TaskFormComponent implements OnInit {
   taskCategory: any[] | undefined;
   taskId: number = 0;
   taskForEdit: TaskAddType | '{}' = '{}';
+  taskForEditInLS: boolean = false;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 
@@ -24,7 +24,6 @@ export class TaskFormComponent implements OnInit {
     private messageService: MessageService,
     private ls: LocalStorageService,
     private idService: IdService,
-    private taskEditService: TaskEditService
   ) { }
 
   taskForm = this.fb.group({
@@ -39,12 +38,17 @@ export class TaskFormComponent implements OnInit {
 
   ngOnInit() {
 
-    this.taskEditService.getEditTask().subscribe((data: TaskAddType | '{}') => {
+    this.ls.getEditTask().subscribe((data: TaskAddType | '{}') => {
       this.taskForEdit = data
-      console.log(this.taskForEdit)
     })
 
-    this.taskEditService.tasksForEdit$.subscribe((data: TaskAddType | '{}') => {
+    this.ls.tasksForEdit$.subscribe((data: TaskAddType | '{}') => {
+      if (data as TaskAddType) {
+        this.taskForEditInLS = true;
+      }
+      if (data === null || data === undefined) {
+        this.taskForEditInLS = false;
+      }
       this.taskForEdit = data
       console.log(this.taskForEdit)
     })
@@ -131,6 +135,11 @@ export class TaskFormComponent implements OnInit {
     }
   }
 
+
+  editTask() {
+    this.ls.removeEditTask()
+  }
+
   closeAndCleanTaskForm() {
     this.messageService.add({ severity: 'success', summary: 'Успешно!', detail: 'Задача успешно создана' })
     setTimeout(() => {
@@ -141,5 +150,14 @@ export class TaskFormComponent implements OnInit {
 
   saveNewId() {
     this.idService.saveTaskId()
+  }
+
+  taskForEditInLocaleStorage(taskForEdit: TaskAddType | '{}'): boolean {
+    if (taskForEdit === '{}') {
+      this.taskForEditInLS = false
+    } else {
+      this.taskForEditInLS = true
+    }
+    return this.taskForEditInLS
   }
 }

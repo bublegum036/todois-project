@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MenuItem, MenuItemCommandEvent} from "primeng/api";
+import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 
 @Component({
   selector: 'menu-dashboard',
@@ -12,19 +13,20 @@ export class MenuComponent implements OnInit {
   addTaskVisible: boolean = false;
   addCategoryVisible: boolean = false;
 
+  constructor(private ls: LocalStorageService) {
 
-
-  constructor() {
   }
 
   ngOnInit() {
+    this.ls.removeEditTask();
     this.userName = JSON.parse(localStorage.getItem('user') || '{}').userInfo.name
     this.items = [
       {
         label: 'Создать задачу',
         icon: 'pi pi-plus-circle',
         command: (event: MenuItemCommandEvent) => {
-          this.openAddTaskMenu()
+          this.openAddTaskMenu();
+          this.ls.removeEditTask
         }
       },
       {

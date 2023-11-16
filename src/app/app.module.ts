@@ -14,7 +14,6 @@ import { DialogModule } from "primeng/dialog";
 import { LocalStorageService } from "./shared/services/local-storage.service";
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { IdService } from './shared/services/id.service';
-import { TaskEditService } from './shared/services/task-edit.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +32,7 @@ import { TaskEditService } from './shared/services/task-edit.service';
     ConfirmDialogModule
   ],
   exports: [DialogModule],
-  providers: [MessageService, LocalStorageService, IdService, TaskEditService],
+  providers: [MessageService, LocalStorageService, IdService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
