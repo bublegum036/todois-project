@@ -13,6 +13,7 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from "primeng/toast";
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TaskEditService } from 'src/app/shared/services/task-edit.service';
 
 
 
@@ -37,7 +38,11 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     ConfirmDialogModule,
     ToastModule,
   ],
-  exports: [MenuComponent, TasksComponent]
+  exports: [
+    MenuComponent, 
+    TasksComponent
+  ],
+  providers: [TaskEditService]
 })
 export class MainModule {
 }

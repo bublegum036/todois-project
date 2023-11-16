@@ -24,19 +24,19 @@ export class LocalStorageService {
     const tasks = JSON.parse(localStorage.getItem('tasks') || '{}')
     return of(this.tasks = tasks)
   }
+  
+  saveTasks(tasks: TaskAddType[] | '{}') {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    this.tasks$.next(tasks);
+  }
 
   getCategories(): Observable<CategoryAddType[] | '{}'> {
     const categories = JSON.parse(localStorage.getItem('categories') || '{}')
     return of(this.categories = categories)
   }
-
-  saveTasks(tasks: TaskAddType[] | '{}'): void {
-    localStorage.getItem('tasks');
-    this.tasks$.next(tasks);
-  }
   
-  saveCategories(categories: CategoryAddType[] | '{}'): void {
-    localStorage.getItem('categories');
+  saveCategories(categories: CategoryAddType[] | '{}') {
+    localStorage.setItem('categories',JSON.stringify('categories'));
     this.categories$.next(categories);
   }
 }

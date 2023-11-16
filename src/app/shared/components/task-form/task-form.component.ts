@@ -4,6 +4,7 @@ import { MessageService } from "primeng/api";
 import { TaskAddType } from "../../../../types/task-add.type";
 import { LocalStorageService } from '../../services/local-storage.service';
 import { IdService } from '../../services/id.service';
+import { TaskEditService } from '../../services/task-edit.service';
 
 
 @Component({
@@ -15,7 +16,7 @@ export class TaskFormComponent implements OnInit {
   priority: any[] | undefined;
   taskCategory: any[] | undefined;
   taskId: number = 0;
-  taskForEdit: any;
+  taskForEdit: TaskAddType | '{}' = '{}';
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 
@@ -23,9 +24,8 @@ export class TaskFormComponent implements OnInit {
     private messageService: MessageService,
     private ls: LocalStorageService,
     private idService: IdService,
-    ) {
-
-  }
+    private taskEditService: TaskEditService
+  ) { }
 
   taskForm = this.fb.group({
     taskName: ['', [Validators.required, Validators.maxLength(30), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
@@ -38,6 +38,18 @@ export class TaskFormComponent implements OnInit {
 
 
   ngOnInit() {
+
+    this.taskEditService.getEditTask().subscribe((data: TaskAddType | '{}') => {
+      this.taskForEdit = data
+      console.log(this.taskForEdit)
+    })
+
+    this.taskEditService.tasksForEdit$.subscribe((data: TaskAddType | '{}') => {
+      this.taskForEdit = data
+      console.log(this.taskForEdit)
+    })
+
+
     this.priority = [
       {
         label: 'Высокий',
@@ -130,7 +142,4 @@ export class TaskFormComponent implements OnInit {
   saveNewId() {
     this.idService.saveTaskId()
   }
-
-
-
 }

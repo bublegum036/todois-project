@@ -1,7 +1,8 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService, SortEvent } from "primeng/api";
 import { TaskAddType } from "../../../../types/task-add.type";
 import { LocalStorageService } from "../../../shared/services/local-storage.service";
+import { TaskEditService } from 'src/app/shared/services/task-edit.service';
 
 
 
@@ -9,18 +10,19 @@ import { LocalStorageService } from "../../../shared/services/local-storage.serv
   selector: 'tasks',
   templateUrl: './tasks.component.html',
   styleUrls: ['./tasks.component.scss'],
-  providers: [MessageService, ConfirmationService]
+  providers: [MessageService, ConfirmationService, TaskEditService]
 })
 export class TasksComponent implements OnInit {
   tasks: TaskAddType[] = [];
   editTaskVisible: boolean = false;
   column: { field: string, header: string }[] | undefined = [];
-  taskForEdit: any;
+  taskForEdit!: TaskAddType;
 
 
   constructor(private messageService: MessageService,
     private ls: LocalStorageService,
     private confirmationService: ConfirmationService,
+    private taskEditService: TaskEditService
   ) { }
 
 
@@ -29,7 +31,6 @@ export class TasksComponent implements OnInit {
     this.ls.getTasks().subscribe((data: TaskAddType[] | '{}') => {
       this.tasks = data as TaskAddType[]
     })
-
 
     this.ls.tasks$.subscribe((data: TaskAddType[] | '{}') => {
       this.tasks = data as TaskAddType[]
@@ -47,8 +48,8 @@ export class TasksComponent implements OnInit {
   }
 
 
-  editTask(task: any) {
-    this.taskForEdit = task
+  editTask(task: TaskAddType) {
+    this.taskEditService.setEditTask(task);
     this.editTaskVisible = !this.editTaskVisible;
   }
 
