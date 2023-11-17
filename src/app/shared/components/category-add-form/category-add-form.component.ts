@@ -12,7 +12,6 @@ import { IdService } from '../../services/id.service';
 })
 export class CategoryAddFormComponent implements OnInit {
   categoryId: number = 0;
-  
   categoryForEdit: CategoryAddType | '{}' = '{}';
   isButton: boolean = true;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -35,7 +34,7 @@ export class CategoryAddFormComponent implements OnInit {
         this.categoryAddTask = this.fb.group({
           categoryName: [data.categoryName, [Validators.required, Validators.maxLength(20), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
         })
-        
+
       } else {
         this.isButton = true;
         this.categoryAddTask = this.fb.group({
@@ -53,13 +52,12 @@ export class CategoryAddFormComponent implements OnInit {
           categoryName: [data.categoryName, [Validators.required, Validators.maxLength(20), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
         })
       } else {
-        this.isButton = true;
-        this.categoryAddTask = this.fb.group({
+        this.isButton = true; this.categoryAddTask = this.fb.group({
           categoryName: ['', [Validators.required, Validators.maxLength(20), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
         })
+
       }
       this.categoryForEdit = data;
-      console.log(this.categoryForEdit)
     })
 
 
@@ -83,7 +81,7 @@ export class CategoryAddFormComponent implements OnInit {
       if (!localStorage.getItem('categories')) {
         localStorage.setItem('categories', JSON.stringify([category]));
         this.saveCategoryNewId();
-        this.closeAndCleanAddCategoryAddTaskForm();
+        this.closeAndCleanAddForm();
         console.log(localStorage.getItem('categories'));
       } else {
         let categoryFromLS: CategoryAddType[] = JSON.parse(localStorage.getItem('categories') || '{}');
@@ -91,7 +89,7 @@ export class CategoryAddFormComponent implements OnInit {
         localStorage.removeItem('categories');
         localStorage.setItem('categories', tasksArrayForLS);
         this.saveCategoryNewId();
-        this.closeAndCleanAddCategoryAddTaskForm();
+        this.closeAndCleanAddForm();
         console.log(JSON.parse(localStorage.getItem('categories') || ''));
       }
       this.ls.saveCategories(JSON.parse(localStorage.getItem('categories') || '{}'))
@@ -99,15 +97,42 @@ export class CategoryAddFormComponent implements OnInit {
   }
 
   editCategory() {
-    alert('1')
+    if (this.categoryForEdit !== '{}') {
+      if (this.categoryAddTask.valid
+        && this.categoryAddTask.value.categoryName) {
+        let category: CategoryAddType = {
+          categoryName: this.categoryAddTask.value.categoryName,
+          label: this.categoryAddTask.value.categoryName,
+          categoryId: this.categoryForEdit.categoryId
+        }
+        let categoryFromLS: CategoryAddType[] = JSON.parse(localStorage.getItem('categories') || '{}');
+        let indexCategoryInArray: number = categoryFromLS.findIndex(categoryFromLS => categoryFromLS.categoryId === category.categoryId);
+        if (indexCategoryInArray !== -1) {
+          categoryFromLS.splice(indexCategoryInArray, 1, category);
+          localStorage.removeItem('categories');
+          localStorage.setItem('categories', JSON.stringify(categoryFromLS));
+          this.closeAndCleanEditForm()
+        }
+        this.ls.saveCategories(JSON.parse(localStorage.getItem('categories') || '{}'))
+      }
+    }
   }
 
-  closeAndCleanAddCategoryAddTaskForm() {
+  closeAndCleanAddForm() {
     this.messageService.add({ severity: 'success', summary: 'Успешно!', detail: 'Категория успешно создана' })
     setTimeout(() => {
       this.visibleChange.emit(false);
       this.categoryAddTask.reset();
-    }, 4000);
+    }, 500);
+  }
+
+  
+  closeAndCleanEditForm() {
+    this.messageService.add({ severity: 'success', summary: 'Успешно!', detail: 'Категория отредактирована' })
+    setTimeout(() => {
+      this.visibleChange.emit(false);
+      this.categoryAddTask.reset();
+    }, 500);
   }
 
   saveCategoryNewId() {
