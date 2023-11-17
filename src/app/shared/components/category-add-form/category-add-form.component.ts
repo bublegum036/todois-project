@@ -32,8 +32,15 @@ export class CategoryAddFormComponent implements OnInit {
     this.ls.getEditCategory().subscribe((data: CategoryAddType | '{}') => {
       if (typeof data === 'object') {
         this.isButton = false;
+        this.categoryAddTask = this.fb.group({
+          categoryName: [data.categoryName, [Validators.required, Validators.maxLength(20), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
+        })
+        
       } else {
         this.isButton = true;
+        this.categoryAddTask = this.fb.group({
+          categoryName: ['', [Validators.required, Validators.maxLength(20), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
+        })
       }
       this.categoryForEdit = data;
       console.log(this.categoryForEdit)
@@ -42,8 +49,14 @@ export class CategoryAddFormComponent implements OnInit {
     this.ls.categoryForEdit$.subscribe((data: CategoryAddType | '{}') => {
       if (typeof data === 'object') {
         this.isButton = false;
+        this.categoryAddTask = this.fb.group({
+          categoryName: [data.categoryName, [Validators.required, Validators.maxLength(20), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
+        })
       } else {
         this.isButton = true;
+        this.categoryAddTask = this.fb.group({
+          categoryName: ['', [Validators.required, Validators.maxLength(20), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
+        })
       }
       this.categoryForEdit = data;
       console.log(this.categoryForEdit)
