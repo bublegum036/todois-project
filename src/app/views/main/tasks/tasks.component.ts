@@ -15,7 +15,6 @@ export class TasksComponent implements OnInit {
   tasks: TaskAddType[] = [];
   editTaskVisible: boolean = false;
   column: { field: string, header: string }[] | undefined = [];
-  taskForEdit!: TaskAddType;
 
 
   constructor(private messageService: MessageService,

@@ -12,6 +12,7 @@
             символов</small>
     </div>
     <div class="category-add-form-action">
-        <p-button [disabled]="!categoryAddTask.valid" label="Создать категорию" severity="warning" (click)="createCategory()"></p-button>
+        <p-button *ngIf="isButton" [disabled]="!categoryAddTask.valid" label="Создать" severity="warning" (click)="createCategory()"></p-button> 
+        <p-button *ngIf="!isButton" [disabled]="!categoryAddTask.valid" label="Редактировать" severity="warning" (click)="editCategory()"></p-button> 
       </div>
 </div>

@@ -4,13 +4,14 @@ import { LocalStorageService } from 'src/app/shared/services/local-storage.servi
 import { CategoryAddType } from 'src/types/category-add.type';
 
 @Component({
-  selector: 'app-task-category',
+  selector: 'task-category',
   templateUrl: './task-category.component.html',
   styleUrls: ['./task-category.component.scss'],
   providers: [MessageService, ConfirmationService]
 })
 export class TaskCategoryComponent implements OnInit {
   categories: CategoryAddType[] = [];
+  editCategoryVisible: boolean = false;
 
   constructor(private ls: LocalStorageService,
     private messageService: MessageService,
@@ -28,7 +29,12 @@ export class TaskCategoryComponent implements OnInit {
   }
 
   editCategory(category: any) {
+    this.ls.setEditCategory(category);
+    this.editCategoryVisible = !this.editCategoryVisible;
+  }
 
+  closeCategoryMenu(value: boolean) {
+    this.editCategoryVisible = value;
   }
 
   removeCategory(category: any) {

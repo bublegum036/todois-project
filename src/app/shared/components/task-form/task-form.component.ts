@@ -16,8 +16,7 @@ export class TaskFormComponent implements OnInit {
   taskCategory: any[] | undefined;
   taskId: number = 0;
   taskForEdit: TaskAddType | '{}' = '{}';
-  isCreateButton: boolean = true;
-  isEditButton: boolean = false;
+  isButton: boolean = true;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 
@@ -38,21 +37,23 @@ export class TaskFormComponent implements OnInit {
 
 
   ngOnInit() {
-
     this.ls.getEditTask().subscribe((data: TaskAddType | '{}') => {
-      this.taskForEdit = data
+      if (typeof data === 'object') {
+        this.isButton = false;
+      } else {
+        this.isButton = true;
+      }
+      this.taskForEdit = data;
+      console.log(this.taskForEdit)
     })
 
     this.ls.taskForEdit$.subscribe((data: TaskAddType | '{}') => {
-      this.taskForEdit = data
-      if (this.taskForEdit as TaskAddType) {
-        this.isCreateButton =  true;
-        this.isEditButton =  false;
+      if (typeof data === 'object') {
+        this.isButton = false;
+      } else {
+        this.isButton = true;
       }
-      if (this.taskForEdit as '{}') {
-        this.isCreateButton = false;
-        this.isEditButton =  true;
-      }
+      this.taskForEdit = data;
       console.log(this.taskForEdit)
     })
 
@@ -140,6 +141,7 @@ export class TaskFormComponent implements OnInit {
 
 
   editTask() {
+    alert('Заебись')
   }
 
   closeAndCleanTaskForm() {

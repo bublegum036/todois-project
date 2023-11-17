@@ -59,7 +59,7 @@
     </span>
   </div>
   <div class="task-form-action">
-    <p-button [disabled]="taskForm.valid" *ngIf="isCreateButton" label="Создать" severity="warning" (click)="createTask()"></p-button>
-    <p-button *ngIf="isEditButton" label="Редактировать" severity="warning" (click)="editTask()"></p-button>
+    <p-button [disabled]="!taskForm.valid" *ngIf="isButton" label="Создать" severity="warning" (click)="createTask()"></p-button>
+    <p-button [disabled]="!taskForm.valid" *ngIf="!isButton" label="Редактировать" severity="warning" (click)="editTask()"></p-button>
   </div>
 </div>

@@ -12,6 +12,9 @@ import { IdService } from '../../services/id.service';
 })
 export class CategoryAddFormComponent implements OnInit {
   categoryId: number = 0;
+  
+  categoryForEdit: CategoryAddType | '{}' = '{}';
+  isButton: boolean = true;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 
@@ -26,6 +29,27 @@ export class CategoryAddFormComponent implements OnInit {
   })
 
   ngOnInit() {
+    this.ls.getEditCategory().subscribe((data: CategoryAddType | '{}') => {
+      if (typeof data === 'object') {
+        this.isButton = false;
+      } else {
+        this.isButton = true;
+      }
+      this.categoryForEdit = data;
+      console.log(this.categoryForEdit)
+    })
+
+    this.ls.categoryForEdit$.subscribe((data: CategoryAddType | '{}') => {
+      if (typeof data === 'object') {
+        this.isButton = false;
+      } else {
+        this.isButton = true;
+      }
+      this.categoryForEdit = data;
+      console.log(this.categoryForEdit)
+    })
+
+
     this.idService.categoryId$
       .subscribe(categoryId => {
         this.categoryId = categoryId
@@ -59,6 +83,10 @@ export class CategoryAddFormComponent implements OnInit {
       }
       this.ls.saveCategories(JSON.parse(localStorage.getItem('categories') || '{}'))
     }
+  }
+
+  editCategory() {
+    alert('1')
   }
 
   closeAndCleanAddCategoryAddTaskForm() {

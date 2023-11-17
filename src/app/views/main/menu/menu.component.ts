@@ -18,7 +18,6 @@ export class MenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.ls.removeEditTask();
     this.userName = JSON.parse(localStorage.getItem('user') || '{}').userInfo.name
     this.items = [
       {
@@ -26,7 +25,7 @@ export class MenuComponent implements OnInit {
         icon: 'pi pi-plus-circle',
         command: (event: MenuItemCommandEvent) => {
           this.openAddTaskMenu();
-          this.ls.removeEditTask()
+          this.ls.setEditTask('{}')
         }
       },
       {
@@ -34,6 +33,7 @@ export class MenuComponent implements OnInit {
         icon: 'pi pi-plus-circle',
         command: (event: MenuItemCommandEvent) => {
           this.openAddCategoryMenu()
+          this.ls.setEditCategory('{}')
         }
       },
       {

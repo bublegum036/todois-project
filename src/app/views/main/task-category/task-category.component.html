@@ -18,6 +18,12 @@
                 </tr>
             </ng-template>
         </p-table>
+
+        <p-dialog [(visible)]="editCategoryVisible" (visibleChange)="closeCategoryMenu($event)" header="Редактировать категорию"
+            [style]="{width: '30%', height: '90%' }">
+            <category-add-form (visibleChange)="closeCategoryMenu($event)"></category-add-form>
+        </p-dialog>
+
         <p-toast></p-toast>
         <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Да" acceptIcon=" " rejectLabel="Нет"
             rejectIcon=" "></p-confirmDialog>

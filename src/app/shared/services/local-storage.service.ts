@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject, of } from "rxjs";
 import { TaskAddType } from "../../../types/task-add.type";
-import { CategoryAddType } from 'src/types/category-add.type';
+import { CategoryAddType } from '../../../types/category-add.type';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +12,17 @@ export class LocalStorageService {
   private categories: CategoryAddType[] | '{}' = []
   public tasks$: Subject<TaskAddType[] | '{}'> = new Subject<TaskAddType[] | '{}'>
   public categories$: Subject<CategoryAddType[] | '{}'> = new Subject<CategoryAddType[] | '{}'>
-  private tasksForEdit: TaskAddType | '{}' = JSON.parse(localStorage.getItem('tasksForEdit') || '{}');
-  public taskForEdit$: Subject<TaskAddType | '{}'> = new Subject<TaskAddType | '{}'>;
+  private tasksForEdit: TaskAddType | '{}';
+  public taskForEdit$: Subject<TaskAddType | '{}'> = new Subject<TaskAddType | '{}'>();
+  private categoryForEdit: CategoryAddType | '{}';
+  public categoryForEdit$: Subject<CategoryAddType | '{}'> = new Subject<CategoryAddType | '{}'>();
 
   tasksFromLS: TaskAddType[] | '{}' = []
 
   constructor() {
-    this.tasks = JSON.parse(localStorage.getItem('tasks') || '{}')
+    this.tasks = JSON.parse(localStorage.getItem('tasks') || '{}');
+    this.tasksForEdit = JSON.parse(localStorage.getItem('tasksForEdit') || '{}');
+    this.categoryForEdit = JSON.parse(localStorage.getItem('categoryForEdit') || '{}');
   }
 
   
@@ -39,7 +43,7 @@ export class LocalStorageService {
   }
 
   saveCategories(categories: CategoryAddType[] | '{}') {
-    localStorage.setItem('categories', JSON.stringify('categories'));
+    localStorage.setItem('categories', JSON.stringify(categories));
     this.categories$.next(categories);
   }
 
@@ -56,5 +60,20 @@ export class LocalStorageService {
 
   removeEditTask() {
     localStorage.removeItem('taskForEdit');
+  }
+
+
+  getEditCategory(): Observable<CategoryAddType | '{}'> {
+    const categoryForEdit = JSON.parse(localStorage.getItem('categoryForEdit') || '{}');
+    return of(this.categoryForEdit = categoryForEdit)
+  }
+
+  setEditCategory(categoryForEdit: CategoryAddType | '{}') {
+    localStorage.setItem('categoryForEdit', JSON.stringify(categoryForEdit));
+    this.categoryForEdit$.next(categoryForEdit);
+  }
+
+  removeEditCategory() {
+    localStorage.removeItem('categoryForEdit');
   }
 }
