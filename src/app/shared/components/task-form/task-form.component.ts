@@ -70,7 +70,6 @@ export class TaskFormComponent implements OnInit {
         })
       }
       this.taskForEdit = data;
-      console.log(this.taskForEdit)
     })
 
 
@@ -165,15 +164,20 @@ export class TaskFormComponent implements OnInit {
         && this.taskForm.value.taskDeadline
         && this.taskForm.value.taskPriority
         && this.taskForm.value.taskCategory) {
+        let taskDateSet = this.dateFromStrToNewDate(this.taskForm.value.taskDateSet)
+        let taskDateDeadline = this.dateFromStrToNewDate(this.taskForm.value.taskDeadline)
         let task: TaskAddType = {
           taskName: this.taskForm.value.taskName,
           taskDescription: this.taskForm.value.taskDescription,
-          taskDateSet: new Date(this.taskForm.value.taskDateSet).toLocaleDateString(),
-          taskDeadline: new Date(this.taskForm.value.taskDeadline).toLocaleDateString(),
+          taskDateSet: taskDateSet.toLocaleDateString(),
+          taskDeadline: taskDateDeadline.toLocaleDateString(),
           taskPriority: Object(this.taskForm.value.taskPriority).label,
           taskCategory: Object(this.taskForm.value.taskCategory).label,
           taskId: this.taskForEdit.taskId
         }
+        console.log(task)
+
+
         let tasksFromLS: TaskAddType[] = JSON.parse(localStorage.getItem('tasks') || '{}');
         let indexTaskInArray: number = tasksFromLS.findIndex(taskFromLS => taskFromLS.taskId === task.taskId);
         if (indexTaskInArray !== -1) {
@@ -206,5 +210,15 @@ export class TaskFormComponent implements OnInit {
   findPriorityByLabel(label: string) {
     const foundPriority = this.priority?.find(priority => priority.label === label);
     return foundPriority ? foundPriority.data : null;
+  }
+
+  dateFromStrToNewDate(dateFromTask: string) {
+    const dateTask = dateFromTask;
+    const dateSplit = dateTask.split(".")
+    const year = parseInt(dateSplit[2]);
+    const month = parseInt(dateSplit[1]) - 1;
+    const day = parseInt(dateSplit[0]);
+    const dateForForm = new Date(year, month, day)
+    return dateForForm
   }
 }
