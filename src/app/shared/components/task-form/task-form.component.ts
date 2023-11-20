@@ -129,7 +129,7 @@ export class TaskFormComponent implements OnInit {
 
       let task: TaskAddType = {
         taskName: this.taskForm.value.taskName,
-        taskDescription: this.taskForm.value.taskName,
+        taskDescription: this.taskForm.value.taskDescription,
         taskDateSet: new Date(this.taskForm.value.taskDateSet).toLocaleDateString(),
         taskDeadline: new Date(this.taskForm.value.taskDeadline).toLocaleDateString(),
         taskPriority: Object(this.taskForm.value.taskPriority).label,
@@ -140,7 +140,7 @@ export class TaskFormComponent implements OnInit {
       if (!localStorage.getItem('tasks')) {
         localStorage.setItem('tasks', JSON.stringify([task]));
         this.saveNewId()
-        this.closeAndCleanAddForm();
+        this.closeAndCleanForm();
         console.log(localStorage.getItem('tasks'))
       } else {
         let tasksFromLS: TaskAddType[] = JSON.parse(localStorage.getItem('tasks') || '{}');
@@ -148,7 +148,7 @@ export class TaskFormComponent implements OnInit {
         localStorage.removeItem('tasks');
         localStorage.setItem('tasks', tasksArrayForLS);
         this.saveNewId()
-        this.closeAndCleanAddForm();
+        this.closeAndCleanForm();
         console.log(localStorage.getItem('tasks'))
       }
       this.ls.saveTasks(JSON.parse(localStorage.getItem('tasks') || '{}'))
@@ -167,7 +167,7 @@ export class TaskFormComponent implements OnInit {
         && this.taskForm.value.taskCategory) {
         let task: TaskAddType = {
           taskName: this.taskForm.value.taskName,
-          taskDescription: this.taskForm.value.taskName,
+          taskDescription: this.taskForm.value.taskDescription,
           taskDateSet: new Date(this.taskForm.value.taskDateSet).toLocaleDateString(),
           taskDeadline: new Date(this.taskForm.value.taskDeadline).toLocaleDateString(),
           taskPriority: Object(this.taskForm.value.taskPriority).label,
@@ -180,23 +180,19 @@ export class TaskFormComponent implements OnInit {
           tasksFromLS.splice(indexTaskInArray, 1, task);
           localStorage.removeItem('tasks');
           localStorage.setItem('tasks', JSON.stringify(tasksFromLS));
-          this.closeAndCleanEditForm()
+          this.closeAndCleanForm()
         }
         this.ls.saveTasks(JSON.parse(localStorage.getItem('tasks') || '{}'))
       }
     }
   }
 
-  closeAndCleanEditForm() {
-    this.messageService.add({ severity: 'success', summary: 'Успешно!', detail: 'Задача отредактирована' })
-    setTimeout(() => {
-      this.visibleChange.emit(false);
-      this.taskForm.reset();
-    }, 500);
-  }
-
-  closeAndCleanAddForm() {
-    this.messageService.add({ severity: 'success', summary: 'Успешно!', detail: 'Задача успешно создана' })
+  closeAndCleanForm() {
+    if (!this.isButton) {
+      this.messageService.add({ severity: 'success', summary: 'Успешно!', detail: 'Задача отредактирована' })
+    } else {
+      this.messageService.add({ severity: 'success', summary: 'Успешно!', detail: 'Задача создана' })
+    }
     setTimeout(() => {
       this.visibleChange.emit(false);
       this.taskForm.reset();

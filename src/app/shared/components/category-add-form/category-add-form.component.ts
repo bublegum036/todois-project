@@ -46,7 +46,8 @@ export class CategoryAddFormComponent implements OnInit {
           categoryName: [data.categoryName, [Validators.required, Validators.maxLength(20), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
         })
       } else {
-        this.isButton = true; this.categoryAddTask = this.fb.group({
+        this.isButton = true;
+        this.categoryAddTask = this.fb.group({
           categoryName: ['', [Validators.required, Validators.maxLength(20), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
         })
       }
@@ -74,7 +75,7 @@ export class CategoryAddFormComponent implements OnInit {
       if (!localStorage.getItem('categories')) {
         localStorage.setItem('categories', JSON.stringify([category]));
         this.saveCategoryNewId();
-        this.closeAndCleanAddForm();
+        this.closeAndCleanForm();
         console.log(localStorage.getItem('categories'));
       } else {
         let categoryFromLS: CategoryAddType[] = JSON.parse(localStorage.getItem('categories') || '{}');
@@ -82,7 +83,7 @@ export class CategoryAddFormComponent implements OnInit {
         localStorage.removeItem('categories');
         localStorage.setItem('categories', tasksArrayForLS);
         this.saveCategoryNewId();
-        this.closeAndCleanAddForm();
+        this.closeAndCleanForm();
         console.log(JSON.parse(localStorage.getItem('categories') || ''));
       }
       this.ls.saveCategories(JSON.parse(localStorage.getItem('categories') || '{}'))
@@ -104,24 +105,19 @@ export class CategoryAddFormComponent implements OnInit {
           categoryFromLS.splice(indexCategoryInArray, 1, category);
           localStorage.removeItem('categories');
           localStorage.setItem('categories', JSON.stringify(categoryFromLS));
-          this.closeAndCleanEditForm()
+          this.closeAndCleanForm()
         }
         this.ls.saveCategories(JSON.parse(localStorage.getItem('categories') || '{}'))
       }
     }
   }
 
-  closeAndCleanAddForm() {
-    this.messageService.add({ severity: 'success', summary: 'Успешно!', detail: 'Категория успешно создана' })
-    setTimeout(() => {
-      this.visibleChange.emit(false);
-      this.categoryAddTask.reset();
-    }, 500);
-  }
-
-  
-  closeAndCleanEditForm() {
-    this.messageService.add({ severity: 'success', summary: 'Успешно!', detail: 'Категория отредактирована' })
+  closeAndCleanForm() {
+    if (!this.isButton) {
+      this.messageService.add({ severity: 'success', summary: 'Успешно!', detail: 'Категория отредактирована' })
+    } else {
+      this.messageService.add({ severity: 'success', summary: 'Успешно!', detail: 'Категория создана' })
+    }
     setTimeout(() => {
       this.visibleChange.emit(false);
       this.categoryAddTask.reset();

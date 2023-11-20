@@ -1,11 +1,12 @@
 <section class="tasks">
   <h2>Все задачи</h2>
   <div class="tasks-table" *ngIf="tasks && tasks.length>0">
-    <p-table [value]="tasks" [columns]="column" [resizableColumns]="true" [customSort]="true" (sortFunction)="customSort($event)"
-      [tableStyle]="{'min-width': '100%'}">
+    <p-table [value]="tasks" [columns]="column" [resizableColumns]="true" [sortMode]="'single'"
+      (sortFunction)="customSort($event)" [tableStyle]="{'min-width': '100%'}">
       <ng-template pTemplate="header" let-columns>
         <tr>
-          <th pSortableColumn="{{column.field}}" *ngFor="let column of columns">{{column.header}} <p-sortIcon field="{{column.field}}"></p-sortIcon></th>
+          <th pSortableColumn="{{column.field}}" *ngFor="let column of columns">{{column.header}} <p-sortIcon
+              field="{{column.field}}"></p-sortIcon></th>
           <th>Действия</th>
         </tr>
       </ng-template>
