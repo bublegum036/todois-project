@@ -76,24 +76,24 @@ export class TaskFormComponent implements OnInit {
 
     this.priority = [
       {
-        label: 'Высокий',
-        data: 'Высокий',
+        label: 'Приоритет 1',
+        data: 'Приоритет 1',
         icon: 'pi pi-angle-double-up'
       },
       {
-        label: 'Обычный',
-        data: 'Обычный',
+        label: 'Приоритет 2',
+        data: 'Приоритет 2',
         icon: 'pi pi-angle-up'
 
       },
       {
-        label: 'Низкий',
-        data: 'Низкий',
+        label: 'Приоритет 3',
+        data: 'Приоритет 3',
         icon: 'pi pi-arrow-right'
       },
       {
-        label: 'Очень низкий',
-        data: 'Очень низкий',
+        label: 'Приоритет 4',
+        data: 'Приоритет 4',
         icon: 'pi pi-arrow-down-right'
       },
     ]
