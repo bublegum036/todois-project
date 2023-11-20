@@ -3,6 +3,7 @@ import {Validators} from "@angular/forms";
 import {FormBuilder} from "@angular/forms";
 import {UserType} from "../../../../types/user.type";
 import {Router} from "@angular/router";
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'signup',
@@ -12,7 +13,8 @@ import {Router} from "@angular/router";
 export class SignupComponent {
 
   constructor(private fb: FormBuilder,
-              private router: Router) {
+              private router: Router,
+              private auth: AuthService) {
   }
 
   signupForm = this.fb.group({
@@ -32,7 +34,8 @@ export class SignupComponent {
           password: this.signupForm.value.password,
         }
       }
-      localStorage.setItem('user', JSON.stringify(user))
+      this.auth.setUser(user)
+      // localStorage.setItem('user', JSON.stringify(user))
     }
 
     if (localStorage.getItem('user')) {

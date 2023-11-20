@@ -39,7 +39,7 @@ export class TasksComponent implements OnInit {
     })
 
     this.ls.categories$.subscribe((data: CategoryAddType[] | '{}') => {
-      this.categories = data as CategoryAddType[]
+      this.categories = data as CategoryAddType[] || '{}'
     })
 
     this.ls.tasks$.subscribe((data: TaskAddType[] | '{}') => {
