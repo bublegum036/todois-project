@@ -1,6 +1,17 @@
 <section class="tasks">
-  <h2>Все задачи</h2>
+  <div class="task-category-empty" *ngIf="categories && categories.length < 1">
+    <h2>Задачи</h2>
+    <div>Отсутствую категории задач! Создайте сначала категорию задач</div>
+    <p-button label="Создать категорию" severity="warning" (click)="openAddCategoryMenu()"></p-button>
+  </div>
+  <div class="tasks-empty" *ngIf="(tasks && tasks.length < 1) && (categories && categories.length > 0)">
+    <h2>Задачи</h2>
+    <div>Отсутствую задачи! </div>
+    <div> Создайте свою первую задачу</div>
+    <p-button label="Создать задачу" severity="warning" (click)="openAddTaskMenu()"></p-button>
+  </div>
   <div class="tasks-table" *ngIf="tasks && tasks.length>0">
+    <h2>Все задачи</h2>
     <p-table [value]="tasks" [columns]="column" [resizableColumns]="true" [sortMode]="'single'"
       (sortFunction)="customSort($event)" [tableStyle]="{'min-width': '100%'}">
       <ng-template pTemplate="header" let-columns>
@@ -24,12 +35,24 @@
     </p-table>
   </div>
 
-  <p-dialog [(visible)]="editTaskVisible" (visibleChange)="closeTaskMenu($event)" header="Редактировать задачу"
+  <p-dialog [(visible)]="editTaskVisible" (visibleChange)="closeEditTaskMenu($event)" header="Редактировать задачу"
     [style]="{width: '30%', height: '90%' }">
-    <task-form (visibleChange)="closeTaskMenu($event)"></task-form>
+    <task-form (visibleChange)="closeEditTaskMenu($event)"></task-form>
+  </p-dialog>
+
+
+  <p-dialog [(visible)]="addTaskVisible" (visibleChange)="closeAddTaskMenu($event)" header="Создать новую задачу"
+    [style]="{width: '30%', height: '90%' }">
+    <task-form (visibleChange)="closeAddTaskMenu($event)"></task-form>
+  </p-dialog>
+
+  <p-dialog [(visible)]="addCategoryVisible" (visibleChange)="closeAddCategory($event)" header="Создать категорию задач"
+    [style]="{ width: '30%', height: '90%' }">
+    <category-add-form (visibleChange)="closeAddCategory($event)"></category-add-form>
   </p-dialog>
 
   <p-toast></p-toast>
   <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Да" acceptIcon=" " rejectLabel="Нет"
     rejectIcon=" "></p-confirmDialog>
+
 </section>

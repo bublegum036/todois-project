@@ -25,7 +25,6 @@ export class MenuComponent implements OnInit {
         icon: 'pi pi-plus-circle',
         command: (event: MenuItemCommandEvent) => {
           this.openAddTaskMenu();
-          this.ls.setEditTask('{}')
         }
       },
       {
@@ -33,7 +32,6 @@ export class MenuComponent implements OnInit {
         icon: 'pi pi-plus-circle',
         command: (event: MenuItemCommandEvent) => {
           this.openAddCategoryMenu()
-          this.ls.setEditCategory('{}')
         }
       },
       {
@@ -55,10 +53,12 @@ export class MenuComponent implements OnInit {
 
   openAddTaskMenu() {
     this.addTaskVisible = !this.addTaskVisible;
+    this.ls.setEditTask('{}')
   }
 
   openAddCategoryMenu() {
     this.addCategoryVisible = !this.addCategoryVisible;
+    this.ls.setEditCategory('{}')
   }
 
   closeTaskMenu(value: boolean) {

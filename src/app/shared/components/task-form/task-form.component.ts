@@ -44,7 +44,6 @@ export class TaskFormComponent implements OnInit {
         this.isButton = true;
       }
       this.taskForEdit = data;
-      console.log(this.taskForEdit)
     })
 
     this.ls.taskForEdit$.subscribe((data: TaskAddType | '{}') => {
@@ -140,7 +139,6 @@ export class TaskFormComponent implements OnInit {
         localStorage.setItem('tasks', JSON.stringify([task]));
         this.saveNewId()
         this.closeAndCleanForm();
-        console.log(localStorage.getItem('tasks'))
       } else {
         let tasksFromLS: TaskAddType[] = JSON.parse(localStorage.getItem('tasks') || '{}');
         let tasksArrayForLS: string = JSON.stringify(tasksFromLS.concat([task]));
@@ -148,7 +146,6 @@ export class TaskFormComponent implements OnInit {
         localStorage.setItem('tasks', tasksArrayForLS);
         this.saveNewId()
         this.closeAndCleanForm();
-        console.log(localStorage.getItem('tasks'))
       }
       this.ls.saveTasks(JSON.parse(localStorage.getItem('tasks') || '{}'))
     }
@@ -175,7 +172,6 @@ export class TaskFormComponent implements OnInit {
           taskCategory: Object(this.taskForm.value.taskCategory).label,
           taskId: this.taskForEdit.taskId
         }
-        console.log(task)
 
 
         let tasksFromLS: TaskAddType[] = JSON.parse(localStorage.getItem('tasks') || '{}');

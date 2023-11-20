@@ -36,7 +36,6 @@ export class CategoryAddFormComponent implements OnInit {
         this.isButton = true;
       }
       this.categoryForEdit = data;
-      console.log(this.categoryForEdit)
     })
 
     this.ls.categoryForEdit$.subscribe((data: CategoryAddType | '{}') => {
@@ -76,7 +75,6 @@ export class CategoryAddFormComponent implements OnInit {
         localStorage.setItem('categories', JSON.stringify([category]));
         this.saveCategoryNewId();
         this.closeAndCleanForm();
-        console.log(localStorage.getItem('categories'));
       } else {
         let categoryFromLS: CategoryAddType[] = JSON.parse(localStorage.getItem('categories') || '{}');
         let tasksArrayForLS: string = JSON.stringify(categoryFromLS.concat([category]));
@@ -84,7 +82,6 @@ export class CategoryAddFormComponent implements OnInit {
         localStorage.setItem('categories', tasksArrayForLS);
         this.saveCategoryNewId();
         this.closeAndCleanForm();
-        console.log(JSON.parse(localStorage.getItem('categories') || ''));
       }
       this.ls.saveCategories(JSON.parse(localStorage.getItem('categories') || '{}'))
     }

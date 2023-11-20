@@ -11,6 +11,7 @@ import { CategoryAddType } from 'src/types/category-add.type';
 })
 export class TaskCategoryComponent implements OnInit {
   categories: CategoryAddType[] = [];
+  addCategoryVisible: boolean = false;
   editCategoryVisible: boolean = false;
 
   constructor(private ls: LocalStorageService,
@@ -65,4 +66,14 @@ export class TaskCategoryComponent implements OnInit {
       }
     });
   }
+
+  openAddCategoryMenu() {
+    this.addCategoryVisible = !this.addCategoryVisible;
+    this.ls.setEditCategory('{}')
+  }
+
+  closeAddCategory(value: boolean) {
+    this.addCategoryVisible = value;
+  }
+
 }

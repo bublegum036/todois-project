@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService, SortEvent } from "primeng/api";
 import { TaskAddType } from "../../../../types/task-add.type";
 import { LocalStorageService } from "../../../shared/services/local-storage.service";
+import { CategoryAddType } from 'src/types/category-add.type';
 
 
 
@@ -13,8 +14,12 @@ import { LocalStorageService } from "../../../shared/services/local-storage.serv
 })
 export class TasksComponent implements OnInit {
   tasks: TaskAddType[] = [];
+  categories: CategoryAddType[] = [];
+  addTaskVisible: boolean = false;
+  addCategoryVisible: boolean = false;
   editTaskVisible: boolean = false;
   column: { field: string, header: string }[] | undefined = [];
+
 
 
   constructor(private messageService: MessageService,
@@ -27,6 +32,14 @@ export class TasksComponent implements OnInit {
   ngOnInit() {
     this.ls.getTasks().subscribe((data: TaskAddType[] | '{}') => {
       this.tasks = data as TaskAddType[]
+    })
+
+    this.ls.getCategories().subscribe((data: CategoryAddType[] | '{}') => {
+      this.categories = data as CategoryAddType[];
+    })
+
+    this.ls.categories$.subscribe((data: CategoryAddType[] | '{}') => {
+      this.categories = data as CategoryAddType[]
     })
 
     this.ls.tasks$.subscribe((data: TaskAddType[] | '{}') => {
@@ -50,13 +63,30 @@ export class TasksComponent implements OnInit {
     this.editTaskVisible = !this.editTaskVisible;
   }
 
-  closeTaskMenu(value: boolean) {
+  openAddTaskMenu() {
+    this.addTaskVisible = !this.addTaskVisible;
+    this.ls.setEditTask('{}')
+  }
+
+  closeEditTaskMenu(value: boolean) {
     this.editTaskVisible = value;
+  }
+  
+  closeAddTaskMenu(value: boolean) {
+    this.addTaskVisible = value;
+  }
+
+  openAddCategoryMenu() {
+    this.addCategoryVisible = !this.addCategoryVisible;
+    this.ls.setEditCategory('{}')
+  }
+
+  closeAddCategory(value: boolean) {
+    this.addCategoryVisible = value;
   }
 
   removeTask(task: any) {
     let indexTaskInArray: number = this.tasks.findIndex(taskFromLS => taskFromLS.taskId === task.taskId);
-    console.log(indexTaskInArray)
     this.confirmationService.confirm({
       message: 'Вы действительно хотите удалить данную задачу?',
       header: 'Удаление',
@@ -98,6 +128,7 @@ export class TasksComponent implements OnInit {
       return event.order as number * result;
     });
   }
+
 
 }
 
