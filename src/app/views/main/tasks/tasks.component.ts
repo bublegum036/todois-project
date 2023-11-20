@@ -30,7 +30,7 @@ export class TasksComponent implements OnInit {
 
 
   ngOnInit() {
-    this.ls.getTasks().subscribe((data: TaskAddType[] | '{}') => {
+    this.ls.getTasks().subscribe((data: TaskAddType[] | '{}' | null) => {
       this.tasks = data as TaskAddType[]
     })
 
@@ -38,11 +38,11 @@ export class TasksComponent implements OnInit {
       this.categories = data as CategoryAddType[];
     })
 
-    this.ls.categories$.subscribe((data: CategoryAddType[] | '{}') => {
-      this.categories = data as CategoryAddType[] || '{}'
+    this.ls.categories$.subscribe((data: CategoryAddType[] | '{}' | null) => {
+      this.categories = data as CategoryAddType[] || '{}' || null
     })
 
-    this.ls.tasks$.subscribe((data: TaskAddType[] | '{}') => {
+    this.ls.tasks$.subscribe((data: TaskAddType[] | '{}'| null) => {
       this.tasks = data as TaskAddType[]
     })
 

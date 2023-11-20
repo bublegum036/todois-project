@@ -24,7 +24,7 @@ export class TaskCategoryComponent implements OnInit {
       this.categories = data as CategoryAddType[];
     })
 
-    this.ls.categories$.subscribe((data: CategoryAddType[] | '{}') => {
+    this.ls.categories$.subscribe((data: CategoryAddType[] | '{}' | null) => {
       this.categories = data as CategoryAddType[]
     })
   }

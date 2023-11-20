@@ -4,6 +4,7 @@ import {FormBuilder} from "@angular/forms";
 import {UserType} from "../../../../types/user.type";
 import {Router} from "@angular/router";
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 
 @Component({
   selector: 'signup',
@@ -14,7 +15,8 @@ export class SignupComponent {
 
   constructor(private fb: FormBuilder,
               private router: Router,
-              private auth: AuthService) {
+              private auth: AuthService,
+              private ls: LocalStorageService) {
   }
 
   signupForm = this.fb.group({
@@ -34,12 +36,13 @@ export class SignupComponent {
           password: this.signupForm.value.password,
         }
       }
-      this.auth.setUser(user)
-      // localStorage.setItem('user', JSON.stringify(user))
+      this.auth.setUser(user);
+      this.ls.setCategories(null);
+      this.ls.setTasks(null);
     }
 
     if (localStorage.getItem('user')) {
-      this.router.navigate(['/task-category'])
+      this.router.navigate(['/tasks'])
     }
   }
 }

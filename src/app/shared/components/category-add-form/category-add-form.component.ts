@@ -76,14 +76,31 @@ export class CategoryAddFormComponent implements OnInit {
         this.saveCategoryNewId();
         this.closeAndCleanForm();
       } else {
-        let categoryFromLS: CategoryAddType[] = JSON.parse(localStorage.getItem('categories') || '{}');
+        let categoryFromLS: CategoryAddType[] = JSON.parse(localStorage.getItem('categories') || '[]');
+        if (categoryFromLS === null) {
+          categoryFromLS = []
+        }
         let tasksArrayForLS: string = JSON.stringify(categoryFromLS.concat([category]));
         localStorage.removeItem('categories');
         localStorage.setItem('categories', tasksArrayForLS);
         this.saveCategoryNewId();
         this.closeAndCleanForm();
       }
-      this.ls.saveCategories(JSON.parse(localStorage.getItem('categories') || '{}'))
+      this.ls.setCategories(JSON.parse(localStorage.getItem('categories') || '[]'));
+
+      // if (!localStorage.getItem('categories')) {
+      //   localStorage.setItem('categories', JSON.stringify([category]));
+      //   this.saveCategoryNewId();
+      //   this.closeAndCleanForm();
+      // } else {
+      //   let categoryFromLS: CategoryAddType[] = JSON.parse(localStorage.getItem('categories') || '[]');
+      //   let tasksArrayForLS: string = JSON.stringify(categoryFromLS.concat([category]));
+      //   localStorage.removeItem('categories');
+      //   localStorage.setItem('categories', tasksArrayForLS);
+      //   this.saveCategoryNewId();
+      //   this.closeAndCleanForm();
+      // }
+      // this.ls.setCategories(JSON.parse(localStorage.getItem('categories') || '[]'))
     }
   }
 
@@ -104,7 +121,7 @@ export class CategoryAddFormComponent implements OnInit {
           localStorage.setItem('categories', JSON.stringify(categoryFromLS));
           this.closeAndCleanForm()
         }
-        this.ls.saveCategories(JSON.parse(localStorage.getItem('categories') || '{}'))
+        this.ls.setCategories(JSON.parse(localStorage.getItem('categories') || '{}'))
       }
     }
   }

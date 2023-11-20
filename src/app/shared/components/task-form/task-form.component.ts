@@ -4,6 +4,7 @@ import { MessageService } from "primeng/api";
 import { TaskAddType } from "../../../../types/task-add.type";
 import { LocalStorageService } from '../../services/local-storage.service';
 import { IdService } from '../../services/id.service';
+import { CategoryAddType } from 'src/types/category-add.type';
 
 
 @Component({
@@ -104,7 +105,7 @@ export class TaskFormComponent implements OnInit {
       })
 
     this.ls.categories$
-      .subscribe((data: any[] | '{}') => {
+      .subscribe((data: CategoryAddType[] | '{}' | null) => {
         this.taskCategory = data as any[]
       })
 
@@ -141,13 +142,16 @@ export class TaskFormComponent implements OnInit {
         this.closeAndCleanForm();
       } else {
         let tasksFromLS: TaskAddType[] = JSON.parse(localStorage.getItem('tasks') || '{}');
+        if (tasksFromLS === null) {
+          tasksFromLS = []
+        }
         let tasksArrayForLS: string = JSON.stringify(tasksFromLS.concat([task]));
         localStorage.removeItem('tasks');
         localStorage.setItem('tasks', tasksArrayForLS);
         this.saveNewId()
         this.closeAndCleanForm();
       }
-      this.ls.saveTasks(JSON.parse(localStorage.getItem('tasks') || '{}'))
+      this.ls.setTasks(JSON.parse(localStorage.getItem('tasks') || '{}'))
     }
   }
 
@@ -182,7 +186,7 @@ export class TaskFormComponent implements OnInit {
           localStorage.setItem('tasks', JSON.stringify(tasksFromLS));
           this.closeAndCleanForm()
         }
-        this.ls.saveTasks(JSON.parse(localStorage.getItem('tasks') || '{}'))
+        this.ls.setTasks(JSON.parse(localStorage.getItem('tasks') || '{}'))
       }
     }
   }

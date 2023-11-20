@@ -8,10 +8,10 @@ import { CategoryAddType } from '../../../types/category-add.type';
 })
 
 export class LocalStorageService {
-  private tasks: TaskAddType[] | '{}' = []
-  private categories: CategoryAddType[] | '{}' = []
-  public tasks$: Subject<TaskAddType[] | '{}'> = new Subject<TaskAddType[] | '{}'>
-  public categories$: Subject<CategoryAddType[] | '{}'> = new Subject<CategoryAddType[] | '{}'>
+  private tasks: TaskAddType[] | '{}' | null= []
+  private categories: CategoryAddType[] | '{}' | null = []
+  public tasks$: Subject<TaskAddType[] | '{}' | null> = new Subject<TaskAddType[] | '{}' | null>
+  public categories$: Subject<CategoryAddType[] | '{}' | null > = new Subject<CategoryAddType[] | '{}' | null >
   private tasksForEdit: TaskAddType | '{}';
   public taskForEdit$: Subject<TaskAddType | '{}'> = new Subject<TaskAddType | '{}'>();
   private categoryForEdit: CategoryAddType | '{}';
@@ -32,7 +32,7 @@ export class LocalStorageService {
     return of(this.tasks = tasks)
   }
 
-  saveTasks(tasks: TaskAddType[] | '{}') {
+  setTasks(tasks: TaskAddType[] | '{}'| null) {
     localStorage.setItem('tasks', JSON.stringify(tasks));
     this.tasks$.next(tasks);
   }
@@ -42,7 +42,7 @@ export class LocalStorageService {
     return of(this.categories = categories)
   }
 
-  saveCategories(categories: CategoryAddType[] | '{}') {
+  setCategories(categories: CategoryAddType[] | '{}' | null) {
     localStorage.setItem('categories', JSON.stringify(categories));
     this.categories$.next(categories);
   }
