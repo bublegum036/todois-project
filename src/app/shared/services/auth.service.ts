@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, Subject, of } from 'rxjs';
 import { UserType } from 'src/types/user.type';
 
@@ -14,7 +15,7 @@ export class AuthService {
   public authToken$: Subject<string | null> = new Subject <string | null>();
   private isAuth: boolean = false;
   public isAuth$: Subject<boolean> = new Subject<boolean>();
-  constructor() { }
+  constructor(private router: Router) { }
 
 
   setUser(user: UserType) {
@@ -35,9 +36,10 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem(this.tokenKey);
+    localStorage.setItem(this.tokenKey, '');
     this.authToken$.next('');
     this.isAuth = false;
-    this.isAuth$.next(false)
+    this.isAuth$.next(false);
+    this.router.navigate(['/'])
   }
 }

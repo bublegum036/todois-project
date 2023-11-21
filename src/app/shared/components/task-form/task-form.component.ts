@@ -60,14 +60,7 @@ export class TaskFormComponent implements OnInit {
         })
       } else {
         this.isButton = true;
-        this.taskForm = this.fb.group({
-          taskName: ['', [Validators.required, Validators.maxLength(30), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
-          taskDescription: ['', [Validators.required, Validators.maxLength(256), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
-          taskDateSet: ['', [Validators.required]],
-          taskDeadline: ['', [Validators.required]],
-          taskPriority: ['', [Validators.required]],
-          taskCategory: ['', [Validators.required]],
-        })
+        this.taskForm.reset();
       }
       this.taskForEdit = data;
     })

@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {MenuItem, MenuItemCommandEvent} from "primeng/api";
+import { Component, OnInit } from '@angular/core';
+import { MenuItem, MenuItemCommandEvent } from "primeng/api";
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 
 @Component({
@@ -13,7 +14,8 @@ export class MenuComponent implements OnInit {
   addTaskVisible: boolean = false;
   addCategoryVisible: boolean = false;
 
-  constructor(private ls: LocalStorageService) {
+  constructor(private ls: LocalStorageService,
+    private auth: AuthService) {
 
   }
 
@@ -47,6 +49,9 @@ export class MenuComponent implements OnInit {
       {
         label: 'Выйти',
         icon: 'pi pi-sign-out',
+        command: (event: MenuItemCommandEvent) => {
+          this.auth.logout()
+        }
       },
     ];
   }
@@ -62,10 +67,10 @@ export class MenuComponent implements OnInit {
   }
 
   closeTaskMenu(value: boolean) {
-      this.addTaskVisible = value;
+    this.addTaskVisible = value;
   }
 
   closeAddCategory(value: boolean) {
-      this.addCategoryVisible = value;
+    this.addCategoryVisible = value;
   }
 }

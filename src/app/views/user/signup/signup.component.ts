@@ -39,6 +39,7 @@ export class SignupComponent {
       this.auth.setUser(user);
       this.ls.setCategories(null);
       this.ls.setTasks(null);
+      this.auth.login('1111')
     }
 
     if (localStorage.getItem('user')) {
