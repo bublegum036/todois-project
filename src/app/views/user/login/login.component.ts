@@ -18,13 +18,12 @@ export class LoginComponent implements OnInit {
 
   loginForm = this.fb.group({
     userName: ['', [Validators.required, Validators.pattern('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')]],
-    password: ['', [Validators.required]]
+    password: ['', Validators.required]
   })
 
   ngOnInit() {
     
   }
-
 
   login() {
     if (localStorage.getItem('user')) {
