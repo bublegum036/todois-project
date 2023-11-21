@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
       this.loginUserName = JSON.parse(localStorage.getItem('user') || '{}').userInfo.email;
       this.loginPassword = JSON.parse(localStorage.getItem('user') || '{}').userInfo.password;
       if (this.loginForm.value.userName === this.loginUserName && this.loginForm.value.password === this.loginPassword) {
-        this.auth.login('1111')
+        this.auth.login()
         this.router.navigate(['/tasks'])
       }
     }
