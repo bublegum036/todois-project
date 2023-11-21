@@ -5,6 +5,8 @@ import { TaskAddType } from "../../../../types/task-add.type";
 import { LocalStorageService } from '../../services/local-storage.service';
 import { IdService } from '../../services/id.service';
 import { CategoryAddType } from 'src/types/category-add.type';
+import { priorityTasks} from '../../constants/constants';
+import { PriorityType } from '../../../../types/priority.type';
 
 
 @Component({
@@ -13,7 +15,7 @@ import { CategoryAddType } from 'src/types/category-add.type';
   styleUrls: ['./task-form.component.scss'],
 })
 export class TaskFormComponent implements OnInit {
-  priority: any[] | undefined;
+  priority: PriorityType[] = priorityTasks;
   taskCategory: any[] | undefined;
   taskId: number = 0;
   taskForEdit: TaskAddType | '{}' = '{}';
@@ -64,31 +66,6 @@ export class TaskFormComponent implements OnInit {
       }
       this.taskForEdit = data;
     })
-
-
-    this.priority = [
-      {
-        label: 'Приоритет 1',
-        data: 'Приоритет 1',
-        icon: 'pi pi-angle-double-up'
-      },
-      {
-        label: 'Приоритет 2',
-        data: 'Приоритет 2',
-        icon: 'pi pi-angle-up'
-
-      },
-      {
-        label: 'Приоритет 3',
-        data: 'Приоритет 3',
-        icon: 'pi pi-arrow-right'
-      },
-      {
-        label: 'Приоритет 4',
-        data: 'Приоритет 4',
-        icon: 'pi pi-arrow-down-right'
-      },
-    ]
 
     this.ls.getCategories()
       .subscribe(data => {

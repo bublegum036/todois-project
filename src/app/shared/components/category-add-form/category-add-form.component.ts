@@ -87,20 +87,6 @@ export class CategoryAddFormComponent implements OnInit {
         this.closeAndCleanForm();
       }
       this.ls.setCategories(JSON.parse(localStorage.getItem('categories') || '[]'));
-
-      // if (!localStorage.getItem('categories')) {
-      //   localStorage.setItem('categories', JSON.stringify([category]));
-      //   this.saveCategoryNewId();
-      //   this.closeAndCleanForm();
-      // } else {
-      //   let categoryFromLS: CategoryAddType[] = JSON.parse(localStorage.getItem('categories') || '[]');
-      //   let tasksArrayForLS: string = JSON.stringify(categoryFromLS.concat([category]));
-      //   localStorage.removeItem('categories');
-      //   localStorage.setItem('categories', tasksArrayForLS);
-      //   this.saveCategoryNewId();
-      //   this.closeAndCleanForm();
-      // }
-      // this.ls.setCategories(JSON.parse(localStorage.getItem('categories') || '[]'))
     }
   }
 
