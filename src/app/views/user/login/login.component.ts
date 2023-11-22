@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {Validators} from "@angular/forms";
-import {FormBuilder} from "@angular/forms";
-import {Router} from "@angular/router";
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { LoginFormInterface } from 'src/app/shared/interfaces/login-form-interface';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -9,23 +9,20 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   loginUserName: string = '';
   loginPassword: string = '';
 
-  constructor(private fb: FormBuilder,
-              private router: Router,
-              private auth: AuthService) {
+  constructor(
+    private router: Router,
+    private auth: AuthService) {
   }
 
-  loginForm = this.fb.group({
-    userName: ['', [Validators.required, Validators.pattern('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')]],
-    password: ['', Validators.required]
+  loginForm: FormGroup = new FormGroup<LoginFormInterface>({
+    userName: new FormControl(null, [Validators.required, Validators.pattern('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')]),
+    password: new FormControl(null, Validators.required)
   })
 
-  ngOnInit() {
-    
-  }
 
   login() {
     if (localStorage.getItem('user')) {
