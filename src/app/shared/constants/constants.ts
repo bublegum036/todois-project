@@ -1,7 +1,9 @@
 import { MenuItem, MenuItemCommandEvent } from "primeng/api";
 import { PriorityType } from "src/types/priority.type";
 
-export const priorityTasks: PriorityType[] = [
+
+
+export const PRIORITY_TASKS: PriorityType[] = [
     {
         label: 'Приоритет 1',
         data: 'Приоритет 1',
@@ -26,35 +28,35 @@ export const priorityTasks: PriorityType[] = [
 ];
 
 // export const menuItem: MenuItem[] = [
-//     {
-//       label: 'Создать задачу',
-//       icon: 'pi pi-plus-circle',
-//       command: (event: MenuItemCommandEvent) => {
-//         this.openAddTaskMenu();
-//       }
-//     },
-//     {
-//       label: 'Создать категорию',
-//       icon: 'pi pi-plus-circle',
-//       command: (event: MenuItemCommandEvent) => {
-//         this.openAddCategoryMenu()
-//       }
-//     },
-//     {
-//       label: 'Все задачи',
-//       icon: 'pi pi-prime',
-//       routerLink: ['/tasks']
-//     },
-//     {
-//       label: 'Категории задач',
-//       icon: 'pi pi-list',
-//       routerLink: ['/task-category']
-//     },
-//     {
-//       label: 'Выйти',
-//       icon: 'pi pi-sign-out',
-//       command: (event: MenuItemCommandEvent) => {
-//         this.auth.logout()
-//       }
-//     },
-//   ];
+//       {
+//         label: 'Создать задачу',
+//         icon: 'pi pi-plus-circle',
+//         command: (event: MenuItemCommandEvent) => {
+//           this.openAddTaskMenu();
+//         }
+//       },
+//       {
+//         label: 'Создать категорию',
+//         icon: 'pi pi-plus-circle',
+//         command: (event: MenuItemCommandEvent) => {
+//           this.openAddCategoryMenu()
+//         }
+//       },
+//       {
+//         label: 'Все задачи',
+//         icon: 'pi pi-prime',
+//         routerLink: ['/tasks']
+//       },
+//       {
+//         label: 'Категории задач',
+//         icon: 'pi pi-list',
+//         routerLink: ['/task-category']
+//       },
+//       {
+//         label: 'Выйти',
+//         icon: 'pi pi-sign-out',
+//         command: (event: MenuItemCommandEvent) => {
+//           this.logout()
+//         }
+//       },
+//     ];

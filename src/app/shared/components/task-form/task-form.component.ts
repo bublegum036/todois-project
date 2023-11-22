@@ -5,9 +5,17 @@ import { TaskAddType } from "../../../../types/task-add.type";
 import { LocalStorageService } from '../../services/local-storage.service';
 import { IdService } from '../../services/id.service';
 import { CategoryAddType } from 'src/types/category-add.type';
-import { priorityTasks} from '../../constants/constants';
+import { PRIORITY_TASKS } from '../../constants/constants';
 import { PriorityType } from '../../../../types/priority.type';
 
+interface TaskFormType {
+  taskName: string | null,
+  taskDescription: string | null,
+  taskDateSet: string | null,
+  taskDeadline: string | null,
+  taskPriority: string | null,
+  taskCategory: string | null,
+}
 
 @Component({
   selector: 'task-form',
@@ -15,7 +23,7 @@ import { PriorityType } from '../../../../types/priority.type';
   styleUrls: ['./task-form.component.scss'],
 })
 export class TaskFormComponent implements OnInit {
-  priority: PriorityType[] = priorityTasks;
+  priority: PriorityType[] = PRIORITY_TASKS;
   taskCategory: any[] | undefined;
   taskId: number = 0;
   taskForEdit: TaskAddType | '{}' = '{}';
@@ -52,13 +60,21 @@ export class TaskFormComponent implements OnInit {
     this.ls.taskForEdit$.subscribe((data: TaskAddType | '{}') => {
       if (typeof data === 'object') {
         this.isButton = false;
-        this.taskForm = this.fb.group({
-          taskName: [data.taskName, [Validators.required, Validators.maxLength(30), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
-          taskDescription: [data.taskDescription, [Validators.required, Validators.maxLength(256), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
-          taskDateSet: [data.taskDateSet, [Validators.required]],
-          taskDeadline: [data.taskDeadline, [Validators.required]],
-          taskPriority: ['', [Validators.required]],
-          taskCategory: ['', [Validators.required]],
+        // this.taskForm = this.fb.group({
+        //   taskName: [data.taskName, [Validators.required, Validators.maxLength(30), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
+        //   taskDescription: [data.taskDescription, [Validators.required, Validators.maxLength(256), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
+        //   taskDateSet: [data.taskDateSet, [Validators.required]],
+        //   taskDeadline: [data.taskDeadline, [Validators.required]],
+        //   taskPriority: ['', [Validators.required]],
+        //   taskCategory: ['', [Validators.required]],
+        // })
+        this.taskForm.patchValue({
+          taskName: data.taskName,
+          taskDescription: data.taskDescription,
+          taskDateSet: data.taskDateSet,
+          taskDeadline: data.taskDeadline,
+          taskPriority: null,
+          taskCategory:null,
         })
       } else {
         this.isButton = true;
