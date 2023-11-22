@@ -1,9 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LocalStorageService } from '../../services/local-storage.service';
 import { MessageService } from 'primeng/api';
 import { CategoryAddType } from 'src/types/category-add.type';
 import { IdService } from '../../services/id.service';
+import { CategoryAddFormInterface } from '../../interfaces/category-add-form.interface';
 
 @Component({
   selector: 'category-add-form',
@@ -23,15 +24,14 @@ export class CategoryAddFormComponent implements OnInit {
     private idService: IdService) {
   }
 
-  categoryAddTask = this.fb.group({
-    categoryName: ['', [Validators.required, Validators.maxLength(20), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
+  categoryAddForm: FormGroup = new FormGroup<CategoryAddFormInterface>({
+    categoryName:new FormControl (null, [Validators.required, Validators.maxLength(20), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]),
   })
 
   ngOnInit() {
     this.ls.getEditCategory().subscribe((data: CategoryAddType | '{}') => {
       if (typeof data === 'object') {
         this.isButton = false;
-
       } else {
         this.isButton = true;
       }
@@ -41,14 +41,12 @@ export class CategoryAddFormComponent implements OnInit {
     this.ls.categoryForEdit$.subscribe((data: CategoryAddType | '{}') => {
       if (typeof data === 'object') {
         this.isButton = false;
-        this.categoryAddTask = this.fb.group({
-          categoryName: [data.categoryName, [Validators.required, Validators.maxLength(20), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
+        this.categoryAddForm.setValue({
+          categoryName: data.label,
         })
       } else {
         this.isButton = true;
-        this.categoryAddTask = this.fb.group({
-          categoryName: ['', [Validators.required, Validators.maxLength(20), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
-        })
+        this.categoryAddForm.reset()
       }
       this.categoryForEdit = data;
     })
@@ -62,12 +60,12 @@ export class CategoryAddFormComponent implements OnInit {
 
 
   createCategory() {
-    if (this.categoryAddTask.valid
-      && this.categoryAddTask.value.categoryName) {
+    if (this.categoryAddForm.valid
+      && this.categoryAddForm.value.categoryName) {
 
       let category: CategoryAddType = {
-        categoryName: this.categoryAddTask.value.categoryName,
-        label: this.categoryAddTask.value.categoryName,
+        categoryName: this.categoryAddForm.value.categoryName,
+        label: this.categoryAddForm.value.categoryName,
         categoryId: this.categoryId
       }
 
@@ -92,11 +90,11 @@ export class CategoryAddFormComponent implements OnInit {
 
   editCategory() {
     if (this.categoryForEdit !== '{}') {
-      if (this.categoryAddTask.valid
-        && this.categoryAddTask.value.categoryName) {
+      if (this.categoryAddForm.valid
+        && this.categoryAddForm.value.categoryName) {
         let category: CategoryAddType = {
-          categoryName: this.categoryAddTask.value.categoryName,
-          label: this.categoryAddTask.value.categoryName,
+          categoryName: this.categoryAddForm.value.categoryName,
+          label: this.categoryAddForm.value.categoryName,
           categoryId: this.categoryForEdit.categoryId
         }
         let categoryFromLS: CategoryAddType[] = JSON.parse(localStorage.getItem('categories') || '{}');
@@ -120,7 +118,7 @@ export class CategoryAddFormComponent implements OnInit {
     }
     setTimeout(() => {
       this.visibleChange.emit(false);
-      this.categoryAddTask.reset();
+      this.categoryAddForm.reset();
     }, 500);
   }
 

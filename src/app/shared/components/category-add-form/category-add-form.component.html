@@ -1,18 +1,18 @@
-<div class="category-add-form" [formGroup]="categoryAddTask">
+<div class="category-add-form" [formGroup]="categoryAddForm">
     <div class="category-add-form-input">
         <span class="p-float-label">
             <input pInputText formControlName="categoryName"
-                [ngClass]="{'ng-invalid ng-dirty': categoryAddTask.get('categoryName')?.invalid && (categoryAddTask.get('categoryName')?.dirty || categoryAddTask.get('categoryName')?.touched) ?  true : ''}"
+                [ngClass]="{'ng-invalid ng-dirty': categoryAddForm.get('categoryName')?.invalid && (categoryAddForm.get('categoryName')?.dirty || categoryAddForm.get('categoryName')?.touched) ?  true : ''}"
                 id="task-name" />
             <label htmlFor="task-name">Название категории</label>
         </span>
-        <small class="category-add-form-input-help" *ngIf="categoryAddTask.get('categoryName')?.errors?.['pattern']">Только буквы,
+        <small class="category-add-form-input-help" *ngIf="categoryAddForm.get('categoryName')?.errors?.['pattern']">Только буквы,
             цифры, знаки препинания</small>
-        <small class="category-add-form-input-help" *ngIf="categoryAddTask.get('categoryName')?.hasError('maxlength')">Максимум 20
+        <small class="category-add-form-input-help" *ngIf="categoryAddForm.get('categoryName')?.hasError('maxlength')">Максимум 20
             символов</small>
     </div>
     <div class="category-add-form-action">
-        <p-button *ngIf="isButton" [disabled]="!categoryAddTask.valid" label="Создать" severity="warning" (click)="createCategory()"></p-button> 
-        <p-button *ngIf="!isButton" [disabled]="!categoryAddTask.valid" label="Редактировать" severity="warning" (click)="editCategory()"></p-button> 
+        <p-button *ngIf="isButton" [disabled]="!categoryAddForm.valid" label="Создать" severity="warning" (click)="createCategory()"></p-button> 
+        <p-button *ngIf="!isButton" [disabled]="!categoryAddForm.valid" label="Редактировать" severity="warning" (click)="editCategory()"></p-button> 
       </div>
 </div>
