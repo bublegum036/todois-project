@@ -56,7 +56,7 @@
           ваш пароль</small>
       </div>
       <div class="login-form-action">
-        <p-button label="Войти" severity="warning" (click)="login()"></p-button>
+        <p-button [disabled]="!loginForm.valid" label="Войти" severity="warning" (click)="login()"></p-button>
       </div>
     </div>
     <div class="login-form-link">
@@ -64,3 +64,5 @@
     </div>
   </section>
 </div>
+
+<p-toast></p-toast>

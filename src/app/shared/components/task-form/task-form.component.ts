@@ -28,7 +28,7 @@ export class TaskFormComponent implements OnInit {
     taskDateSet: new FormControl(null, Validators.required),
     taskDeadline: new FormControl(null, Validators.required),
     taskPriority: new FormControl(null, Validators.required),
-    taskCategory: new FormControl(null, Validators.required),
+    taskCategory: new FormControl(null),
   })
 
 
@@ -94,7 +94,7 @@ export class TaskFormComponent implements OnInit {
       && this.taskForm.value.taskDateSet
       && this.taskForm.value.taskDeadline
       && this.taskForm.value.taskPriority
-      && this.taskForm.value.taskCategory) {
+      ) {
 
       let task: TaskAddType = {
         taskName: this.taskForm.value.taskName,

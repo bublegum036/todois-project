@@ -20,7 +20,7 @@ export class MenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userName = JSON.parse(localStorage.getItem('user') || '{}').userInfo.name
+    this.userName = JSON.parse(localStorage.getItem('user') || '{}').userInfo.name;
     this.items = [
       {
         label: 'Создать задачу',
