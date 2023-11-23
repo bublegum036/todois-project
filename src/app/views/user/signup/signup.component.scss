@@ -18,31 +18,31 @@
     }
 
     .signup-form {
+
       .signup-form-input {
         margin-bottom: 30px;
-
         text-align: center;
-
-        .signup-form-input-help {
-          font-size: 10px;
-          color: #e24c4c;
-          max-width: 224px;
-          display: block;
-        }
-      }
-
-      .signup-form-action {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 15px;
       }
     }
 
-
-    .signup-form-link {
-      a {
-        text-decoration: none;
-      }
+    .signup-form-input-help {
+      font-size: 10px;
+      color: #e24c4c;
+      max-width: 224px;
+      display: block;
     }
+  }
+
+  .signup-form-action {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+  }
+}
+
+
+.signup-form-link {
+  a {
+    text-decoration: none;
   }
 }
