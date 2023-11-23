@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, Validators } from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { MessageService } from "primeng/api";
 import { TaskAddType } from "../../../../types/task-add.type";
 import { LocalStorageService } from '../../services/local-storage.service';
@@ -7,6 +7,7 @@ import { IdService } from '../../services/id.service';
 import { CategoryAddType } from 'src/types/category-add.type';
 import { PRIORITY_TASKS } from '../../constants/constants';
 import { PriorityType } from '../../../../types/priority.type';
+import { TaskFormInterface } from '../../interfaces/task-form-interface';
 
 interface TaskFormType {
   taskName: string | null,
@@ -24,7 +25,7 @@ interface TaskFormType {
 })
 export class TaskFormComponent implements OnInit {
   priority: PriorityType[] = PRIORITY_TASKS;
-  taskCategory: any[] | undefined;
+  taskCategory: CategoryAddType[] | undefined;
   taskId: number = 0;
   taskForEdit: TaskAddType | '{}' = '{}';
   isButton: boolean = true;
@@ -37,15 +38,14 @@ export class TaskFormComponent implements OnInit {
     private idService: IdService,
   ) { }
 
-  taskForm = this.fb.group({
-    taskName: ['', [Validators.required, Validators.maxLength(30), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
-    taskDescription: ['', [Validators.required, Validators.maxLength(256), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
-    taskDateSet: ['', [Validators.required]],
-    taskDeadline: ['', [Validators.required]],
-    taskPriority: ['', [Validators.required]],
-    taskCategory: ['', [Validators.required]],
+  taskForm: FormGroup = new FormGroup<TaskFormInterface>({
+    taskName: new FormControl(null, [Validators.required, Validators.maxLength(30), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]),
+    taskDescription: new FormControl(null, [Validators.required, Validators.maxLength(256), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]),
+    taskDateSet: new FormControl(null, Validators.required),
+    taskDeadline: new FormControl(null, Validators.required),
+    taskPriority: new FormControl(null, Validators.required),
+    taskCategory: new FormControl(null, Validators.required),
   })
-
 
   ngOnInit() {
     this.ls.getEditTask().subscribe((data: TaskAddType | '{}') => {
@@ -54,27 +54,19 @@ export class TaskFormComponent implements OnInit {
       } else {
         this.isButton = true;
       }
-      this.taskForEdit = data;
+      this.taskForEdit = data as TaskAddType;
     })
 
     this.ls.taskForEdit$.subscribe((data: TaskAddType | '{}') => {
       if (typeof data === 'object') {
         this.isButton = false;
-        // this.taskForm = this.fb.group({
-        //   taskName: [data.taskName, [Validators.required, Validators.maxLength(30), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
-        //   taskDescription: [data.taskDescription, [Validators.required, Validators.maxLength(256), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]],
-        //   taskDateSet: [data.taskDateSet, [Validators.required]],
-        //   taskDeadline: [data.taskDeadline, [Validators.required]],
-        //   taskPriority: ['', [Validators.required]],
-        //   taskCategory: ['', [Validators.required]],
-        // })
         this.taskForm.patchValue({
           taskName: data.taskName,
           taskDescription: data.taskDescription,
           taskDateSet: data.taskDateSet,
           taskDeadline: data.taskDeadline,
-          taskPriority: null,
-          taskCategory:null,
+          taskPriority: this.priority.find(item => item.label === data.taskPriority),
+          taskCategory: this.taskCategory?.find(item => item.label === data.taskCategory),
         })
       } else {
         this.isButton = true;
@@ -86,13 +78,13 @@ export class TaskFormComponent implements OnInit {
     this.ls.getCategories()
       .subscribe(data => {
         if (data) {
-          this.taskCategory = data as any
+          this.taskCategory = data as CategoryAddType[];
         }
       })
 
     this.ls.categories$
       .subscribe((data: CategoryAddType[] | '{}' | null) => {
-        this.taskCategory = data as any[]
+        this.taskCategory = data as CategoryAddType[];
       })
 
 
@@ -101,7 +93,6 @@ export class TaskFormComponent implements OnInit {
         this.taskId = taskId
       })
   }
-
 
   createTask() {
     if (this.taskForm.valid
@@ -138,6 +129,7 @@ export class TaskFormComponent implements OnInit {
         this.closeAndCleanForm();
       }
       this.ls.setTasks(JSON.parse(localStorage.getItem('tasks') || '{}'))
+      console.log(task)
     }
   }
 
@@ -151,18 +143,16 @@ export class TaskFormComponent implements OnInit {
         && this.taskForm.value.taskDeadline
         && this.taskForm.value.taskPriority
         && this.taskForm.value.taskCategory) {
-        let taskDateSet = this.dateFromStrToNewDate(this.taskForm.value.taskDateSet)
-        let taskDateDeadline = this.dateFromStrToNewDate(this.taskForm.value.taskDeadline)
+
         let task: TaskAddType = {
           taskName: this.taskForm.value.taskName,
           taskDescription: this.taskForm.value.taskDescription,
-          taskDateSet: taskDateSet.toLocaleDateString(),
-          taskDeadline: taskDateDeadline.toLocaleDateString(),
+          taskDateSet: new Date(this.taskForm.value.taskDateSet).toLocaleDateString(),
+          taskDeadline: new Date(this.taskForm.value.taskDeadline).toLocaleDateString(),
           taskPriority: Object(this.taskForm.value.taskPriority).label,
           taskCategory: Object(this.taskForm.value.taskCategory).label,
           taskId: this.taskForEdit.taskId
         }
-
 
         let tasksFromLS: TaskAddType[] = JSON.parse(localStorage.getItem('tasks') || '{}');
         let indexTaskInArray: number = tasksFromLS.findIndex(taskFromLS => taskFromLS.taskId === task.taskId);
@@ -198,13 +188,5 @@ export class TaskFormComponent implements OnInit {
     return foundPriority ? foundPriority.data : null;
   }
 
-  dateFromStrToNewDate(dateFromTask: string) {
-    const dateTask = dateFromTask;
-    const dateSplit = dateTask.split(".")
-    const year = parseInt(dateSplit[2]);
-    const month = parseInt(dateSplit[1]) - 1;
-    const day = parseInt(dateSplit[0]);
-    const dateForForm = new Date(year, month, day)
-    return dateForForm
-  }
+  
 }

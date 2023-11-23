@@ -14,8 +14,7 @@ import { SignupFormInterface } from 'src/app/shared/interfaces/signup-form-inter
 })
 export class SignupComponent {
 
-  constructor(private fb: FormBuilder,
-              private router: Router,
+  constructor(private router: Router,
               private auth: AuthService,
               private ls: LocalStorageService) {
   }
