@@ -6,10 +6,13 @@ import { BehaviorSubject } from 'rxjs';
 })
 
 export class IdService {
-  private taskId = new BehaviorSubject<number>(Number(localStorage.getItem('taskId')) || 1);
+  taskIdKey: string = 'taskId';
+  categoryIdKey: string = 'categoryId';
+
+  private taskId = new BehaviorSubject<number>(Number(localStorage.getItem(this.taskIdKey)) || 1);
   public taskId$ = this.taskId.asObservable();
 
-  private categoryId = new BehaviorSubject<number>(Number(localStorage.getItem('categoryId')) || 1);;
+  private categoryId = new BehaviorSubject<number>(Number(localStorage.getItem(this.categoryIdKey)) || 1);;
   public categoryId$ = this.categoryId.asObservable();
 
   constructor() { }

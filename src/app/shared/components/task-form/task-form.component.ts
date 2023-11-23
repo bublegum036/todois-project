@@ -9,14 +9,6 @@ import { PRIORITY_TASKS } from '../../constants/constants';
 import { PriorityType } from '../../../../types/priority.type';
 import { TaskFormInterface } from '../../interfaces/task-form-interface';
 
-interface TaskFormType {
-  taskName: string | null,
-  taskDescription: string | null,
-  taskDateSet: string | null,
-  taskDeadline: string | null,
-  taskPriority: string | null,
-  taskCategory: string | null,
-}
 
 @Component({
   selector: 'task-form',
@@ -30,14 +22,6 @@ export class TaskFormComponent implements OnInit {
   taskForEdit: TaskAddType | '{}' = '{}';
   isButton: boolean = true;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-
-  constructor(private fb: FormBuilder,
-    private messageService: MessageService,
-    private ls: LocalStorageService,
-    private idService: IdService,
-  ) { }
-
   taskForm: FormGroup = new FormGroup<TaskFormInterface>({
     taskName: new FormControl(null, [Validators.required, Validators.maxLength(30), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]),
     taskDescription: new FormControl(null, [Validators.required, Validators.maxLength(256), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]),
@@ -46,6 +30,15 @@ export class TaskFormComponent implements OnInit {
     taskPriority: new FormControl(null, Validators.required),
     taskCategory: new FormControl(null, Validators.required),
   })
+
+
+  constructor(private fb: FormBuilder,
+    private messageService: MessageService,
+    private ls: LocalStorageService,
+    private idService: IdService,
+  ) { }
+
+  
 
   ngOnInit() {
     this.ls.getEditTask().subscribe((data: TaskAddType | '{}') => {
