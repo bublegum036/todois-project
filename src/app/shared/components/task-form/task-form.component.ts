@@ -129,7 +129,6 @@ export class TaskFormComponent implements OnInit {
         this.closeAndCleanForm();
       }
       this.ls.setTasks(JSON.parse(localStorage.getItem('tasks') || '{}'))
-      console.log(task)
     }
   }
 
@@ -143,12 +142,23 @@ export class TaskFormComponent implements OnInit {
         && this.taskForm.value.taskDeadline
         && this.taskForm.value.taskPriority
         && this.taskForm.value.taskCategory) {
-
+        let taskDateSet = null;
+        let taskDeadline = null;
+        if (typeof this.taskForm.value.taskDateSet === 'string') {
+          taskDateSet = this.taskForm.value.taskDateSet
+        } else {
+          taskDateSet = new Date(this.taskForm.value.taskDateSet).toLocaleDateString()
+        }
+        if (typeof this.taskForm.value.taskDeadline === 'string') {
+          taskDeadline = this.taskForm.value.taskDeadline
+        } else {
+          taskDeadline = new Date(this.taskForm.value.taskDeadline).toLocaleDateString()
+        }
         let task: TaskAddType = {
           taskName: this.taskForm.value.taskName,
           taskDescription: this.taskForm.value.taskDescription,
-          taskDateSet: new Date(this.taskForm.value.taskDateSet).toLocaleDateString(),
-          taskDeadline: new Date(this.taskForm.value.taskDeadline).toLocaleDateString(),
+          taskDateSet: taskDateSet,
+          taskDeadline: taskDeadline,
           taskPriority: Object(this.taskForm.value.taskPriority).label,
           taskCategory: Object(this.taskForm.value.taskCategory).label,
           taskId: this.taskForEdit.taskId
@@ -187,6 +197,4 @@ export class TaskFormComponent implements OnInit {
     const foundPriority = this.priority?.find(priority => priority.label === label);
     return foundPriority ? foundPriority.data : null;
   }
-
-  
 }
