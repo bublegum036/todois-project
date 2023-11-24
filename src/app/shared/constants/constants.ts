@@ -23,3 +23,12 @@ export const PRIORITY_TASKS: PriorityType[] = [
         icon: 'pi pi-arrow-down-right'
     },
 ];
+
+export const TASKS_COLUMNS: { field: string, header: string }[] = [
+    { field: 'taskName', header: 'Название задачи' },
+    { field: 'taskDescription', header: 'Описание задачи' },
+    { field: 'taskDateSet', header: 'Дата постановки' },
+    { field: 'taskDeadline', header: 'Срок выполнения' },
+    { field: 'taskPriority', header: 'Приоритет' },
+    { field: 'taskCategory', header: 'Категория' },
+];

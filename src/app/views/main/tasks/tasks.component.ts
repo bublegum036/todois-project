@@ -3,6 +3,7 @@ import { ConfirmEventType, ConfirmationService, MessageService, SortEvent } from
 import { TaskAddType } from "../../../../types/task-add.type";
 import { LocalStorageService } from "../../../shared/services/local-storage.service";
 import { CategoryAddType } from 'src/types/category-add.type';
+import { TASKS_COLUMNS } from '../../../shared/constants/constants'
 
 
 
@@ -18,7 +19,7 @@ export class TasksComponent implements OnInit {
   addTaskVisible: boolean = false;
   addCategoryVisible: boolean = false;
   editTaskVisible: boolean = false;
-  column: { field: string, header: string }[] | undefined = [];
+  column: { field: string, header: string }[] = TASKS_COLUMNS;
 
 
 
@@ -42,21 +43,10 @@ export class TasksComponent implements OnInit {
       this.categories = data as CategoryAddType[] || '{}' || null
     })
 
-    this.ls.tasks$.subscribe((data: TaskAddType[] | '{}'| null) => {
+    this.ls.tasks$.subscribe((data: TaskAddType[] | '{}' | null) => {
       this.tasks = data as TaskAddType[]
     })
-
-
-    this.column = [
-      { field: 'taskName', header: 'Название задачи' },
-      { field: 'taskDescription', header: 'Описание задачи' },
-      { field: 'taskDateSet', header: 'Дата постановки' },
-      { field: 'taskDeadline', header: 'Срок выполнения' },
-      { field: 'taskPriority', header: 'Приоритет' },
-      { field: 'taskCategory', header: 'Категория' },
-    ];
   }
-
 
   editTask(task: TaskAddType) {
     this.ls.setEditTask(task);
@@ -71,7 +61,7 @@ export class TasksComponent implements OnInit {
   closeEditTaskMenu(value: boolean) {
     this.editTaskVisible = value;
   }
-  
+
   closeAddTaskMenu(value: boolean) {
     this.addTaskVisible = value;
   }
@@ -94,9 +84,8 @@ export class TasksComponent implements OnInit {
       accept: () => {
         if (indexTaskInArray !== -1) {
           this.tasks.splice(indexTaskInArray, 1);
-          let tasksArrayForLS = JSON.stringify(this.tasks)
-          localStorage.removeItem('tasks');
-          localStorage.setItem('tasks', tasksArrayForLS);
+          let tasksArrayForLS = this.tasks;
+          this.ls.setTasks(tasksArrayForLS)
         }
         this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Задача удалена' });
       },

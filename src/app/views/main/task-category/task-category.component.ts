@@ -39,7 +39,6 @@ export class TaskCategoryComponent implements OnInit {
   }
 
   removeCategory(category: any) {
-    console.log(category)
     let indexCategoryInArray: number = this.categories.findIndex(categoryFromLS => categoryFromLS.categoryId === category.categoryId);
     this.confirmationService.confirm({
       message: 'Вы действительно хотите удалить данную категорию?',
@@ -48,9 +47,8 @@ export class TaskCategoryComponent implements OnInit {
       accept: () => {
         if (indexCategoryInArray !== -1) {
           this.categories.splice(indexCategoryInArray, 1);
-          let categoriesArrayForLS = JSON.stringify(this.categories)
-          localStorage.removeItem('categories');
-          localStorage.setItem('categories', categoriesArrayForLS);
+          let categoriesArrayForLS = this.categories;
+          this.ls.setCategories(categoriesArrayForLS)
         }
         this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Категория удалена' });
       },
@@ -75,5 +73,4 @@ export class TaskCategoryComponent implements OnInit {
   closeAddCategory(value: boolean) {
     this.addCategoryVisible = value;
   }
-
 }

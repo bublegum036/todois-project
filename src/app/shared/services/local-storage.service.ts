@@ -16,6 +16,7 @@ export class LocalStorageService {
   public taskForEdit$: Subject<TaskAddType | '{}'> = new Subject<TaskAddType | '{}'>();
   private categoryForEdit: CategoryAddType | '{}';
   public categoryForEdit$: Subject<CategoryAddType | '{}'> = new Subject<CategoryAddType | '{}'>();
+  public userName: string | null = null;
 
   tasksFromLS: TaskAddType[] | '{}' = []
 
@@ -24,8 +25,6 @@ export class LocalStorageService {
     this.tasksForEdit = JSON.parse(localStorage.getItem('tasksForEdit') || '{}');
     this.categoryForEdit = JSON.parse(localStorage.getItem('categoryForEdit') || '{}');
   }
-
-  
 
   getTasks(): Observable<TaskAddType[] | '{}'> {
     const tasks = JSON.parse(localStorage.getItem('tasks') || '{}')
@@ -47,7 +46,6 @@ export class LocalStorageService {
     this.categories$.next(categories);
   }
 
-
   getEditTask(): Observable<TaskAddType | '{}'> {
     const taskForEdit = JSON.parse(localStorage.getItem('taskForEdit') || '{}');
     return of(this.tasksForEdit = taskForEdit)
@@ -62,7 +60,6 @@ export class LocalStorageService {
     localStorage.removeItem('taskForEdit');
   }
 
-
   getEditCategory(): Observable<CategoryAddType | '{}'> {
     const categoryForEdit = JSON.parse(localStorage.getItem('categoryForEdit') || '{}');
     return of(this.categoryForEdit = categoryForEdit)
@@ -75,5 +72,10 @@ export class LocalStorageService {
 
   removeEditCategory() {
     localStorage.removeItem('categoryForEdit');
+  }
+
+  getUserName(): Observable<string | '{}'> {
+    const userName = JSON.parse(localStorage.getItem('user') || '{}').userInfo.name;
+    return of(this.userName = userName)
   }
 }
