@@ -9,13 +9,23 @@
     }
   }
 
-
   .tasks-table {
-    h2 {
-      margin: 0 0 30px 0;
-    }
-  }
+    .tasks-table-head {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 30px;
 
+      .tasks-table-head-button {
+        display: none;
+      }
+
+      h2 {
+        margin: 0;
+      }
+    }
+
+  }
 
   .tasks-empty {
     h2 {
@@ -26,5 +36,18 @@
       margin-bottom: 20px;
     }
   }
+}
 
+@media (max-width:1170px) {
+  .tasks {
+    .tasks-table {
+      text-align: center;
+  
+      .tasks-table-head {
+        .tasks-table-head-button {
+          display: block;
+        }
+      }
+    }
+  }
 }

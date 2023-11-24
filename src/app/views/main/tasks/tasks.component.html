@@ -11,9 +11,12 @@
     <p-button label="Создать задачу" severity="warning" (click)="openAddTaskMenu()"></p-button>
   </div>
   <div class="tasks-table" *ngIf="tasks && tasks.length>0">
-    <h2>Все задачи</h2>
-    <p-table [value]="tasks" [columns]="column" [resizableColumns]="true" [sortMode]="'single'"
-      (sortFunction)="customSort($event)" [tableStyle]="{'min-width': '100%'}">
+    <div class="tasks-table-head">
+      <p-button class="tasks-table-head-button" severity="secondary" icon="pi pi-align-justify"  [text]="true"></p-button>
+      <h2>Все задачи</h2>
+    </div>
+    <p-table class="p-datatable p-md-12 p-sm-12 p-lg-12" [value]="tasks" [columns]="column" [resizableColumns]="true" [sortMode]="'single'"
+      (sortFunction)="customSort($event)" [tableStyle]="{'min-width': '100%'}" >
       <ng-template pTemplate="header" let-columns>
         <tr>
           <th pSortableColumn="{{column.field}}" *ngFor="let column of columns">{{column.header}} <p-sortIcon

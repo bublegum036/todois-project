@@ -49,7 +49,7 @@ export class MenuComponent implements OnInit, OnDestroy {
       },
       {
         label: 'Создать категорию',
-        icon: 'pi pi-plus-circle',
+        icon: 'pi pi-reply',
         command: (event: MenuItemCommandEvent) => {
           this.openAddCategoryMenu()
         }

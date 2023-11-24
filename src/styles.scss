@@ -1,6 +1,7 @@
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
+@import "primeflex/primeflex.css";
 
 
 .container {
@@ -53,4 +54,11 @@
 
 .p-ripple.p-element.p-menuitem-link.ng-star-inserted {
   padding: 9px;
+}
+
+.tasks-table-head-button .p-ripple.p-element.p-button.p-component.p-button-icon-only.p-button-secondary.p-button-text {
+  width: 30px;
+  height: 30px;
+  padding: 10px;
+  margin-right: 20px;
 }
