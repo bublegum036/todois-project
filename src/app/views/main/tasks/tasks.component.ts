@@ -49,6 +49,33 @@ export class TasksComponent implements OnInit {
     })
   }
 
+  completeTask(task: TaskAddType){
+    let indexTaskInArray: number = this.tasks.findIndex(taskFromLS => taskFromLS.taskId === task.taskId);
+    this.confirmationService.confirm({
+      message: 'Вы выполнили данную задачу?',
+      header: 'Выполнение',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        if (indexTaskInArray !== -1) {
+          this.tasks.splice(indexTaskInArray, 1);
+          let tasksArrayForLS = this.tasks;
+          this.ls.setTasks(tasksArrayForLS)
+        }
+        this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Задача удалена' });
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({ severity: 'error', summary: 'Отклонено', detail: 'Вы передумали' });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({ severity: 'warn', summary: 'Отмена', detail: 'Отменено' });
+            break;
+        }
+      }
+    });
+  }
+
   editTask(task: TaskAddType) {
     this.ls.setEditTask(task);
     this.editTaskVisible = !this.editTaskVisible;

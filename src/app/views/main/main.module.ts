@@ -17,6 +17,7 @@ import { SidebarModule } from 'primeng/sidebar';
 import { HeaderComponent } from './header/header.component';
 import { MenuModule } from 'primeng/menu';
 import { TabMenuModule } from 'primeng/tabmenu';
+import { CompleteComponent } from './complete/complete.component';
 
 
 
@@ -27,6 +28,7 @@ import { TabMenuModule } from 'primeng/tabmenu';
     SidebarComponent,
     TasksComponent,
     HeaderComponent,
+    CompleteComponent,
   ],
   imports: [
     CommonModule,

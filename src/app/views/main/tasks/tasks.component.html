@@ -12,7 +12,7 @@
     <div class="tasks-table-action">
       <p-button label="Создать задачу" severity="warning" (click)="openAddTaskMenu()"></p-button>
     </div>
-    <p-table [value]="tasks" [columns]="column" responsiveLayout="stack" [breakpoint]="'576px'" [sortMode]="'single'"
+    <p-table [value]="tasks" [columns]="column" responsiveLayout="stack" [sortMode]="'single'"
       (sortFunction)="customSort($event)" [tableStyle]="{'min-width': '50rem'}" >
       <ng-template pTemplate="header" let-columns>
         <tr>
@@ -27,6 +27,7 @@
             {{ currentTask[col.field] }}
           </td>
           <td>
+            <p-button (click)="completeTask(currentTask)" icon="pi pi-check" severity="success"></p-button>
             <p-button (click)="editTask(currentTask)" icon="pi pi-pencil" severity="info"></p-button>
             <p-button (click)="removeTask(currentTask)" icon="pi pi-trash" severity="danger"></p-button>
           </td>
@@ -39,7 +40,6 @@
     [style]="{width: '30%', height: '90%' }">
     <task-form (visibleChange)="closeEditTaskMenu($event)"></task-form>
   </p-dialog>
-
 
   <p-dialog [(visible)]="addTaskVisible" (visibleChange)="closeAddTaskMenu($event)" header="Создать новую задачу"
     [style]="{width: '30%', height: '90%' }">

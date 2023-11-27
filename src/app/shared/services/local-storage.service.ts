@@ -8,10 +8,12 @@ import { CategoryAddType } from '../../../types/category-add.type';
 })
 
 export class LocalStorageService {
-  private tasks: TaskAddType[] | '{}' | null= []
-  private categories: CategoryAddType[] | '{}' | null = []
-  public tasks$: Subject<TaskAddType[] | '{}' | null> = new Subject<TaskAddType[] | '{}' | null>
-  public categories$: Subject<CategoryAddType[] | '{}' | null > = new Subject<CategoryAddType[] | '{}' | null >
+  private tasks: TaskAddType[] | '{}' | null= [];
+  private tasksComplete: TaskAddType[] | '{}' | null= [];
+  private categories: CategoryAddType[] | '{}' | null = [];
+  public tasks$: Subject<TaskAddType[] | '{}' | null> = new Subject<TaskAddType[] | '{}' | null>;
+  public tasksComplete$: Subject<TaskAddType[] | '{}' | null> = new Subject<TaskAddType[] | '{}' | null>;
+  public categories$: Subject<CategoryAddType[] | '{}' | null > = new Subject<CategoryAddType[] | '{}' | null >;
   private tasksForEdit: TaskAddType | '{}';
   public taskForEdit$: Subject<TaskAddType | '{}'> = new Subject<TaskAddType | '{}'>();
   private categoryForEdit: CategoryAddType | '{}';
@@ -34,6 +36,16 @@ export class LocalStorageService {
   setTasks(tasks: TaskAddType[] | '{}'| null) {
     localStorage.setItem('tasks', JSON.stringify(tasks));
     this.tasks$.next(tasks);
+  }
+
+  getCompleteTasks(): Observable<TaskAddType[] | '{}'> {
+    const tasksComplete = JSON.parse(localStorage.getItem('tasksComplete') || '{}')
+    return of(this.tasksComplete = tasksComplete)
+  }
+
+  setCompleteTasks(tasksComplete: TaskAddType[] | '{}'| null) {
+    localStorage.setItem('tasks', JSON.stringify(tasksComplete));
+    this.tasksComplete$.next(tasksComplete);
   }
 
   getCategories(): Observable<CategoryAddType[] | '{}'> {

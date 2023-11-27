@@ -1,18 +1,15 @@
 <aside class="sidebar">
-  <div class="container">
-    <div class="sidebar-menu">
-      <div class="card flex justify-content-center">
-        <p-tieredMenu [model]="items" [style]="{'width':'200px'}"></p-tieredMenu>
-      </div>
-    </div>
+  <div class="sidebar-menu">
+    <p-menu [model]="items" [style]="{'width':'100%'}"></p-menu>
   </div>
 </aside>
 
-
-<p-dialog [(visible)]="addTaskVisible" (visibleChange)="closeTaskMenu($event)" header="Создать новую задачу" [style]="{width: '30%', height: '90%' }">
+<p-dialog [(visible)]="addTaskVisible" (visibleChange)="closeTaskMenu($event)" header="Создать новую задачу"
+  [style]="{width: '30%', height: '90%' }">
   <task-form (visibleChange)="closeTaskMenu($event)"></task-form>
 </p-dialog>
 
-<p-dialog [(visible)]="addCategoryVisible" (visibleChange)="closeAddCategory($event)" header="Создать категорию задач" [style]="{ width: '30%', height: '90%' }">
+<p-dialog [(visible)]="addCategoryVisible" (visibleChange)="closeAddCategory($event)" header="Создать категорию задач"
+  [style]="{ width: '30%', height: '90%' }">
   <category-add-form (visibleChange)="closeAddCategory($event)"></category-add-form>
 </p-dialog>
