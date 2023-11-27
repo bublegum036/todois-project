@@ -61,19 +61,19 @@ body {
   padding: 9px;
 }
 
-.tasks-table-head-button .p-ripple.p-element.p-button.p-component.p-button-icon-only.p-button-secondary.p-button-text {
+.tasks-table-head-button.p-ripple.p-element.p-button.p-component.p-button-icon-only.p-button-secondary.p-button-text {
   width: 30px;
   height: 30px;
   padding: 10px;
   margin-right: 20px;
 }
 
-.p-tabmenu-nav-content {
-  background: #e9ecef;
 
+.nav-menu.p-tabmenu-nav-content {
+  background: #e9ecef;
 }
 
-.p-ripple.p-element.p-menuitem-link.ng-star-inserted {
+.nav-menu .p-ripple.p-element.p-menuitem-link.ng-star-inserted {
   background-color: #e9ecef;
   color: #85888a;
 }

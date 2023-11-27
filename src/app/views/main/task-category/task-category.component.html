@@ -6,11 +6,11 @@
         <p-button label="Создать категорию" severity="warning" (click)="openAddCategoryMenu()"></p-button>
     </div>
     <div class="task-category-table" *ngIf="categories && categories.length>0">
-        <p-table [value]="categories" responsiveLayout="stack" [tableStyle]="{ 'min-width': '80%' }">
+        <p-table [value]="categories" responsiveLayout="stack" [tableStyle]="{ 'width': '100%' }">
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width:60%">Название категории</th>
-                    <th style="width:30%"></th>
+                    <th style="text-align: center;">Название категории</th>
+                    <th style="text-align: right;"></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-category>

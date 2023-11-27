@@ -47,7 +47,7 @@ export class HeaderComponent implements OnInit {
       {
         label: 'Выполнено',
         // icon: 'pi pi-list',
-        routerLink: ['/task-category']
+        routerLink: ['/complete']
       },
     ]
 
