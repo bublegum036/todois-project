@@ -4,8 +4,14 @@
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
+  position: relative;
 
   menu-dashboard {
     margin-right: 20px;
+  }
+
+  @media (max-width: 1170px) {
+    justify-content: center;
+    max-width: 960px;
   }
 }

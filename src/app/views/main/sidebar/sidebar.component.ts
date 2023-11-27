@@ -6,15 +6,16 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 
 @Component({
-  selector: 'menu-dashboard',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss']
+  selector: 'sidebar-menu',
+  templateUrl: './sidebar.component.html',
+  styleUrls: ['./sidebar.component.scss']
 })
-export class MenuComponent implements OnInit, OnDestroy {
+export class SidebarComponent implements OnInit, OnDestroy {
   items: MenuItem[] = [];
   userName!: string;
   addTaskVisible: boolean = false;
   addCategoryVisible: boolean = false;
+  isAsideVisible: boolean = false;
   private subscriptionOpenAddTaskMenu: Subscription;
   private subscriptionAddCategoryMenu: Subscription;
 
@@ -97,5 +98,9 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   closeAddCategory(value: boolean) {
     this.addCategoryVisible = value;
+  }
+
+  openAside(value: boolean) {
+    this.isAsideVisible = value;
   }
 }

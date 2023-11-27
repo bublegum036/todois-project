@@ -38,7 +38,7 @@
   }
 }
 
-@media (max-width:1170px) {
+@media screen and (max-width:1170px) {
   .tasks {
     .tasks-table {
       text-align: center;
@@ -46,6 +46,7 @@
       .tasks-table-head {
         .tasks-table-head-button {
           display: block;
+          
         }
       }
     }

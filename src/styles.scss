@@ -24,7 +24,7 @@
 }
 
 
-.p-datatable .p-datatable-thead > tr > th {
+.p-datatable .p-datatable-thead>tr>th {
   padding: 8px;
   font-size: 12px;
 }
@@ -34,7 +34,7 @@
   text-align: center;
 }
 
-.p-datatable .p-datatable-tbody > tr > td {
+.p-datatable .p-datatable-tbody>tr>td {
   padding: 0.3rem 0.3rem;
 }
 
@@ -61,4 +61,12 @@
   height: 30px;
   padding: 10px;
   margin-right: 20px;
+}
+
+.slide-in-out {
+  transform: translateX(0);
+}
+
+.slide-out {
+  transform: translateX(-100%);
 }

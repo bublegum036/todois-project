@@ -7,12 +7,13 @@ import { TieredMenuModule } from "primeng/tieredmenu";
 import { DialogModule } from "primeng/dialog";
 import { SharedModule } from "../../shared/shared.module";
 import { TaskCategoryComponent } from './task-category/task-category.component';
-import { MenuComponent } from './menu/menu.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from "primeng/toast";
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { SidebarModule } from 'primeng/sidebar';
 
 
 
@@ -20,7 +21,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @NgModule({
   declarations: [
     TaskCategoryComponent,
-    MenuComponent,
+    SidebarComponent,
     TasksComponent,
   ],
   imports: [
@@ -36,9 +37,10 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     ButtonModule,
     ConfirmDialogModule,
     ToastModule,
+    SidebarModule,
   ],
   exports: [
-    MenuComponent, 
+    SidebarComponent, 
     TasksComponent
   ],
   providers: []

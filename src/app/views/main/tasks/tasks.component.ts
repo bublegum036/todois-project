@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService, SortEvent } from "primeng/api";
 import { TaskAddType } from "../../../../types/task-add.type";
 import { LocalStorageService } from "../../../shared/services/local-storage.service";
 import { CategoryAddType } from 'src/types/category-add.type';
 import { TASKS_COLUMNS } from '../../../shared/constants/constants'
+import { SidebarService } from 'src/app/shared/services/sidebar.service';
 
 
 
@@ -19,6 +20,8 @@ export class TasksComponent implements OnInit {
   addTaskVisible: boolean = false;
   addCategoryVisible: boolean = false;
   editTaskVisible: boolean = false;
+  sidebarVisible: boolean = false;
+  // @Output() sidebarVisible: EventEmitter<boolean> = new EventEmitter<boolean>();
   column: { field: string, header: string }[] = TASKS_COLUMNS;
 
 
@@ -26,6 +29,7 @@ export class TasksComponent implements OnInit {
   constructor(private messageService: MessageService,
     private ls: LocalStorageService,
     private confirmationService: ConfirmationService,
+    private sidebarService: SidebarService
   ) { }
 
 
@@ -118,6 +122,10 @@ export class TasksComponent implements OnInit {
     });
   }
 
-
+  sidebarOpen() {
+    this.sidebarVisible = this.sidebarService.getSidebarVisible();
+    this.sidebarService.setSidebarVisible(!this.sidebarVisible);
+    
+  }
 }
 

@@ -12,6 +12,7 @@ import { RippleModule } from "primeng/ripple";
 import { ToastModule } from 'primeng/toast';
 import { CategoryAddFormComponent } from './components/category-add-form/category-add-form.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { SidebarModule } from 'primeng/sidebar';
 
 
 
@@ -35,7 +36,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     DialogModule,
     RippleModule,
     ToastModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    SidebarModule
   ],
   providers: []
 })

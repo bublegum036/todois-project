@@ -1,5 +1,7 @@
 <div class="container">
-  <menu-dashboard></menu-dashboard>
+  <p-sidebar [(visible)]="sidebarVisible" (visibleChange)="sidebarOpen($event)"> 
+    <sidebar-menu></sidebar-menu>
+  </p-sidebar>
   <router-outlet></router-outlet>
   <p-toast></p-toast>
 </div>

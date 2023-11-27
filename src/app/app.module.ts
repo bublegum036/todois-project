@@ -15,6 +15,7 @@ import { LocalStorageService } from "./shared/services/local-storage.service";
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { IdService } from './shared/services/id.service';
 import { AuthGuard } from './shared/services/auth.guard';
+import { SidebarModule } from 'primeng/sidebar';
 
 @NgModule({
   declarations: [
@@ -30,10 +31,12 @@ import { AuthGuard } from './shared/services/auth.guard';
     AppRoutingModule,
     MainModule,
     ToastModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    SidebarModule
   ],
   exports: [DialogModule],
   providers: [MessageService, LocalStorageService, IdService, AuthGuard],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  
 })
 export class AppModule { }
