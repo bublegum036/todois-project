@@ -2,13 +2,11 @@
 
 .container {
   display: flex;
-  align-items: flex-start;
+  align-items: space-between;
+  flex-direction: column;
   justify-content: flex-start;
   position: relative;
-
-  menu-dashboard {
-    margin-right: 20px;
-  }
+  margin: 0 auto;
 
   @media (max-width: 1170px) {
     justify-content: center;

@@ -20,7 +20,6 @@ export class TasksComponent implements OnInit {
   addTaskVisible: boolean = false;
   addCategoryVisible: boolean = false;
   editTaskVisible: boolean = false;
-  sidebarVisible: boolean = false;
   // @Output() sidebarVisible: EventEmitter<boolean> = new EventEmitter<boolean>();
   column: { field: string, header: string }[] = TASKS_COLUMNS;
 
@@ -122,10 +121,5 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  sidebarOpen() {
-    this.sidebarVisible = this.sidebarService.getSidebarVisible();
-    this.sidebarService.setSidebarVisible(!this.sidebarVisible);
-    
-  }
 }
 

@@ -12,7 +12,6 @@ import { LocalStorageService } from 'src/app/shared/services/local-storage.servi
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   items: MenuItem[] = [];
-  userName!: string;
   addTaskVisible: boolean = false;
   addCategoryVisible: boolean = false;
   isAsideVisible: boolean = false;
@@ -36,10 +35,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit() {
-    this.ls.getUserName().subscribe(name => {
-      this.userName = name;
-    });
-    
     this.items = [
       {
         label: 'Создать задачу',

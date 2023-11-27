@@ -14,6 +14,8 @@ import { ToastModule } from "primeng/toast";
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { SidebarModule } from 'primeng/sidebar';
+import { HeaderComponent } from './header/header.component';
+import { MenuModule } from 'primeng/menu';
 
 
 
@@ -23,6 +25,7 @@ import { SidebarModule } from 'primeng/sidebar';
     TaskCategoryComponent,
     SidebarComponent,
     TasksComponent,
+    HeaderComponent,
   ],
   imports: [
     CommonModule,
@@ -38,10 +41,12 @@ import { SidebarModule } from 'primeng/sidebar';
     ConfirmDialogModule,
     ToastModule,
     SidebarModule,
+    MenuModule
   ],
   exports: [
     SidebarComponent, 
-    TasksComponent
+    TasksComponent,
+    HeaderComponent
   ],
   providers: []
 })

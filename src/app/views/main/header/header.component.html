@@ -1,0 +1,10 @@
+<div class="container">
+    <p-button p class="tasks-table-head-button" (click)="sidebarOpen()" severity="secondary" icon="pi pi-align-justify"
+        [text]="true"></p-button>
+    <p-avatar icon="pi pi-user" styleClass="mr-2" shape="circle" size="large" label="{{userNameFofAvatar}}" (click)="menu.toggle($event)">
+    <p-menu #menu [model]="items" [popup]="true"></p-menu>
+    </p-avatar>
+</div>
+<p-sidebar [(visible)]="sidebarVisible">
+    <sidebar-menu></sidebar-menu>
+</p-sidebar>
