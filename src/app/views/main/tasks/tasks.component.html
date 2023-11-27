@@ -9,6 +9,9 @@
     <p-button label="Создать задачу" severity="warning" (click)="openAddTaskMenu()"></p-button>
   </div>
   <div class="tasks-table" *ngIf="tasks && tasks.length>0">
+    <div class="tasks-table-action">
+      <p-button label="Создать задачу" severity="warning" (click)="openAddTaskMenu()"></p-button>
+    </div>
     <p-table [value]="tasks" [columns]="column" responsiveLayout="stack" [breakpoint]="'576px'" [sortMode]="'single'"
       (sortFunction)="customSort($event)" [tableStyle]="{'min-width': '50rem'}" >
       <ng-template pTemplate="header" let-columns>

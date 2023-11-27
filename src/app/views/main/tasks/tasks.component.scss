@@ -12,19 +12,9 @@
   }
 
   .tasks-table {
-    .tasks-table-head {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
+    .tasks-table-action {
       margin-bottom: 30px;
-
-      .tasks-table-head-button {
-        display: block;
-      }
-
-      h2 {
-        margin: 0;
-      }
+     }
     }
 
   }
@@ -38,7 +28,7 @@
       margin-bottom: 20px;
     }
   }
-}
+
 
 @media screen and (max-width:1170px) {
   .tasks {

@@ -3,7 +3,7 @@
         [text]="true">
     </p-button>
     <p-tabMenu [model]="navMenu"></p-tabMenu>
-    <p-avatar icon="pi pi-user" styleClass="mr-2" shape="circle" size="large" label="{{userName}}"
+    <p-avatar icon="pi pi-user" styleClass="mr-2" shape="circle" size="large" [style]="{ 'background-color': '#F59E0B', color: '#ffffff' }"  label="{{userName}}"
         (click)="menu.toggle($event)">
         <p-menu #menu [model]="userMenu" [popup]="true"></p-menu>
     </p-avatar>
