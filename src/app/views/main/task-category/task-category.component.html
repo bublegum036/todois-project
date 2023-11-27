@@ -1,8 +1,8 @@
 <section class="task-category">
-    <div class="task-category-empty" *ngIf="!categories">
-        <h2>Категории задач отсутствуют</h2>
-        <p-button label="Создать категорию" severity="warning" (click)="openAddCategoryMenu()"></p-button>
+    <div class="task-category-empty" *ngIf="!categories || categories.length <1">
+        <div>Категории задач отсутствуют</div>
     </div>
+    <p-button label="Создать категорию" severity="warning" (click)="openAddCategoryMenu()"></p-button>
     <div class="task-category-table" *ngIf="categories && categories.length>0">
         <p-table [value]="categories" responsiveLayout="stack" [tableStyle]="{ 'min-width': '80%' }">
             <ng-template pTemplate="header">
