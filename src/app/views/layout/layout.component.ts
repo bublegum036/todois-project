@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { SidebarService } from 'src/app/shared/services/sidebar.service';
 
 @Component({
   selector: 'app-layout',
@@ -9,11 +8,7 @@ import { SidebarService } from 'src/app/shared/services/sidebar.service';
 export class LayoutComponent {
   sidebarVisible: boolean = true;
 
-  constructor(private sidebarService: SidebarService) {}
-
-  sidebarOpen(value: boolean) {
-    this.sidebarVisible = false;
-  }
+  constructor() {}
 }
 
 

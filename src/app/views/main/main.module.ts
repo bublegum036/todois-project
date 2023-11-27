@@ -16,6 +16,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { SidebarModule } from 'primeng/sidebar';
 import { HeaderComponent } from './header/header.component';
 import { MenuModule } from 'primeng/menu';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 
 
@@ -41,7 +42,8 @@ import { MenuModule } from 'primeng/menu';
     ConfirmDialogModule,
     ToastModule,
     SidebarModule,
-    MenuModule
+    MenuModule,
+    TabMenuModule 
   ],
   exports: [
     SidebarComponent, 

@@ -68,10 +68,19 @@ body {
   margin-right: 20px;
 }
 
-.slide-in-out {
-  transform: translateX(0);
+.p-tabmenu-nav-content {
+  background: #e9ecef;
+
 }
 
-.slide-out {
-  transform: translateX(-100%);
+.p-ripple.p-element.p-menuitem-link.ng-star-inserted {
+  background-color: #e9ecef;
+  color: #85888a;
+}
+
+.p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
+    background: #e9ecef;
+    border-color: #e9ecef;
+    color: #000000;
+    border-radius: 0;
 }

@@ -4,7 +4,6 @@ import { TaskAddType } from "../../../../types/task-add.type";
 import { LocalStorageService } from "../../../shared/services/local-storage.service";
 import { CategoryAddType } from 'src/types/category-add.type';
 import { TASKS_COLUMNS } from '../../../shared/constants/constants'
-import { SidebarService } from 'src/app/shared/services/sidebar.service';
 
 
 
@@ -28,7 +27,6 @@ export class TasksComponent implements OnInit {
   constructor(private messageService: MessageService,
     private ls: LocalStorageService,
     private confirmationService: ConfirmationService,
-    private sidebarService: SidebarService
   ) { }
 
 

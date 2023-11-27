@@ -17,6 +17,7 @@ import { IdService } from './shared/services/id.service';
 import { AuthGuard } from './shared/services/auth.guard';
 import { SidebarModule } from 'primeng/sidebar';
 import { MenuModule } from 'primeng/menu';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { MenuModule } from 'primeng/menu';
     ToastModule,
     ConfirmDialogModule,
     SidebarModule,
-    MenuModule
+    MenuModule,
+    TabMenuModule,
   ],
   exports: [DialogModule],
   providers: [MessageService, LocalStorageService, IdService, AuthGuard],

@@ -10,26 +10,14 @@ import { LocalStorageService } from 'src/app/shared/services/local-storage.servi
 })
 export class HeaderComponent implements OnInit {
   sidebarVisible: boolean = false;
-  userName!: string;
-  userNameFofAvatar: string | null = null;
-  items: any;
+  userName: string | null = null;
+  userMenu: { label: string, icon: string, command?: any }[];
+  navMenu: {}[] = []
 
 
   constructor(private ls: LocalStorageService,
     private auth: AuthService) {
-
-  }
-
-  ngOnInit(): void {
-    this.ls.getUserName().subscribe(name => {
-      this.userName = name;
-    });
-
-    if (this.userName) {
-      this.userNameFofAvatar = this.userName[0]
-    }
-
-    this.items = [
+    this.userMenu = [
       {
         label: 'Выйти',
         icon: 'pi pi-sign-out',
@@ -37,6 +25,30 @@ export class HeaderComponent implements OnInit {
           this.auth.logout()
         }
       }
+    ]
+  }
+
+  ngOnInit(): void {
+    this.ls.getUserName().subscribe(name => {
+      this.userName = name[0];
+    });
+
+    this.navMenu = [
+      {
+        label: 'Все задачи',
+        // icon: 'pi pi-prime',
+        routerLink: ['/tasks']
+      },
+      {
+        label: 'Категории задач',
+        // icon: 'pi pi-list',
+        routerLink: ['/task-category']
+      },
+      {
+        label: 'Выполнено',
+        // icon: 'pi pi-list',
+        routerLink: ['/task-category']
+      },
     ]
 
   }
