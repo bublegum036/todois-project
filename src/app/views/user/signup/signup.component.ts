@@ -40,6 +40,7 @@ export class SignupComponent {
       this.auth.setUser(user);
       this.ls.setCategories(null);
       this.ls.setTasks(null);
+      this.ls.setCompleteTasks(null)
       this.auth.login()
     }
 

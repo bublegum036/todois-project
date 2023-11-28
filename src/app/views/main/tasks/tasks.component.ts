@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService, SortEvent } from "primeng/api";
 import { TaskAddType } from "../../../../types/task-add.type";
 import { LocalStorageService } from "../../../shared/services/local-storage.service";
@@ -16,10 +16,10 @@ import { TASKS_COLUMNS } from '../../../shared/constants/constants'
 export class TasksComponent implements OnInit {
   tasks: TaskAddType[] = [];
   categories: CategoryAddType[] = [];
+  tasksComplete: TaskAddType[] = []
   addTaskVisible: boolean = false;
   addCategoryVisible: boolean = false;
   editTaskVisible: boolean = false;
-  // @Output() sidebarVisible: EventEmitter<boolean> = new EventEmitter<boolean>();
   column: { field: string, header: string }[] = TASKS_COLUMNS;
 
 
@@ -36,6 +36,10 @@ export class TasksComponent implements OnInit {
       this.tasks = data as TaskAddType[]
     })
 
+    this.ls.tasks$.subscribe((data: TaskAddType[] | '{}' | null) => {
+      this.tasks = data as TaskAddType[]
+    })
+
     this.ls.getCategories().subscribe((data: CategoryAddType[] | '{}') => {
       this.categories = data as CategoryAddType[];
     })
@@ -44,12 +48,18 @@ export class TasksComponent implements OnInit {
       this.categories = data as CategoryAddType[] || '{}' || null
     })
 
-    this.ls.tasks$.subscribe((data: TaskAddType[] | '{}' | null) => {
-      this.tasks = data as TaskAddType[]
+    this.ls.getCompleteTasks().subscribe((data: TaskAddType[] | '{}') => {
+      this.tasksComplete = data as TaskAddType[];
+    })
+
+    this.ls.tasksComplete$.subscribe((data: TaskAddType[] | '{}' | null) => {
+      this.tasksComplete = data as TaskAddType[] || '{}' || null
     })
   }
+    
 
-  completeTask(task: TaskAddType){
+
+  completeTask(task: TaskAddType) {
     let indexTaskInArray: number = this.tasks.findIndex(taskFromLS => taskFromLS.taskId === task.taskId);
     this.confirmationService.confirm({
       message: 'Вы выполнили данную задачу?',
@@ -60,8 +70,22 @@ export class TasksComponent implements OnInit {
           this.tasks.splice(indexTaskInArray, 1);
           let tasksArrayForLS = this.tasks;
           this.ls.setTasks(tasksArrayForLS)
+          if (!localStorage.getItem('tasksComplete')) {
+            this.ls.setCompleteTasks([task])
+          } else {
+            let tasksFromLS: TaskAddType[] = JSON.parse(localStorage.getItem('tasksComplete') || '{}');
+            if (tasksFromLS === null) {
+              tasksFromLS = []
+            }
+            let tasksArrayForLS = tasksFromLS.concat([task]);
+            localStorage.removeItem('tasksComplete');
+            this.ls.setCompleteTasks(tasksArrayForLS)
+            // localStorage.setItem('tasksComplete', tasksArrayForLS);
+            console.log(this.ls.getCompleteTasks)
+          }
+          this.ls.setTasks(JSON.parse(localStorage.getItem('tasks') || '{}'))
         }
-        this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Задача удалена' });
+        this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Задача перемещена в выполненные' });
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {

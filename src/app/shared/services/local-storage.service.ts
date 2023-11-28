@@ -44,7 +44,7 @@ export class LocalStorageService {
   }
 
   setCompleteTasks(tasksComplete: TaskAddType[] | '{}'| null) {
-    localStorage.setItem('tasks', JSON.stringify(tasksComplete));
+    localStorage.setItem('tasksComplete', JSON.stringify(tasksComplete));
     this.tasksComplete$.next(tasksComplete);
   }
 
