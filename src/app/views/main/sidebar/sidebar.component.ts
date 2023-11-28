@@ -14,9 +14,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
   items: MenuItem[] = [];
   addTaskVisible: boolean = false;
   addCategoryVisible: boolean = false;
-  isAsideVisible: boolean = false;
   private subscriptionOpenAddTaskMenu: Subscription;
   private subscriptionAddCategoryMenu: Subscription;
+  
 
   constructor(private ls: LocalStorageService,
     private auth: AuthService,
@@ -61,6 +61,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
         routerLink: ['/task-category']
       },
       {
+        label: 'Выполненные задачи',
+        icon: 'pi pi-verified',
+        routerLink: ['/complete']
+      },
+      {
         label: 'Выйти',
         icon: 'pi pi-sign-out',
         command: (event: MenuItemCommandEvent) => {
@@ -93,9 +98,5 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   closeAddCategory(value: boolean) {
     this.addCategoryVisible = value;
-  }
-
-  openAside(value: boolean) {
-    this.isAsideVisible = value;
   }
 }

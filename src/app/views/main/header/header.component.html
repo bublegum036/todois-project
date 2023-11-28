@@ -1,8 +1,8 @@
 <div class="container">
-    <p-button p class="tasks-table-head-button" (click)="sidebarOpen()" severity="secondary" icon="pi pi-align-justify"
+    <p-button (click)="sidebarOpen()" severity="secondary" icon="pi pi-align-justify"
         [text]="true">
     </p-button>
-    <p-tabMenu [model]="navMenu" styleClass="nav-menu"></p-tabMenu>
+    <p-tabMenu [model]="navMenu" styleClass="nav-menu" class="nav-menu"></p-tabMenu>
     <p-avatar icon="pi pi-user" styleClass="mr-2" shape="circle" size="large" [style]="{ 'background-color': '#F59E0B', color: '#ffffff' }"  label="{{userName}}"
         (click)="menu.toggle($event)">
         <p-menu #menu [model]="userMenu" [popup]="true"></p-menu>

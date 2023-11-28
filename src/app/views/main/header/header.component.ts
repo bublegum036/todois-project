@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
 import { MenuItemCommandEvent } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 
@@ -8,15 +10,29 @@ import { LocalStorageService } from 'src/app/shared/services/local-storage.servi
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   sidebarVisible: boolean = false;
   userName: string | null = null;
-  userMenu: { label: string, icon: string, command?: any }[];
-  navMenu: {}[] = []
+  userMenu: { label: string, icon: string, command?: any }[] = [];
+  navMenu: {}[] = [];
+  private subscriptionSidebarVisible: Subscription;
 
 
   constructor(private ls: LocalStorageService,
-    private auth: AuthService) {
+    private auth: AuthService,
+    private router: Router) {
+      this.subscriptionSidebarVisible = this.router.events.subscribe(event => {
+        if (event instanceof NavigationStart) {
+          this.sidebarVisible = false;
+        }
+      });
+  }
+
+  ngOnInit(): void {
+    this.ls.getUserName().subscribe(name => {
+      this.userName = name[0];
+    });
+
     this.userMenu = [
       {
         label: 'Выйти',
@@ -26,36 +42,28 @@ export class HeaderComponent implements OnInit {
         }
       }
     ]
-  }
-
-  ngOnInit(): void {
-    this.ls.getUserName().subscribe(name => {
-      this.userName = name[0];
-    });
 
     this.navMenu = [
       {
         label: 'Все задачи',
-        // icon: 'pi pi-prime',
         routerLink: ['/tasks']
       },
       {
         label: 'Категории задач',
-        // icon: 'pi pi-list',
         routerLink: ['/task-category']
       },
       {
         label: 'Выполнено',
-        // icon: 'pi pi-list',
         routerLink: ['/complete']
       },
     ]
+  }
 
+  ngOnDestroy() {
+    this.subscriptionSidebarVisible.unsubscribe();
   }
 
   sidebarOpen() {
     this.sidebarVisible = !this.sidebarVisible
   }
-
-
 }

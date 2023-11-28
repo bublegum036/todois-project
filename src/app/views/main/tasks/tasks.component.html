@@ -17,7 +17,7 @@
     [columns]="column"
     responsiveLayout="stack"
     [breakpoint]="'890px'"
-    [tableStyle]="{'max-width': '90vw'}"
+    [tableStyle]="{'min-width': '80vw'}"
     [sortMode]="'single'"
       (sortFunction)="customSort($event)">
       <ng-template pTemplate="header" let-columns>
@@ -36,9 +36,11 @@
             {{ currentTask[col.field] | trimText }}
           </td>
           <td>
-            <p-button (click)="completeTask(currentTask)" icon="pi pi-check" severity="success"></p-button>
-            <p-button (click)="editTask(currentTask)" icon="pi pi-pencil" severity="info"></p-button>
-            <p-button (click)="removeTask(currentTask)" icon="pi pi-trash" severity="danger"></p-button>
+            <div class="tasks-table-action-group">
+              <p-button (click)="completeTask(currentTask)" icon="pi pi-check" severity="success"></p-button>
+              <p-button (click)="editTask(currentTask)" icon="pi pi-pencil" severity="info"></p-button>
+              <p-button (click)="removeTask(currentTask)" icon="pi pi-trash" severity="danger"></p-button>
+            </div>
           </td>
         </tr>
       </ng-template>
@@ -46,17 +48,17 @@
   </div>
 
   <p-dialog [(visible)]="editTaskVisible" (visibleChange)="closeEditTaskMenu($event)" header="Редактировать задачу"
-    [style]="{width: '70%', height: '90%' }">
+    [style]="{width: '50vw', height: '90%' }">
     <task-form (visibleChange)="closeEditTaskMenu($event)"></task-form>
   </p-dialog>
 
   <p-dialog [(visible)]="addTaskVisible" (visibleChange)="closeAddTaskMenu($event)" header="Создать новую задачу"
-    [style]="{width: '70%', height: '90%' }">
+    [style]="{width: '50vw', height: '90%' }">
     <task-form (visibleChange)="closeAddTaskMenu($event)"></task-form>
   </p-dialog>
 
   <p-dialog [(visible)]="addCategoryVisible" (visibleChange)="closeAddCategory($event)" header="Создать категорию задач"
-    [style]="{ width: '70%', height: '90%' }">
+    [style]="{ width: '50vw', height: '90%' }">
     <category-add-form (visibleChange)="closeAddCategory($event)"></category-add-form>
   </p-dialog>
 
@@ -66,5 +68,3 @@
 
 </section>
 
-<!-- responsiveLayout="single" 
-    [autoLayout] = 'true' -->

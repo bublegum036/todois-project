@@ -10,9 +10,9 @@
         <p-table 
         [value]="tasksComplete" 
         [columns]="column"
-        responsiveLayout="scroll" 
+        responsiveLayout="stack" 
         [breakpoint]="'672px'"
-        [autoLayout] = 'true'
+        [tableStyle]="{'min-width': '70vw'}"
         >
             <ng-template pTemplate="header" let-columns>
                 <tr>
@@ -22,7 +22,8 @@
             <ng-template pTemplate="body" let-currentTask let-columns="columns">
                 <tr>
                     <td *ngFor="let col of columns">
-                        {{ currentTask[col.field] }}
+                        <span class="p-column-title">{{[col.header]}}</span>
+                            {{ currentTask[col.field] | trimText }}
                     </td>
                 </tr>
             </ng-template>
