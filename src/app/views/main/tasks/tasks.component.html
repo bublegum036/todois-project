@@ -17,6 +17,7 @@
     [columns]="column"
     responsiveLayout="stack"
     [breakpoint]="'890px'"
+    [tableStyle]="{'max-width': '90vw'}"
     [sortMode]="'single'"
       (sortFunction)="customSort($event)">
       <ng-template pTemplate="header" let-columns>
@@ -32,7 +33,7 @@
         <tr>
           <td *ngFor="let col of columns">
             <span class="p-column-title">{{[col.header]}}</span>
-            {{ currentTask[col.field] }}
+            {{ currentTask[col.field] | trimText }}
           </td>
           <td>
             <p-button (click)="completeTask(currentTask)" icon="pi pi-check" severity="success"></p-button>

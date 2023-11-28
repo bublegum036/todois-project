@@ -13,6 +13,7 @@ import { ToastModule } from 'primeng/toast';
 import { CategoryAddFormComponent } from './components/category-add-form/category-add-form.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { SidebarModule } from 'primeng/sidebar';
+import { TrimTextPipe } from './pipes/trim-text.pipe';
 
 
 
@@ -20,10 +21,12 @@ import { SidebarModule } from 'primeng/sidebar';
   declarations: [
     TaskFormComponent,
     CategoryAddFormComponent,
+    TrimTextPipe
   ],
   exports: [
     TaskFormComponent,
     CategoryAddFormComponent,
+    TrimTextPipe
   ],
   imports: [
     CommonModule,
@@ -37,7 +40,7 @@ import { SidebarModule } from 'primeng/sidebar';
     RippleModule,
     ToastModule,
     ConfirmDialogModule,
-    SidebarModule
+    SidebarModule,
   ],
   providers: []
 })

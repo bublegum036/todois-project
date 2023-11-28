@@ -45,7 +45,7 @@ import { CompleteComponent } from './complete/complete.component';
     ToastModule,
     SidebarModule,
     MenuModule,
-    TabMenuModule 
+    TabMenuModule,
   ],
   exports: [
     SidebarComponent, 
