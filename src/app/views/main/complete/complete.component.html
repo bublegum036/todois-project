@@ -1,1 +1,31 @@
-<p>complete works!</p>
+<section class="complete">
+    <div class="complete-empty" *ngIf="!tasksComplete || tasksComplete.length < 1">
+        <div>Отсутствую выполненные задачи! </div>
+    </div>
+
+    <div class="complete-tasks-table" *ngIf="tasksComplete && tasksComplete.length>0">
+        <div class="tasks-table-action">
+            <p-button label="Очистить" severity="warning" (click)="removeCompleteTasks()"></p-button>
+        </div>
+        <p-table [value]="tasksComplete" [columns]="column" responsiveLayout="stack"
+            [tableStyle]="{'min-width': '50rem'}">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let column of columns">{{column.header}}</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-currentTask let-columns="columns">
+                <tr>
+                    <td *ngFor="let col of columns">
+                        {{ currentTask[col.field] }}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+
+    <p-toast></p-toast>
+    <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Да" acceptIcon=" " rejectLabel="Нет"
+        rejectIcon=" "></p-confirmDialog>
+</section>
