@@ -5,8 +5,6 @@ import { LocalStorageService } from "../../../shared/services/local-storage.serv
 import { CategoryAddType } from 'src/types/category-add.type';
 import { TASKS_COLUMNS } from '../../../shared/constants/constants'
 
-
-
 @Component({
   selector: 'tasks',
   templateUrl: './tasks.component.html',
@@ -57,8 +55,7 @@ export class TasksComponent implements OnInit {
     })
   }
     
-
-
+  
   completeTask(task: TaskAddType) {
     let indexTaskInArray: number = this.tasks.findIndex(taskFromLS => taskFromLS.taskId === task.taskId);
     this.confirmationService.confirm({

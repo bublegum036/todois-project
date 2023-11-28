@@ -7,8 +7,13 @@
         <div class="tasks-table-action">
             <p-button label="Очистить" severity="warning" (click)="removeCompleteTasks()"></p-button>
         </div>
-        <p-table [value]="tasksComplete" [columns]="column" responsiveLayout="stack"
-            [tableStyle]="{'min-width': '50rem'}">
+        <p-table 
+        [value]="tasksComplete" 
+        [columns]="column"
+        responsiveLayout="scroll" 
+        [scrollable]="true"  
+        scrollHeight="flex"
+        >
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let column of columns">{{column.header}}</th>

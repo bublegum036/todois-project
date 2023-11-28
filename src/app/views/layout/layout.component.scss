@@ -2,14 +2,8 @@
 
 .container {
   display: flex;
-  align-items: space-between;
   flex-direction: column;
   justify-content: flex-start;
   position: relative;
   margin: 0 auto;
-
-  @media (max-width: 1170px) {
-    justify-content: center;
-    max-width: 960px;
-  }
 }
