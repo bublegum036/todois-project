@@ -68,11 +68,13 @@ body {
 
 .nav-menu.p-tabmenu-nav-content {
   background: #e9ecef;
+  border-radius: 0;
 }
 
 .nav-menu .p-ripple.p-element.p-menuitem-link.ng-star-inserted {
   background-color: #e9ecef;
   color: #85888a;
+  border-radius: 0;
 }
 
 .p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {

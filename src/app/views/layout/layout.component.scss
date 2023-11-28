@@ -2,6 +2,7 @@
 
 .container {
   display: flex;
+  align-items: space-between;
   flex-direction: column;
   justify-content: flex-start;
   position: relative;

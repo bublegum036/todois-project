@@ -11,8 +11,8 @@
         [value]="tasksComplete" 
         [columns]="column"
         responsiveLayout="scroll" 
-        [scrollable]="true"  
-        scrollHeight="flex"
+        [breakpoint]="'672px'"
+        [autoLayout] = 'true'
         >
             <ng-template pTemplate="header" let-columns>
                 <tr>
