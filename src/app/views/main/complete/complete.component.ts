@@ -26,8 +26,6 @@ export class CompleteComponent implements OnInit {
     this.ls.tasksComplete$.subscribe((data: TaskAddType[] | '{}' | null) => {
       this.tasksComplete = data as TaskAddType[] || '{}' || null
     })
-
-    console.log(this.tasksComplete)
   }
 
   removeCompleteTasks() {

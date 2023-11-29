@@ -77,7 +77,6 @@ export class TasksComponent implements OnInit {
             let tasksArrayForLS = tasksFromLS.concat([task]);
             localStorage.removeItem('tasksComplete');
             this.ls.setCompleteTasks(tasksArrayForLS)
-            console.log(this.ls.getCompleteTasks)
           }
           this.ls.setTasks(JSON.parse(localStorage.getItem('tasks') || '{}'))
         }

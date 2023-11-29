@@ -37,8 +37,9 @@
           </td>
           <td>
             <div class="tasks-table-action-group">
+              <p-button icon="pi pi-info"  severity="info"></p-button>
               <p-button (click)="completeTask(currentTask)" icon="pi pi-check" severity="success"></p-button>
-              <p-button (click)="editTask(currentTask)" icon="pi pi-pencil" severity="info"></p-button>
+              <p-button (click)="editTask(currentTask)" icon="pi pi-pencil" severity="help"></p-button>
               <p-button (click)="removeTask(currentTask)" icon="pi pi-trash" severity="danger"></p-button>
             </div>
           </td>
@@ -48,22 +49,22 @@
   </div>
 
   <p-dialog [(visible)]="editTaskVisible" (visibleChange)="closeEditTaskMenu($event)" header="Редактировать задачу"
-    [style]="{width: '50vw', height: '90%' }">
+    [style]="{width: '300px', height: '90%' }">
     <task-form (visibleChange)="closeEditTaskMenu($event)"></task-form>
   </p-dialog>
 
   <p-dialog [(visible)]="addTaskVisible" (visibleChange)="closeAddTaskMenu($event)" header="Создать новую задачу"
-    [style]="{width: '50vw', height: '90%' }">
+    [style]="{width: '300px', height: '90%' }">
     <task-form (visibleChange)="closeAddTaskMenu($event)"></task-form>
   </p-dialog>
 
   <p-dialog [(visible)]="addCategoryVisible" (visibleChange)="closeAddCategory($event)" header="Создать категорию задач"
-    [style]="{ width: '50vw', height: '90%' }">
+    [style]="{ width: '300px', height: '90%' }">
     <category-add-form (visibleChange)="closeAddCategory($event)"></category-add-form>
   </p-dialog>
 
   <p-toast></p-toast>
-  <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Да" acceptIcon=" " rejectLabel="Нет"
+  <p-confirmDialog [style]="{width: '300px'}" acceptLabel="Да" acceptIcon=" " rejectLabel="Нет"
     rejectIcon=" "></p-confirmDialog>
 
 </section>

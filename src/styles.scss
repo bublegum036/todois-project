@@ -43,11 +43,13 @@ body {
 .p-datatable .p-datatable-tbody>tr>td {
   padding: 0.3rem 0.3rem;
 }
+.p-ripple.p-element.p-button.p-component.p-button-icon-only.p-button-help,
 .p-ripple.p-element.p-button.p-component.p-button-icon-only.p-button-info,
 .p-ripple.p-element.p-button.p-component.p-button-icon-only.p-button-success {
   margin-right: 5px;
 }
 
+.p-ripple.p-element.p-button.p-component.p-button-icon-only.p-button-help,
 .p-ripple.p-element.p-button.p-component.p-button-icon-only.p-button-info,
 .p-ripple.p-element.p-button.p-component.p-button-icon-only.p-button-danger,
 .p-ripple.p-element.p-button.p-component.p-button-icon-only.p-button-success {
