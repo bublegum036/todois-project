@@ -37,7 +37,7 @@
           </td>
           <td>
             <div class="tasks-table-action-group">
-              <p-button icon="pi pi-info"  severity="info"></p-button>
+              <p-button (click)="infoTask(currentTask)" icon="pi pi-info"  severity="info"></p-button>
               <p-button (click)="completeTask(currentTask)" icon="pi pi-check" severity="success"></p-button>
               <p-button (click)="editTask(currentTask)" icon="pi pi-pencil" severity="help"></p-button>
               <p-button (click)="removeTask(currentTask)" icon="pi pi-trash" severity="danger"></p-button>
@@ -47,6 +47,11 @@
       </ng-template>
     </p-table>
   </div>
+
+  <p-dialog [(visible)]="infoTaskVisible" (visibleChange)="closeInfoTaskMenu($event)" header="Подробнее"
+    [style]="{width: '300px', height: '90%' }">
+    <task-info></task-info>
+  </p-dialog>
 
   <p-dialog [(visible)]="editTaskVisible" (visibleChange)="closeEditTaskMenu($event)" header="Редактировать задачу"
     [style]="{width: '300px', height: '90%' }">

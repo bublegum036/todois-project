@@ -14,6 +14,7 @@ import { CategoryAddFormComponent } from './components/category-add-form/categor
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { SidebarModule } from 'primeng/sidebar';
 import { TrimTextPipe } from './pipes/trim-text.pipe';
+import { TaskInfoComponent } from './components/task-info/task-info.component';
 
 
 
@@ -21,12 +22,14 @@ import { TrimTextPipe } from './pipes/trim-text.pipe';
   declarations: [
     TaskFormComponent,
     CategoryAddFormComponent,
-    TrimTextPipe
+    TrimTextPipe,
+    TaskInfoComponent
   ],
   exports: [
     TaskFormComponent,
     CategoryAddFormComponent,
-    TrimTextPipe
+    TrimTextPipe,
+    TaskInfoComponent
   ],
   imports: [
     CommonModule,

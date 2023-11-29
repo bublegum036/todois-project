@@ -1,0 +1,14 @@
+<div class="task-info" *ngIf="taskForAction">
+    <div class="task-info-name">Название:</div>
+    <div class="task-info-name-description">{{ taskName }}</div>
+    <div class="task-info-name">Описание:</div>
+    <div class="task-info-name-description">{{taskDescription}}</div>
+    <div class="task-info-name">Дата постановки:</div>
+    <div class="task-info-name-description">{{taskDateSet}}</div>
+    <div class="task-info-name">Срок выполнения:</div>
+    <div class="task-info-name-description">{{taskDeadline}}</div>
+    <div class="task-info-name">Приоритет:</div>
+    <div class="task-info-name-description">{{taskPriority}}</div>
+    <div class="task-info-name" *ngIf="taskCategory">Категория:</div>
+    <div class="task-info-name-description" *ngIf="taskCategory">{{taskCategory}}</div>
+</div>

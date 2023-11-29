@@ -18,6 +18,7 @@ export class TasksComponent implements OnInit {
   addTaskVisible: boolean = false;
   addCategoryVisible: boolean = false;
   editTaskVisible: boolean = false;
+  infoTaskVisible: boolean = false;
   column: { field: string, header: string }[] = TASKS_COLUMNS;
 
 
@@ -54,8 +55,70 @@ export class TasksComponent implements OnInit {
       this.tasksComplete = data as TaskAddType[] || '{}' || null
     })
   }
-    
-  
+
+  openAddTaskMenu() {
+    this.addTaskVisible = !this.addTaskVisible;
+    this.ls.setEditTask('{}')
+  }
+
+  closeEditTaskMenu(value: boolean) {
+    this.editTaskVisible = value;
+  }
+
+  closeAddTaskMenu(value: boolean) {
+    this.addTaskVisible = value;
+  }
+
+  openAddCategoryMenu() {
+    this.addCategoryVisible = !this.addCategoryVisible;
+    this.ls.setEditCategory('{}')
+  }
+
+  closeAddCategory(value: boolean) {
+    this.addCategoryVisible = value;
+  }
+
+  closeInfoTaskMenu(value: boolean) {
+    this.infoTaskVisible = value;
+  }
+
+  infoTask(task: TaskAddType) {
+    this.infoTaskVisible = !this.infoTaskVisible;
+    this.ls.setInfoTask(task)
+  }
+
+  editTask(task: TaskAddType) {
+    this.ls.setEditTask(task);
+    this.editTaskVisible = !this.editTaskVisible;
+  }
+
+  removeTask(task: any) {
+    let indexTaskInArray: number = this.tasks.findIndex(taskFromLS => taskFromLS.taskId === task.taskId);
+    this.confirmationService.confirm({
+      message: 'Вы действительно хотите удалить данную задачу?',
+      header: 'Удаление',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        if (indexTaskInArray !== -1) {
+          this.tasks.splice(indexTaskInArray, 1);
+          let tasksArrayForLS = this.tasks;
+          this.ls.setTasks(tasksArrayForLS)
+        }
+        this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Задача удалена' });
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({ severity: 'error', summary: 'Отклонено', detail: 'Вы отменили удаление задачи' });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({ severity: 'warn', summary: 'Отмена', detail: 'Отменено' });
+            break;
+        }
+      }
+    });
+  };
+
   completeTask(task: TaskAddType) {
     let indexTaskInArray: number = this.tasks.findIndex(taskFromLS => taskFromLS.taskId === task.taskId);
     this.confirmationService.confirm({
@@ -95,60 +158,6 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  editTask(task: TaskAddType) {
-    this.ls.setEditTask(task);
-    this.editTaskVisible = !this.editTaskVisible;
-  }
-
-  openAddTaskMenu() {
-    this.addTaskVisible = !this.addTaskVisible;
-    this.ls.setEditTask('{}')
-  }
-
-  closeEditTaskMenu(value: boolean) {
-    this.editTaskVisible = value;
-  }
-
-  closeAddTaskMenu(value: boolean) {
-    this.addTaskVisible = value;
-  }
-
-  openAddCategoryMenu() {
-    this.addCategoryVisible = !this.addCategoryVisible;
-    this.ls.setEditCategory('{}')
-  }
-
-  closeAddCategory(value: boolean) {
-    this.addCategoryVisible = value;
-  }
-
-  removeTask(task: any) {
-    let indexTaskInArray: number = this.tasks.findIndex(taskFromLS => taskFromLS.taskId === task.taskId);
-    this.confirmationService.confirm({
-      message: 'Вы действительно хотите удалить данную задачу?',
-      header: 'Удаление',
-      icon: 'pi pi-info-circle',
-      accept: () => {
-        if (indexTaskInArray !== -1) {
-          this.tasks.splice(indexTaskInArray, 1);
-          let tasksArrayForLS = this.tasks;
-          this.ls.setTasks(tasksArrayForLS)
-        }
-        this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Задача удалена' });
-      },
-      reject: (type: ConfirmEventType) => {
-        switch (type) {
-          case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Отклонено', detail: 'Вы отменили удаление задачи' });
-            break;
-          case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: 'Отмена', detail: 'Отменено' });
-            break;
-        }
-      }
-    });
-  }
-
   customSort(event: SortEvent) {
     event.data?.sort((data1, data2) => {
       let value1 = data1[event.field!];
@@ -164,6 +173,5 @@ export class TasksComponent implements OnInit {
       return event.order as number * result;
     });
   }
-
 }
 
