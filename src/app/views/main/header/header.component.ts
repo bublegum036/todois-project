@@ -2,8 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { MenuItemCommandEvent } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { AuthService } from 'src/app/shared/services/auth.service';
-import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
+import { NAV_MENU } from '../../../shared/constants/constants';
+import { AuthService } from '../../../shared/services/auth.service';
+import { LocalStorageService } from '../../../shared/services/local-storage.service';
 
 @Component({
   selector: 'header-component',
@@ -14,7 +15,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   sidebarVisible: boolean = false;
   userName: string | null = null;
   userMenu: { label: string, icon: string, command?: any }[] = [];
-  navMenu: {}[] = [];
+  navMenu: {label: string, routerLink: [string]}[] = NAV_MENU;
   private subscriptionSidebarVisible: Subscription;
 
 
@@ -41,21 +42,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.auth.logout()
         }
       }
-    ]
-
-    this.navMenu = [
-      {
-        label: 'Все задачи',
-        routerLink: ['/tasks']
-      },
-      {
-        label: 'Категории задач',
-        routerLink: ['/task-category']
-      },
-      {
-        label: 'Выполнено',
-        routerLink: ['/complete']
-      },
     ]
   }
 

@@ -32,3 +32,19 @@ export const TASKS_COLUMNS: { field: string, header: string }[] = [
     { field: 'taskPriority', header: 'Приоритет' },
     { field: 'taskCategory', header: 'Категория' },
 ];
+
+
+export const NAV_MENU: {label: string, routerLink: [string]}[] = [
+    {
+        label: 'Все задачи',
+        routerLink: ['/tasks'],
+      },
+      {
+        label: 'Категории задач',
+        routerLink: ['/task-category']
+      },
+      {
+        label: 'Выполнено',
+        routerLink: ['/complete']
+      },
+]
