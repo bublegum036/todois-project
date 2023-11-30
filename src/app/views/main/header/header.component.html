@@ -1,6 +1,5 @@
 <div class="container">
-    <p-button (click)="sidebarOpen()" severity="secondary" icon="pi pi-align-justify"
-        [text]="true">
+    <p-button [text]="true" (click)="sidebarOpen()" severity="secondary" icon="pi pi-align-justify">
     </p-button>
     <p-tabMenu [model]="navMenu" styleClass="nav-menu" class="nav-menu"></p-tabMenu>
     <p-avatar icon="pi pi-user" styleClass="mr-2" shape="circle" size="large" [style]="{ 'background-color': '#F59E0B', color: '#ffffff' }"  label="{{userName}}"

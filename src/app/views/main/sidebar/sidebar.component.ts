@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { MenuItem, MenuItemCommandEvent } from "primeng/api";
 import { Subscription } from 'rxjs';

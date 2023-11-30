@@ -34,17 +34,17 @@ export const TASKS_COLUMNS: { field: string, header: string }[] = [
 ];
 
 
-export const NAV_MENU: {label: string, routerLink: [string]}[] = [
+export const NAV_MENU: { label: string, routerLink: [string] }[] = [
     {
         label: 'Все задачи',
         routerLink: ['/tasks'],
-      },
-      {
+    },
+    {
         label: 'Категории задач',
         routerLink: ['/task-category']
-      },
-      {
+    },
+    {
         label: 'Выполнено',
         routerLink: ['/complete']
-      },
-]
+    },
+];
