@@ -16,17 +16,13 @@ export class LocalStorageService {
   public tasksComplete$: Subject<TaskAddType[] | null> = new Subject<TaskAddType[] | null>;
   public categories$: Subject<CategoryAddType[] | null> = new Subject<CategoryAddType[] | null>;
   public taskInfo$: Subject<TaskAddType | null> = new Subject<TaskAddType | null>;
-  private tasksForEdit: TaskAddType | null;
+  private tasksForEdit: TaskAddType | null = null;
   public taskForEdit$: Subject<TaskAddType |null> = new Subject<TaskAddType | null>();
-  private categoryForEdit: CategoryAddType | null;
+  private categoryForEdit: CategoryAddType | null = null;
   public categoryForEdit$: Subject<CategoryAddType | null> = new Subject<CategoryAddType | null>();
   public userName: string | null = null;
 
-  constructor() {
-    this.tasks = JSON.parse(localStorage.getItem('tasks') || '{}');
-    this.tasksForEdit = JSON.parse(localStorage.getItem('tasksForEdit') || '{}');
-    this.categoryForEdit = JSON.parse(localStorage.getItem('categoryForEdit') || '{}');
-  }
+  constructor() {}
 
   getTasks(): Observable<TaskAddType[] | null> {
     const tasks = JSON.parse(localStorage.getItem('tasks') || '{}')

@@ -80,8 +80,8 @@ export class TaskFormComponent implements OnInit {
     })
 
     this.idService.taskId$.subscribe(taskId => {
-        this.taskId = taskId
-      })
+      this.taskId = taskId
+    })
   }
 
   createTask() {
@@ -117,7 +117,7 @@ export class TaskFormComponent implements OnInit {
         this.saveNewId()
         this.closeAndCleanForm();
       }
-      this.ls.setTasks(JSON.parse(localStorage.getItem('tasks') || '{}'))
+      // this.ls.setTasks(JSON.parse(localStorage.getItem('tasks') || '{}'))
     }
   }
 
@@ -157,11 +157,9 @@ export class TaskFormComponent implements OnInit {
         let indexTaskInArray: number = tasksFromLS.findIndex(taskFromLS => taskFromLS.taskId === task.taskId);
         if (indexTaskInArray !== -1) {
           tasksFromLS.splice(indexTaskInArray, 1, task);
-          localStorage.removeItem('tasks');
-          localStorage.setItem('tasks', JSON.stringify(tasksFromLS));
+          this.ls.setTasks(tasksFromLS)
           this.closeAndCleanForm()
         }
-        this.ls.setTasks(JSON.parse(localStorage.getItem('tasks') || '{}'))
       }
     }
   }
