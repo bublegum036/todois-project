@@ -20,7 +20,7 @@ export class TaskCategoryComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.ls.getCategories().subscribe((data: CategoryAddType[] | '{}') => {
+    this.ls.getCategories().subscribe((data: CategoryAddType[] | null) => {
       this.categories = data as CategoryAddType[];
     })
 
@@ -67,7 +67,7 @@ export class TaskCategoryComponent implements OnInit {
 
   openAddCategoryMenu() {
     this.addCategoryVisible = !this.addCategoryVisible;
-    this.ls.setEditCategory('{}')
+    this.ls.setEditCategory(null)
   }
 
   closeAddCategory(value: boolean) {

@@ -4,7 +4,7 @@ import { MessageService } from "primeng/api";
 import { TaskAddType } from "../../../../types/task-add.type";
 import { LocalStorageService } from '../../services/local-storage.service';
 import { IdService } from '../../services/id.service';
-import { CategoryAddType } from 'src/types/category-add.type';
+import { CategoryAddType } from '../../../../types/category-add.type';
 import { PRIORITY_TASKS } from '../../constants/constants';
 import { PriorityType } from '../../../../types/priority.type';
 import { TaskFormInterface } from '../../interfaces/task-form-interface';
@@ -19,7 +19,7 @@ export class TaskFormComponent implements OnInit {
   priority: PriorityType[] = PRIORITY_TASKS;
   taskCategory: CategoryAddType[] | undefined;
   taskId: number = 0;
-  taskForEdit: TaskAddType | '{}' = '{}';
+  taskForEdit: TaskAddType | null = null;
   isButton: boolean = true;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   taskForm: FormGroup = new FormGroup<TaskFormInterface>({
@@ -38,20 +38,19 @@ export class TaskFormComponent implements OnInit {
     private idService: IdService,
   ) { }
 
-  
 
   ngOnInit() {
-    this.ls.getEditTask().subscribe((data: TaskAddType | '{}') => {
+    this.ls.getEditTask().subscribe((data: TaskAddType | null) => {
       if (typeof data === 'object') {
         this.isButton = false;
       } else {
         this.isButton = true;
       }
-      this.taskForEdit = data as TaskAddType;
+      this.taskForEdit = data;
     })
 
-    this.ls.taskForEdit$.subscribe((data: TaskAddType | '{}') => {
-      if (typeof data === 'object') {
+    this.ls.taskForEdit$.subscribe((data: TaskAddType | null) => {
+      if (typeof data === 'object' && data !== null) {
         this.isButton = false;
         this.taskForm.patchValue({
           taskName: data.taskName,
@@ -68,21 +67,19 @@ export class TaskFormComponent implements OnInit {
       this.taskForEdit = data;
     })
 
-    this.ls.getCategories()
-      .subscribe(data => {
-        if (data) {
-          this.taskCategory = data as CategoryAddType[];
-        }
-      })
+    this.ls.getCategories().subscribe(data => {
+      if (data !== null) {
+        this.taskCategory = data;
+      }
+    })
 
-    this.ls.categories$
-      .subscribe((data: CategoryAddType[] | '{}' | null) => {
-        this.taskCategory = data as CategoryAddType[];
-      })
+    this.ls.categories$.subscribe((data: CategoryAddType[] | null) => {
+      if (data !== null) {
+        this.taskCategory = data;
+      }
+    })
 
-
-    this.idService.taskId$
-      .subscribe(taskId => {
+    this.idService.taskId$.subscribe(taskId => {
         this.taskId = taskId
       })
   }
@@ -94,7 +91,7 @@ export class TaskFormComponent implements OnInit {
       && this.taskForm.value.taskDateSet
       && this.taskForm.value.taskDeadline
       && this.taskForm.value.taskPriority
-      ) {
+    ) {
 
       let task: TaskAddType = {
         taskName: this.taskForm.value.taskName,
@@ -106,8 +103,8 @@ export class TaskFormComponent implements OnInit {
         taskId: this.taskId
       }
 
-      if (!localStorage.getItem('tasks')) {
-        localStorage.setItem('tasks', JSON.stringify([task]));
+      if (this.ls.getTasks() === null) {
+        this.ls.setTasks([task])
         this.saveNewId()
         this.closeAndCleanForm();
       } else {
@@ -115,9 +112,8 @@ export class TaskFormComponent implements OnInit {
         if (tasksFromLS === null) {
           tasksFromLS = []
         }
-        let tasksArrayForLS: string = JSON.stringify(tasksFromLS.concat([task]));
-        localStorage.removeItem('tasks');
-        localStorage.setItem('tasks', tasksArrayForLS);
+        let tasksArrayForLS = tasksFromLS.concat([task]);
+        this.ls.setTasks(tasksArrayForLS)
         this.saveNewId()
         this.closeAndCleanForm();
       }
@@ -127,7 +123,7 @@ export class TaskFormComponent implements OnInit {
 
 
   editTask() {
-    if (this.taskForEdit !== '{}') {
+    if (this.taskForEdit !== null) {
       if (this.taskForm.valid
         && this.taskForm.value.taskName
         && this.taskForm.value.taskDescription

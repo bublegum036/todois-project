@@ -15,5 +15,4 @@ export class TrimTextPipe implements PipeTransform {
     }
     return value
   }
-
 }

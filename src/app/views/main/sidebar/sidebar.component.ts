@@ -83,13 +83,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
   openAddTaskMenu() {
     this.addTaskVisible = !this.addTaskVisible;
     this.addCategoryVisible = false;
-    this.ls.setEditTask('{}')
+    this.ls.setEditTask(null)
   }
 
   openAddCategoryMenu() {
     this.addCategoryVisible = !this.addCategoryVisible;
     this.addTaskVisible = false;
-    this.ls.setEditCategory('{}')
+    this.ls.setEditCategory(null)
   }
 
   closeTaskMenu(value: boolean) {

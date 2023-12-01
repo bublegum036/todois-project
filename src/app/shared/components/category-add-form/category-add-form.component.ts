@@ -13,7 +13,7 @@ import { CategoryAddFormInterface } from '../../interfaces/category-add-form.int
 })
 export class CategoryAddFormComponent implements OnInit {
   categoryId: number = 0;
-  categoryForEdit: CategoryAddType | '{}' = '{}';
+  categoryForEdit: CategoryAddType | null = null;
   isButton: boolean = true;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -29,17 +29,17 @@ export class CategoryAddFormComponent implements OnInit {
   })
 
   ngOnInit() {
-    this.ls.getEditCategory().subscribe((data: CategoryAddType | '{}') => {
+    this.ls.getEditCategory().subscribe((data: CategoryAddType | null) => {
       if (typeof data === 'object') {
         this.isButton = false;
       } else {
         this.isButton = true;
       }
-      this.categoryForEdit = data;
+      this.categoryForEdit = data as CategoryAddType;
     })
 
-    this.ls.categoryForEdit$.subscribe((data: CategoryAddType | '{}') => {
-      if (typeof data === 'object') {
+    this.ls.categoryForEdit$.subscribe((data: CategoryAddType | null) => {
+      if (typeof data === 'object' && data) {
         this.isButton = false;
         this.categoryAddForm.setValue({
           categoryName: data.label,
@@ -48,7 +48,11 @@ export class CategoryAddFormComponent implements OnInit {
         this.isButton = true;
         this.categoryAddForm.reset()
       }
-      this.categoryForEdit = data;
+      if (data !== null) {
+        this.categoryForEdit = data;
+      } else {
+        this.categoryForEdit = null
+      }
     })
 
 
@@ -89,7 +93,7 @@ export class CategoryAddFormComponent implements OnInit {
   }
 
   editCategory() {
-    if (this.categoryForEdit !== '{}') {
+    if (this.categoryForEdit !== null) {
       if (this.categoryAddForm.valid
         && this.categoryAddForm.value.categoryName) {
         let category: CategoryAddType = {

@@ -22,12 +22,10 @@ export class TasksComponent implements OnInit {
   column: { field: string, header: string }[] = TASKS_COLUMNS;
 
 
-
   constructor(private messageService: MessageService,
     private ls: LocalStorageService,
     private confirmationService: ConfirmationService,
   ) { }
-
 
 
   ngOnInit() {
@@ -39,7 +37,7 @@ export class TasksComponent implements OnInit {
       this.tasks = data as TaskAddType[]
     })
 
-    this.ls.getCategories().subscribe((data: CategoryAddType[] | '{}') => {
+    this.ls.getCategories().subscribe((data: CategoryAddType[] | null) => {
       this.categories = data as CategoryAddType[];
     })
 
@@ -58,7 +56,7 @@ export class TasksComponent implements OnInit {
 
   openAddTaskMenu() {
     this.addTaskVisible = !this.addTaskVisible;
-    this.ls.setEditTask('{}')
+    this.ls.setEditTask(null)
   }
 
   closeEditTaskMenu(value: boolean) {
@@ -71,7 +69,7 @@ export class TasksComponent implements OnInit {
 
   openAddCategoryMenu() {
     this.addCategoryVisible = !this.addCategoryVisible;
-    this.ls.setEditCategory('{}')
+    this.ls.setEditCategory(null)
   }
 
   closeAddCategory(value: boolean) {
