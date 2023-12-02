@@ -12,6 +12,7 @@ import { CategoryAddFormInterface } from '../../interfaces/category-add-form.int
   styleUrls: ['./category-add-form.component.scss']
 })
 export class CategoryAddFormComponent implements OnInit {
+  categories: CategoryAddType[] | [] = [];
   categoryId: number = 0;
   categoryForEdit: CategoryAddType | null = null;
   isButton: boolean = true;
@@ -25,17 +26,25 @@ export class CategoryAddFormComponent implements OnInit {
   }
 
   categoryAddForm: FormGroup = new FormGroup<CategoryAddFormInterface>({
-    categoryName:new FormControl (null, [Validators.required, Validators.maxLength(20), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]),
+    categoryName: new FormControl(null, [Validators.required, Validators.maxLength(20), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]),
   })
 
   ngOnInit() {
+    // this.ls.getCategories().subscribe((data: CategoryAddType[] | []) => {
+    //   this.categories = data;
+    // })
+
+    // this.ls.categories$.subscribe((data: CategoryAddType[] | null) => {
+    //   this.categories = data
+    // })
+
     this.ls.getEditCategory().subscribe((data: CategoryAddType | null) => {
       if (typeof data === 'object') {
         this.isButton = false;
       } else {
         this.isButton = true;
       }
-      this.categoryForEdit = data as CategoryAddType;
+      this.categoryForEdit = data;
     })
 
     this.ls.categoryForEdit$.subscribe((data: CategoryAddType | null) => {
@@ -55,13 +64,11 @@ export class CategoryAddFormComponent implements OnInit {
       }
     })
 
-
     this.idService.categoryId$
       .subscribe(categoryId => {
         this.categoryId = categoryId
       })
   }
-
 
   createCategory() {
     if (this.categoryAddForm.valid
@@ -72,23 +79,16 @@ export class CategoryAddFormComponent implements OnInit {
         label: this.categoryAddForm.value.categoryName,
         categoryId: this.categoryId
       }
-
-      if (!localStorage.getItem('categories')) {
-        localStorage.setItem('categories', JSON.stringify([category]));
+      if (!this.categories || this.categories === null) {
+        this.ls.setCategories([category])
         this.saveCategoryNewId();
         this.closeAndCleanForm();
       } else {
-        let categoryFromLS: CategoryAddType[] = JSON.parse(localStorage.getItem('categories') || '[]');
-        if (categoryFromLS === null) {
-          categoryFromLS = []
-        }
-        let tasksArrayForLS: string = JSON.stringify(categoryFromLS.concat([category]));
-        localStorage.removeItem('categories');
-        localStorage.setItem('categories', tasksArrayForLS);
+        // let tasksArrayForLS = this.categories.concat([category]);
+        // this.ls.setCategories(tasksArrayForLS);
         this.saveCategoryNewId();
         this.closeAndCleanForm();
       }
-      this.ls.setCategories(JSON.parse(localStorage.getItem('categories') || '[]'));
     }
   }
 

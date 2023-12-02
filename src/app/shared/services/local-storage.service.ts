@@ -8,14 +8,14 @@ import { CategoryAddType } from '../../../types/category-add.type';
 })
 
 export class LocalStorageService {
-  private tasks: TaskAddType[] | null = [];
-  private tasksComplete: TaskAddType[] | null = [];
-  private categories: CategoryAddType[] | null = [];
-  private taskInfo: TaskAddType | null = null;
+  private tasks: TaskAddType[] | []  = [];
+  private tasksComplete: TaskAddType[] | [] = [];
+  private categories: CategoryAddType[] | [] = [];
+  private taskInfo: TaskAddType | [] = [];
   public tasks$: Subject<TaskAddType[] | null> = new Subject<TaskAddType[] | null>;
   public tasksComplete$: Subject<TaskAddType[] | null> = new Subject<TaskAddType[] | null>;
   public categories$: Subject<CategoryAddType[] | null> = new Subject<CategoryAddType[] | null>;
-  public taskInfo$: Subject<TaskAddType | null> = new Subject<TaskAddType | null>;
+  public taskInfo$: Subject<TaskAddType | []> = new Subject<TaskAddType | []>;
   private tasksForEdit: TaskAddType | null = null;
   public taskForEdit$: Subject<TaskAddType |null> = new Subject<TaskAddType | null>();
   private categoryForEdit: CategoryAddType | null = null;
@@ -24,26 +24,38 @@ export class LocalStorageService {
 
   constructor() {}
 
-  getTasks(): Observable<TaskAddType[] | null> {
-    const tasks = JSON.parse(localStorage.getItem('tasks') || '{}')
-    return of(this.tasks = tasks)
+  getTasks(): Observable<TaskAddType[] | []> {
+   const tasks: TaskAddType[] | null = JSON.parse(localStorage.getItem('tasks') || '')
+    if (tasks === null) {
+      this.tasks = [];
+    } else {
+      this.tasks = tasks;
+    }
+    return of(this.tasks);
   }
 
-  setTasks(tasks: TaskAddType[] | null) {
+  setTasks(tasks: TaskAddType[] | []) {
     localStorage.setItem('tasks', JSON.stringify(tasks));
     this.tasks$.next(tasks);
   }
-  getInfoTask(): Observable<TaskAddType | '{}'> {
-    const task = JSON.parse(localStorage.getItem('infoTask') || '{}')
-    return of(this.tasks = task)
+
+
+  getInfoTask(): Observable<TaskAddType | []> {
+    const task = JSON.parse(localStorage.getItem('infoTask') || '');
+    if(task === '') {
+      this.taskInfo = []
+    } else {
+      this.taskInfo = task
+    }
+    return of(this.taskInfo)
   }
 
-  setInfoTask(infoTask: TaskAddType  | null) {
+  setInfoTask(infoTask: TaskAddType  | []) {
     localStorage.setItem('infoTask', JSON.stringify(infoTask));
     this.taskInfo$.next(infoTask);
   }
 
-  getCompleteTasks(): Observable<TaskAddType[] | '{}'> {
+  getCompleteTasks(): Observable<TaskAddType[] | []> {
     const tasksComplete = JSON.parse(localStorage.getItem('tasksComplete') || '{}')
     return of(this.tasksComplete = tasksComplete)
   }
@@ -54,8 +66,15 @@ export class LocalStorageService {
   }
 
   getCategories(): Observable<CategoryAddType[] | null> {
-    const categories = JSON.parse(localStorage.getItem('categories') || '{}')
-    return of(this.categories = categories)
+    const categories = JSON.parse(localStorage.getItem('categories') || '{}');
+    // return of(this.categories = categories)
+
+    if (categories === null) {
+      this.categories = []
+    } else {
+      this.categories = categories;
+    }
+    return this.categories = categories
   }
 
   setCategories(categories: CategoryAddType[] | null) {

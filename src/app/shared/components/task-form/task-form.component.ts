@@ -117,10 +117,8 @@ export class TaskFormComponent implements OnInit {
         this.saveNewId()
         this.closeAndCleanForm();
       }
-      // this.ls.setTasks(JSON.parse(localStorage.getItem('tasks') || '{}'))
     }
   }
-
 
   editTask() {
     if (this.taskForEdit !== null) {

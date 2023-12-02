@@ -29,29 +29,29 @@ export class TasksComponent implements OnInit {
 
 
   ngOnInit() {
-    this.ls.getTasks().subscribe((data: TaskAddType[] | '{}' | null) => {
-      this.tasks = data as TaskAddType[]
-    })
+    this.ls.getTasks().subscribe((data => {
+      this.tasks = data || [];
+    }));
 
-    this.ls.tasks$.subscribe((data: TaskAddType[] | '{}' | null) => {
-      this.tasks = data as TaskAddType[]
-    })
+    this.ls.tasks$.subscribe((data: TaskAddType[] | null) => {
+      this.tasks = data || [];
+    });
 
     this.ls.getCategories().subscribe((data: CategoryAddType[] | null) => {
-      this.categories = data as CategoryAddType[];
-    })
+      this.categories = data || [];
+    });
 
-    this.ls.categories$.subscribe((data: CategoryAddType[] | '{}' | null) => {
-      this.categories = data as CategoryAddType[] || '{}' || null
-    })
+    this.ls.categories$.subscribe((data: CategoryAddType[] | null) => {
+      this.categories = data || [];
+    });
 
-    this.ls.getCompleteTasks().subscribe((data: TaskAddType[] | '{}') => {
-      this.tasksComplete = data as TaskAddType[];
-    })
+    this.ls.getCompleteTasks().subscribe((data: TaskAddType[] |[] ) => {
+      this.tasksComplete = data || [];
+    });
 
-    this.ls.tasksComplete$.subscribe((data: TaskAddType[] | '{}' | null) => {
-      this.tasksComplete = data as TaskAddType[] || '{}' || null
-    })
+    this.ls.tasksComplete$.subscribe((data: TaskAddType[] | null) => {
+      this.tasksComplete = data || [];
+    });
   }
 
   openAddTaskMenu() {
@@ -90,31 +90,33 @@ export class TasksComponent implements OnInit {
     this.editTaskVisible = !this.editTaskVisible;
   }
 
-  removeTask(task: any) {
-    let indexTaskInArray: number = this.tasks.findIndex(taskFromLS => taskFromLS.taskId === task.taskId);
-    this.confirmationService.confirm({
-      message: 'Вы действительно хотите удалить данную задачу?',
-      header: 'Удаление',
-      icon: 'pi pi-info-circle',
-      accept: () => {
-        if (indexTaskInArray !== -1) {
-          this.tasks.splice(indexTaskInArray, 1);
-          let tasksArrayForLS = this.tasks;
-          this.ls.setTasks(tasksArrayForLS)
+  removeTask(task: TaskAddType) {
+    if(this.tasks) {
+      let indexTaskInArray: number = this.tasks.findIndex(taskFromLS => taskFromLS.taskId === task.taskId);
+      this.confirmationService.confirm({
+        message: 'Вы действительно хотите удалить данную задачу?',
+        header: 'Удаление',
+        icon: 'pi pi-info-circle',
+        accept: () => {
+          if (indexTaskInArray !== -1) {
+            this.tasks.splice(indexTaskInArray, 1);
+            let tasksArrayForLS = this.tasks;
+            this.ls.setTasks(tasksArrayForLS)
+          }
+          this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Задача удалена' });
+        },
+        reject: (type: ConfirmEventType) => {
+          switch (type) {
+            case ConfirmEventType.REJECT:
+              this.messageService.add({ severity: 'error', summary: 'Отклонено', detail: 'Вы отменили удаление задачи' });
+              break;
+            case ConfirmEventType.CANCEL:
+              this.messageService.add({ severity: 'warn', summary: 'Отмена', detail: 'Отменено' });
+              break;
+          }
         }
-        this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Задача удалена' });
-      },
-      reject: (type: ConfirmEventType) => {
-        switch (type) {
-          case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Отклонено', detail: 'Вы отменили удаление задачи' });
-            break;
-          case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: 'Отмена', detail: 'Отменено' });
-            break;
-        }
-      }
-    });
+      });
+    }
   };
 
   completeTask(task: TaskAddType) {
