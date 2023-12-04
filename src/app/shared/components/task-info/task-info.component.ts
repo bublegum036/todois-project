@@ -8,7 +8,7 @@ import { LocalStorageService } from '../../services/local-storage.service';
   styleUrls: ['./task-info.component.scss']
 })
 export class TaskInfoComponent implements OnInit {
-  taskForAction: TaskAddType | '{}' | null = null;
+  taskForAction: TaskAddType | null = null;
   taskName: string | null = null;
   taskDescription: string| null = null;
   taskDateSet: string| null = null;
@@ -24,7 +24,10 @@ export class TaskInfoComponent implements OnInit {
     })
 
     this.ls.taskInfo$.subscribe(task => {
-      this.taskForAction = task as TaskAddType;
+      this.taskForAction = task;
+    })
+
+    this.ls.taskInfo$.subscribe(task => {
       this.taskName = (this.taskForAction as TaskAddType).taskName;
       this.taskDescription = (this.taskForAction as TaskAddType).taskDescription;
       this.taskDateSet = (this.taskForAction as TaskAddType).taskDateSet;
@@ -33,5 +36,4 @@ export class TaskInfoComponent implements OnInit {
       this.taskCategory = (this.taskForAction as TaskAddType).taskCategory;
     })
   }
-
 }
