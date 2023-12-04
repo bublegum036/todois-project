@@ -21,10 +21,10 @@ export class SignupComponent {
 
 
   signupForm: FormGroup = new FormGroup<SignupFormInterface>({
-    firstName: new FormControl(null, [Validators.required, Validators.pattern('^[а-яА-Яa-zA-Z\\s]+$')]), 
+    firstName: new FormControl(null, [Validators.required, Validators.pattern('^[а-яА-Яa-zA-Z\\s]+$')]),
     email: new FormControl(null, [Validators.required, Validators.pattern('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')]),
     password:new FormControl(null, [Validators.required, Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)]),
-    passwordRepeat:new FormControl(null, [Validators.required]), 
+    passwordRepeat:new FormControl(null, [Validators.required]),
   });
 
 
@@ -39,7 +39,7 @@ export class SignupComponent {
       }
       this.auth.setUser(user);
       this.ls.setCategories(null);
-      this.ls.setTasks([]);
+      this.ls.setTasks(null);
       this.ls.setCompleteTasks(null)
       this.auth.login()
     }

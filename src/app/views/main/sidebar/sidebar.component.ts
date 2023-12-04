@@ -16,7 +16,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   addCategoryVisible: boolean = false;
   private subscriptionOpenAddTaskMenu: Subscription;
   private subscriptionAddCategoryMenu: Subscription;
-  
+
 
   constructor(private ls: LocalStorageService,
     private auth: AuthService,

@@ -9,7 +9,6 @@ import { PRIORITY_TASKS } from '../../constants/constants';
 import { PriorityType } from '../../../../types/priority.type';
 import { TaskFormInterface } from '../../interfaces/task-form-interface';
 
-
 @Component({
   selector: 'task-form',
   templateUrl: './task-form.component.html',
@@ -17,7 +16,7 @@ import { TaskFormInterface } from '../../interfaces/task-form-interface';
 })
 export class TaskFormComponent implements OnInit {
   priority: PriorityType[] = PRIORITY_TASKS;
-  taskCategory: CategoryAddType[] | undefined;
+  taskCategory: CategoryAddType[] | [] = [];
   taskId: number = 0;
   taskForEdit: TaskAddType | null = null;
   isButton: boolean = true;
@@ -50,7 +49,7 @@ export class TaskFormComponent implements OnInit {
     })
 
     this.ls.taskForEdit$.subscribe((data: TaskAddType | null) => {
-      if (typeof data === 'object' && data !== null) {
+      if (data) {
         this.isButton = false;
         this.taskForm.patchValue({
           taskName: data.taskName,

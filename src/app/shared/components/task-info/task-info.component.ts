@@ -20,7 +20,7 @@ export class TaskInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.ls.getInfoTask().subscribe(task => {
-      this.taskForAction = task as TaskAddType;
+      this.taskForAction = task;
     })
 
     this.ls.taskInfo$.subscribe(task => {
@@ -31,8 +31,6 @@ export class TaskInfoComponent implements OnInit {
       this.taskDeadline = (this.taskForAction as TaskAddType).taskDeadline;
       this.taskPriority = (this.taskForAction as TaskAddType).taskPriority;
       this.taskCategory = (this.taskForAction as TaskAddType).taskCategory;
-
-      console.log(this.taskForAction)
     })
   }
 

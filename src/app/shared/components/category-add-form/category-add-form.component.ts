@@ -12,7 +12,7 @@ import { CategoryAddFormInterface } from '../../interfaces/category-add-form.int
   styleUrls: ['./category-add-form.component.scss']
 })
 export class CategoryAddFormComponent implements OnInit {
-  categories: CategoryAddType[] | [] = [];
+  categories: CategoryAddType[] | null = [];
   categoryId: number = 0;
   categoryForEdit: CategoryAddType | null = null;
   isButton: boolean = true;
@@ -30,13 +30,13 @@ export class CategoryAddFormComponent implements OnInit {
   })
 
   ngOnInit() {
-    // this.ls.getCategories().subscribe((data: CategoryAddType[] | []) => {
-    //   this.categories = data;
-    // })
+    this.ls.getCategories().subscribe((data: CategoryAddType[] | null) => {
+      this.categories = data;
+    })
 
-    // this.ls.categories$.subscribe((data: CategoryAddType[] | null) => {
-    //   this.categories = data
-    // })
+    this.ls.categories$.subscribe((data: CategoryAddType[] | null) => {
+      this.categories = data;
+    })
 
     this.ls.getEditCategory().subscribe((data: CategoryAddType | null) => {
       if (typeof data === 'object') {
@@ -48,7 +48,7 @@ export class CategoryAddFormComponent implements OnInit {
     })
 
     this.ls.categoryForEdit$.subscribe((data: CategoryAddType | null) => {
-      if (typeof data === 'object' && data) {
+      if (data) {
         this.isButton = false;
         this.categoryAddForm.setValue({
           categoryName: data.label,
@@ -79,13 +79,13 @@ export class CategoryAddFormComponent implements OnInit {
         label: this.categoryAddForm.value.categoryName,
         categoryId: this.categoryId
       }
-      if (!this.categories || this.categories === null) {
+      if (!this.categories) {
         this.ls.setCategories([category])
         this.saveCategoryNewId();
         this.closeAndCleanForm();
       } else {
-        // let tasksArrayForLS = this.categories.concat([category]);
-        // this.ls.setCategories(tasksArrayForLS);
+        let tasksArrayForLS = this.categories.concat([category]);
+        this.ls.setCategories(tasksArrayForLS);
         this.saveCategoryNewId();
         this.closeAndCleanForm();
       }
