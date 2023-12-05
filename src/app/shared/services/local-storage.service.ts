@@ -106,17 +106,19 @@ export class LocalStorageService {
     }
 
     getEditCategory(): Observable<CategoryAddType | null> {
-        const categoryForEdit = JSON.parse(localStorage.getItem('categoryForEdit') || '');
-        return of(this.categoryForEdit = categoryForEdit)
+        const categoryForEdit = localStorage.getItem('categoryForEdit');
+        if(categoryForEdit) {
+            this.categoryForEdit = JSON.parse(categoryForEdit);
+        } else {
+            this.setEditCategory(null);
+            this.categoryForEdit = null;
+        }
+        return of(this.categoryForEdit)
     }
 
     setEditCategory(categoryForEdit: CategoryAddType | null) {
         localStorage.setItem('categoryForEdit', JSON.stringify(categoryForEdit));
         this.categoryForEdit$.next(categoryForEdit);
-    }
-
-    removeEditCategory() {
-        localStorage.removeItem('categoryForEdit');
     }
 
     getUserName(): Observable<string> {
