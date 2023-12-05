@@ -29,18 +29,13 @@ export class SignupComponent {
 
   signUp() {
     if (this.signupForm.valid && this.signupForm.value.firstName && this.signupForm.value.email && this.signupForm.value.password && this.signupForm.value.passwordRepeat) {
-      const user: UserType = {
-        userInfo: {
+      const user: UserType= {
           name: this.signupForm.value.firstName,
           email: this.signupForm.value.email,
-          password: this.signupForm.value.password,
-        }
+          password: this.signupForm.value.password
       }
       this.auth.setUser(user);
-      this.auth.login()
-    }
-
-    if (localStorage.getItem('user')) {
+      this.auth.login();
       this.router.navigate(['/tasks'])
     }
   }

@@ -34,7 +34,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.ls.getUserName().subscribe(name => {
-      this.userName = name[0];
+      if(name) {
+        this.userName = name[0];
+      } else {
+        this.userName = null
+      }
     });
 
 

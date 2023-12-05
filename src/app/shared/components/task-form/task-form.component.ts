@@ -19,6 +19,7 @@ export class TaskFormComponent implements OnInit {
   taskCategory: CategoryAddType[] | [] = [];
   taskId: number = 0;
   taskForEdit: TaskAddType | null = null;
+  tasks: TaskAddType [] | null = null;
   isButton: boolean = true;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   taskForm: FormGroup = new FormGroup<TaskFormInterface>({
@@ -39,6 +40,15 @@ export class TaskFormComponent implements OnInit {
 
 
   ngOnInit() {
+    this.ls.getTasks().subscribe((data => {
+      this.tasks = data;
+    }));
+
+    this.ls.tasks$.subscribe((data: TaskAddType[] | null) => {
+      this.tasks = data;
+    });
+
+
     this.ls.getEditTask().subscribe((data: TaskAddType | null) => {
       if (data === null) {
         this.isButton = true;
@@ -102,15 +112,12 @@ export class TaskFormComponent implements OnInit {
         taskId: this.taskId
       }
 
-      if (this.ls.getTasks() === null) {
+      if (this.tasks === null) {
         this.ls.setTasks([task])
         this.saveNewId()
         this.closeAndCleanForm();
       } else {
-        let tasksFromLS: TaskAddType[] = JSON.parse(localStorage.getItem('tasks') || '{}');
-        if (tasksFromLS === null) {
-          tasksFromLS = []
-        }
+        let tasksFromLS: TaskAddType[] = this.tasks!
         let tasksArrayForLS = tasksFromLS.concat([task]);
         this.ls.setTasks(tasksArrayForLS)
         this.saveNewId()
@@ -127,7 +134,7 @@ export class TaskFormComponent implements OnInit {
         && this.taskForm.value.taskDateSet
         && this.taskForm.value.taskDeadline
         && this.taskForm.value.taskPriority
-        ) {
+      ) {
         let taskDateSet = null;
         let taskDeadline = null;
         if (typeof this.taskForm.value.taskDateSet === 'string') {
@@ -150,7 +157,7 @@ export class TaskFormComponent implements OnInit {
           taskId: this.taskForEdit.taskId
         }
 
-        let tasksFromLS: TaskAddType[] = JSON.parse(localStorage.getItem('tasks') || '{}');
+        let tasksFromLS: TaskAddType[] = this.tasks!;
         let indexTaskInArray: number = tasksFromLS.findIndex(taskFromLS => taskFromLS.taskId === task.taskId);
         if (indexTaskInArray !== -1) {
           tasksFromLS.splice(indexTaskInArray, 1, task);

@@ -101,15 +101,13 @@ export class CategoryAddFormComponent implements OnInit {
           label: this.categoryAddForm.value.categoryName,
           categoryId: this.categoryForEdit.categoryId
         }
-        let categoryFromLS: CategoryAddType[] = JSON.parse(localStorage.getItem('categories') || '{}');
+        let categoryFromLS: CategoryAddType[] = this.categories!;
         let indexCategoryInArray: number = categoryFromLS.findIndex(categoryFromLS => categoryFromLS.categoryId === category.categoryId);
         if (indexCategoryInArray !== -1) {
           categoryFromLS.splice(indexCategoryInArray, 1, category);
-          localStorage.removeItem('categories');
-          localStorage.setItem('categories', JSON.stringify(categoryFromLS));
+          this.ls.setCategories(categoryFromLS)
           this.closeAndCleanForm()
         }
-        this.ls.setCategories(JSON.parse(localStorage.getItem('categories') || '{}'))
       }
     }
   }

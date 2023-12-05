@@ -121,9 +121,14 @@ export class LocalStorageService {
         this.categoryForEdit$.next(categoryForEdit);
     }
 
-    getUserName(): Observable<string> {
-        const userName = JSON.parse(localStorage.getItem('user') || '').userInfo.name;
-        return of(this.userName = userName)
+    getUserName(): Observable<string | null> {
+        const user = localStorage.getItem('user');
+        if(user) {
+            this.userName = JSON.parse(user).name
+        } else {
+            this.userName = null
+        }
+        return of(this.userName)
     }
 
     removeUserProfile() {

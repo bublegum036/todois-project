@@ -8,21 +8,27 @@ import { UserType } from 'src/types/user.type';
 })
 export class AuthService {
   public userKey: string = 'user';
-  private user: UserType | '{}' = '{}';
-  public user$: Subject<UserType | '{}'> = new Subject<UserType | '{}'>;
+  private user: UserType | null = null;
+  public user$: Subject<UserType | null> = new Subject<UserType | null>;
   private isAuth: boolean = false;
   public isAuth$: Subject<boolean> = new Subject<boolean>();
   constructor(private router: Router) { }
 
 
-  setUser(user: UserType) {
+  setUser(user: UserType | null) {
     localStorage.setItem(this.userKey, JSON.stringify(user));
     this.user$.next(user)
   }
 
-  getUser(): Observable<UserType | '{}'> {
-    const user = JSON.parse(localStorage.getItem(this.userKey) || '{}')
-    return of(this.user = user)
+  getUser(): Observable<UserType | null> {
+    const user = localStorage.getItem(this.userKey);
+    if (user) {
+      this.user = JSON.parse(user)
+    } else {
+      this.setUser(null)
+      this.user = null;
+    }
+    return of(this.user)
   }
 
   login() {

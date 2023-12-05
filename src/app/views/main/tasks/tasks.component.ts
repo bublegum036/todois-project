@@ -135,18 +135,13 @@ export class TasksComponent implements OnInit {
                     this.tasks.splice(indexTaskInArray, 1);
                     let tasksArrayForLS = this.tasks;
                     this.ls.setTasks(tasksArrayForLS)
-                    if (!localStorage.getItem('tasksComplete')) {
+                    if (!this.tasksComplete) {
                         this.ls.setCompleteTasks([task])
                     } else {
-                        let tasksFromLS: TaskAddType[] = JSON.parse(localStorage.getItem('tasksComplete') || '{}');
-                        if (tasksFromLS === null) {
-                            tasksFromLS = []
-                        }
+                        let tasksFromLS: TaskAddType[] = this.tasksComplete;
                         let tasksArrayForLS = tasksFromLS.concat([task]);
-                        localStorage.removeItem('tasksComplete');
                         this.ls.setCompleteTasks(tasksArrayForLS)
                     }
-                    this.ls.setTasks(JSON.parse(localStorage.getItem('tasks') || '{}'))
                 }
                 this.messageService.add({
                     severity: 'info',
