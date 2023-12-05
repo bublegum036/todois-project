@@ -42,8 +42,14 @@ export class LocalStorageService {
     }
 
     getInfoTask(): Observable<TaskAddType | null> {
-        const task = JSON.parse(localStorage.getItem('infoTask') || '');
-        return of(this.taskInfo = task)
+        const task = localStorage.getItem('infoTask');
+        if (task) {
+            this.taskInfo = JSON.parse(task)
+        } else {
+            this.setInfoTask(null);
+            this.taskInfo = null
+        }
+        return of(this.taskInfo)
     }
 
     setInfoTask(infoTask: TaskAddType | null) {
