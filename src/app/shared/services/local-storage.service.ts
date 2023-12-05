@@ -120,4 +120,8 @@ export class LocalStorageService {
         const userName = JSON.parse(localStorage.getItem('user') || '').userInfo.name;
         return of(this.userName = userName)
     }
+
+    removeUserProfile() {
+        localStorage.clear()
+    }
 }
