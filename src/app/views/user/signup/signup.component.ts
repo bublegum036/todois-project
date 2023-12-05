@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {FormBuilder} from "@angular/forms";
 import {UserType} from "../../../../types/user.type";
 import {Router} from "@angular/router";
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -39,8 +38,10 @@ export class SignupComponent {
       }
       this.auth.setUser(user);
       this.ls.setCategories(null);
-      this.ls.setTasks(null);
-      this.ls.setCompleteTasks(null)
+      this.ls.setCompleteTasks(null);
+      this.ls.setInfoTask(null);
+      this.ls.setEditTask(null);
+      this.ls.setEditCategory(null);
       this.auth.login()
     }
 

@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {Observable, Subject, of} from "rxjs";
-import {TaskAddType} from "../../../types/task-add.type";
-import {CategoryAddType} from '../../../types/category-add.type';
+import { Injectable } from '@angular/core';
+import { Observable, Subject, of } from "rxjs";
+import { TaskAddType } from "../../../types/task-add.type";
+import { CategoryAddType } from '../../../types/category-add.type';
 
 @Injectable({
     providedIn: 'root'
@@ -26,15 +26,20 @@ export class LocalStorageService {
     }
 
     getTasks(): Observable<TaskAddType[] | null> {
-        const tasks: TaskAddType[] | null = JSON.parse(localStorage.getItem('tasks') || '')
-        return of(this.tasks = tasks);
+        const tasks = localStorage.getItem('tasks');
+        if(tasks) {
+            this.tasks = JSON.parse(tasks)
+        } else {
+            this.setTasks(null);
+            this.tasks = null;
+        }
+        return of(this.tasks)
     }
 
     setTasks(tasks: TaskAddType[] | null) {
         localStorage.setItem('tasks', JSON.stringify(tasks));
         this.tasks$.next(tasks);
     }
-
 
     getInfoTask(): Observable<TaskAddType | null> {
         const task = JSON.parse(localStorage.getItem('infoTask') || '');

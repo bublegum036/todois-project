@@ -40,10 +40,10 @@ export class TaskFormComponent implements OnInit {
 
   ngOnInit() {
     this.ls.getEditTask().subscribe((data: TaskAddType | null) => {
-      if (typeof data === 'object') {
-        this.isButton = false;
-      } else {
+      if (data === null) {
         this.isButton = true;
+      } else {
+        this.isButton = false;
       }
       this.taskForEdit = data;
     })
@@ -127,7 +127,7 @@ export class TaskFormComponent implements OnInit {
         && this.taskForm.value.taskDateSet
         && this.taskForm.value.taskDeadline
         && this.taskForm.value.taskPriority
-        && this.taskForm.value.taskCategory) {
+        ) {
         let taskDateSet = null;
         let taskDeadline = null;
         if (typeof this.taskForm.value.taskDateSet === 'string') {
@@ -146,7 +146,7 @@ export class TaskFormComponent implements OnInit {
           taskDateSet: taskDateSet,
           taskDeadline: taskDeadline,
           taskPriority: Object(this.taskForm.value.taskPriority).label,
-          taskCategory: Object(this.taskForm.value.taskCategory).label,
+          taskCategory: Object(this.taskForm.value.taskCategory)?.label,
           taskId: this.taskForEdit.taskId
         }
 

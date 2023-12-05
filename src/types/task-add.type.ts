@@ -4,6 +4,6 @@ export type TaskAddType = {
   taskDateSet: string,
   taskDeadline: string,
   taskPriority: string,
-  taskCategory: string
+  taskCategory?: string
   taskId: number
 }
