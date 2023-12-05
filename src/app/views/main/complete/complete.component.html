@@ -7,13 +7,8 @@
         <div class="tasks-table-action">
             <p-button label="Очистить" severity="warning" (click)="removeCompleteTasks()"></p-button>
         </div>
-        <p-table 
-        [value]="tasksComplete" 
-        [columns]="column"
-        responsiveLayout="stack" 
-        [breakpoint]="'672px'"
-        [tableStyle]="{'min-width': '70vw'}"
-        >
+        <p-table [value]="tasksComplete" [columns]="column" responsiveLayout="stack" [breakpoint]="'672px'"
+            [tableStyle]="{'min-width': '70vw'}">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let column of columns">{{column.header}}</th>
@@ -23,7 +18,7 @@
                 <tr>
                     <td *ngFor="let col of columns">
                         <span class="p-column-title">{{[col.header]}}</span>
-                            {{ currentTask[col.field] | trimText }}
+                        {{ currentTask[col.field] | trimText }}
                     </td>
                 </tr>
             </ng-template>

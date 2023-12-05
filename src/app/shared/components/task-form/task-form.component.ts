@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MessageService } from "primeng/api";
 import { TaskAddType } from "../../../../types/task-add.type";
 import { LocalStorageService } from '../../services/local-storage.service';
@@ -19,7 +19,7 @@ export class TaskFormComponent implements OnInit {
   taskCategory: CategoryAddType[] | [] = [];
   taskId: number = 0;
   taskForEdit: TaskAddType | null = null;
-  tasks: TaskAddType [] | null = null;
+  tasks: TaskAddType[] | null = null;
   isButton: boolean = true;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   taskForm: FormGroup = new FormGroup<TaskFormInterface>({
@@ -32,8 +32,7 @@ export class TaskFormComponent implements OnInit {
   })
 
 
-  constructor(private fb: FormBuilder,
-    private messageService: MessageService,
+  constructor(private messageService: MessageService,
     private ls: LocalStorageService,
     private idService: IdService,
   ) { }

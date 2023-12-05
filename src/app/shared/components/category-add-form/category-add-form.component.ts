@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LocalStorageService } from '../../services/local-storage.service';
 import { MessageService } from 'primeng/api';
 import { CategoryAddType } from 'src/types/category-add.type';
@@ -19,8 +19,7 @@ export class CategoryAddFormComponent implements OnInit {
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 
-  constructor(private fb: FormBuilder,
-    private ls: LocalStorageService,
+  constructor(private ls: LocalStorageService,
     private messageService: MessageService,
     private idService: IdService) {
   }

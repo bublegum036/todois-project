@@ -21,13 +21,13 @@ export class IdService {
     const taskId = this.taskId.getValue();
     const nextTaskId = taskId + 1;
     this.taskId.next(nextTaskId);
-    localStorage.setItem('taskId', JSON.stringify(nextTaskId));
+    localStorage.setItem(this.taskIdKey, JSON.stringify(nextTaskId));
   }
 
   saveCategoryId() {
     const categoryId = this.categoryId.getValue();
     const nextCategoryId = categoryId + 1;
     this.categoryId.next(nextCategoryId)
-    localStorage.setItem('categoryId', JSON.stringify(nextCategoryId));
+    localStorage.setItem(this.categoryIdKey, JSON.stringify(nextCategoryId));
   }
 }

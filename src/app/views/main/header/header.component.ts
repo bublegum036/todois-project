@@ -34,7 +34,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.ls.getUserName().subscribe(name => {
-      if(name) {
+      if (name) {
         this.userName = name[0];
       } else {
         this.userName = null
@@ -75,26 +75,26 @@ export class HeaderComponent implements OnInit, OnDestroy {
       header: 'Удаление',
       icon: 'pi pi-info-circle',
       accept: () => {
-          this.ls.removeUserProfile()
-          this.messageService.add({severity: 'info', summary: 'Успешно', detail: 'Профиль удален'});
-          setTimeout(()=> {
-            this.router.navigate(['/']);
-          }, 500)
+        this.ls.removeUserProfile()
+        this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Профиль удален' });
+        setTimeout(() => {
+          this.router.navigate(['/']);
+        }, 500)
       },
       reject: (type: ConfirmEventType) => {
-          switch (type) {
-              case ConfirmEventType.REJECT:
-                  this.messageService.add({
-                      severity: 'error',
-                      summary: 'Отклонено',
-                      detail: 'Вы отменили удаление профиля'
-                  });
-                  break;
-              case ConfirmEventType.CANCEL:
-                  this.messageService.add({severity: 'warn', summary: 'Отмена', detail: 'Отменено'});
-                  break;
-          }
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Отклонено',
+              detail: 'Вы отменили удаление профиля'
+            });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({ severity: 'warn', summary: 'Отмена', detail: 'Отменено' });
+            break;
+        }
       }
-  });
+    });
   }
 }

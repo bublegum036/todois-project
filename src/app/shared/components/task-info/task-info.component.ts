@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { TaskAddType } from 'src/types/task-add.type';
+import { Component, OnInit } from '@angular/core';
+import { TaskAddType } from '../../../../types/task-add.type';
 import { LocalStorageService } from '../../services/local-storage.service';
 
 @Component({
@@ -19,10 +19,6 @@ export class TaskInfoComponent implements OnInit {
   constructor(private ls: LocalStorageService) { }
 
   ngOnInit(): void {
-    // this.ls.getInfoTask().subscribe(task => {
-    //   this.taskForAction = task;
-    // })
-
     this.ls.taskInfo$.subscribe(task => {
       this.taskForAction = task;
     })

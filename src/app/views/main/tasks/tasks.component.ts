@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {ConfirmEventType, ConfirmationService, MessageService, SortEvent} from "primeng/api";
-import {TaskAddType} from "../../../../types/task-add.type";
-import {LocalStorageService} from "../../../shared/services/local-storage.service";
-import {CategoryAddType} from 'src/types/category-add.type';
-import {TASKS_COLUMNS} from '../../../shared/constants/constants'
+import { Component, OnInit } from '@angular/core';
+import { ConfirmEventType, ConfirmationService, MessageService, SortEvent } from "primeng/api";
+import { TaskAddType } from "../../../../types/task-add.type";
+import { LocalStorageService } from "../../../shared/services/local-storage.service";
+import { CategoryAddType } from 'src/types/category-add.type';
+import { TASKS_COLUMNS } from '../../../shared/constants/constants'
 
 @Component({
     selector: 'tasks',
@@ -23,8 +23,8 @@ export class TasksComponent implements OnInit {
 
 
     constructor(private messageService: MessageService,
-                private ls: LocalStorageService,
-                private confirmationService: ConfirmationService,
+        private ls: LocalStorageService,
+        private confirmationService: ConfirmationService,
     ) {
     }
 
@@ -104,7 +104,7 @@ export class TasksComponent implements OnInit {
                         let tasksArrayForLS = this.tasks;
                         this.ls.setTasks(tasksArrayForLS)
                     }
-                    this.messageService.add({severity: 'info', summary: 'Успешно', detail: 'Задача удалена'});
+                    this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Задача удалена' });
                 },
                 reject: (type: ConfirmEventType) => {
                     switch (type) {
@@ -116,7 +116,7 @@ export class TasksComponent implements OnInit {
                             });
                             break;
                         case ConfirmEventType.CANCEL:
-                            this.messageService.add({severity: 'warn', summary: 'Отмена', detail: 'Отменено'});
+                            this.messageService.add({ severity: 'warn', summary: 'Отмена', detail: 'Отменено' });
                             break;
                     }
                 }
@@ -152,10 +152,10 @@ export class TasksComponent implements OnInit {
             reject: (type: ConfirmEventType) => {
                 switch (type) {
                     case ConfirmEventType.REJECT:
-                        this.messageService.add({severity: 'error', summary: 'Отклонено', detail: 'Вы передумали'});
+                        this.messageService.add({ severity: 'error', summary: 'Отклонено', detail: 'Вы передумали' });
                         break;
                     case ConfirmEventType.CANCEL:
-                        this.messageService.add({severity: 'warn', summary: 'Отмена', detail: 'Отменено'});
+                        this.messageService.add({ severity: 'warn', summary: 'Отмена', detail: 'Отменено' });
                         break;
                 }
             }
