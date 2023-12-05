@@ -1,5 +1,5 @@
 <section class="tasks">
-    <div class="task-category-empty" *ngIf="(!categories || categories.length <1) && !tasks">
+    <div class="task-category-empty" *ngIf="categories.length<1 && tasks.length<1">
         <div>Отсутствую категории задач! Создайте сначала категорию задач</div>
         <p-button label="Создать категорию" severity="warning" (click)="openAddCategoryMenu()"></p-button>
     </div>

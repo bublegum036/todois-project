@@ -51,7 +51,7 @@
       <label htmlFor="taskPriority">Приоритет</label>
     </span>
   </div>
-  <div class="task-form-input">
+  <div class="task-form-input" *ngIf="taskCategory.length>0">
     <span class="p-float-label">
       <p-treeSelect [options]="taskCategory" formControlName="taskCategory"
         [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskCategory')?.invalid && (taskForm.get('taskCategory')?.dirty || taskForm.get('taskCategory')?.touched) ?  true : ''}"></p-treeSelect>

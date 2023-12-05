@@ -37,8 +37,6 @@ export class SignupComponent {
         }
       }
       this.auth.setUser(user);
-      this.ls.setCategories(null);
-      this.ls.setCompleteTasks(null);
       this.ls.setInfoTask(null);
       this.ls.setEditTask(null);
       this.ls.setEditCategory(null);

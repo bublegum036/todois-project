@@ -27,7 +27,7 @@ export class LocalStorageService {
 
     getTasks(): Observable<TaskAddType[] | null> {
         const tasks = localStorage.getItem('tasks');
-        if(tasks) {
+        if (tasks) {
             this.tasks = JSON.parse(tasks)
         } else {
             this.setTasks(null);
@@ -52,8 +52,14 @@ export class LocalStorageService {
     }
 
     getCompleteTasks(): Observable<TaskAddType[] | null> {
-        const tasksComplete = JSON.parse(localStorage.getItem('tasksComplete') || '')
-        return of(this.tasksComplete = tasksComplete)
+        const tasksComplete = localStorage.getItem('tasksComplete');
+        if (tasksComplete) {
+            this.tasksComplete = JSON.parse(tasksComplete)
+        } else {
+            this.setCompleteTasks(null);
+            this.tasksComplete = null;
+        }
+        return of(this.tasksComplete)
     }
 
     setCompleteTasks(tasksComplete: TaskAddType[] | null) {
@@ -62,8 +68,14 @@ export class LocalStorageService {
     }
 
     getCategories(): Observable<CategoryAddType[] | null> {
-        const categories = JSON.parse(localStorage.getItem('categories') || '')
-        return of(this.categories = categories)
+        const categories = localStorage.getItem('categories')
+        if (categories) {
+            this.categories = JSON.parse(categories)
+        } else {
+            this.setCategories(null)
+            this.categories = null;
+        }
+        return of(this.categories)
     }
     setCategories(categories: CategoryAddType[] | null) {
         localStorage.setItem('categories', JSON.stringify(categories));
