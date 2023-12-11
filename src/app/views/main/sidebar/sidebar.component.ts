@@ -3,6 +3,7 @@ import { NavigationStart, Router } from '@angular/router';
 import { MenuItem, MenuItemCommandEvent } from "primeng/api";
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { CategoryService } from 'src/app/shared/services/category.service';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 
 @Component({
@@ -20,7 +21,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   constructor(private ls: LocalStorageService,
     private auth: AuthService,
-    private router: Router) {
+    private router: Router,
+    private categoryService: CategoryService) {
       this.subscriptionOpenAddTaskMenu = this.router.events.subscribe(event => {
         if (event instanceof NavigationStart) {
           this.addTaskVisible = false;
@@ -89,7 +91,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   openAddCategoryMenu() {
     this.addCategoryVisible = !this.addCategoryVisible;
     this.addTaskVisible = false;
-    this.ls.setEditCategory(null)
+    this.categoryService.setEditCategory(null)
   }
 
   closeTaskMenu(value: boolean) {

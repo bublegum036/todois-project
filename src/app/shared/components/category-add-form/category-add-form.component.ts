@@ -1,3 +1,4 @@
+import { CategoryService } from './../../services/category.service';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LocalStorageService } from '../../services/local-storage.service';
@@ -19,7 +20,7 @@ export class CategoryAddFormComponent implements OnInit {
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 
-  constructor(private ls: LocalStorageService,
+  constructor(private categoryService: CategoryService,
     private messageService: MessageService,
     private idService: IdService) {
   }
@@ -29,15 +30,15 @@ export class CategoryAddFormComponent implements OnInit {
   })
 
   ngOnInit() {
-    this.ls.getCategories().subscribe((data: CategoryAddType[] | null) => {
+    this.categoryService.getCategories().subscribe((data: CategoryAddType[] | null) => {
       this.categories = data;
     })
 
-    this.ls.categories$.subscribe((data: CategoryAddType[] | null) => {
+    this.categoryService.categories$.subscribe((data: CategoryAddType[] | null) => {
       this.categories = data;
     })
 
-    this.ls.getEditCategory().subscribe((data: CategoryAddType | null) => {
+    this.categoryService.getEditCategory().subscribe((data: CategoryAddType | null) => {
       if (typeof data === 'object') {
         this.isButton = false;
       } else {
@@ -46,7 +47,7 @@ export class CategoryAddFormComponent implements OnInit {
       this.categoryForEdit = data;
     })
 
-    this.ls.categoryForEdit$.subscribe((data: CategoryAddType | null) => {
+    this.categoryService.categoryForEdit$.subscribe((data: CategoryAddType | null) => {
       if (data) {
         this.isButton = false;
         this.categoryAddForm.setValue({
@@ -79,12 +80,12 @@ export class CategoryAddFormComponent implements OnInit {
         categoryId: this.categoryId
       }
       if (!this.categories) {
-        this.ls.setCategories([category])
+        this.categoryService.setCategories([category])
         this.saveCategoryNewId();
         this.closeAndCleanForm();
       } else {
         let tasksArrayForLS = this.categories.concat([category]);
-        this.ls.setCategories(tasksArrayForLS);
+        this.categoryService.setCategories(tasksArrayForLS);
         this.saveCategoryNewId();
         this.closeAndCleanForm();
       }
@@ -104,7 +105,7 @@ export class CategoryAddFormComponent implements OnInit {
         let indexCategoryInArray: number = categoryFromLS.findIndex(categoryFromLS => categoryFromLS.categoryId === category.categoryId);
         if (indexCategoryInArray !== -1) {
           categoryFromLS.splice(indexCategoryInArray, 1, category);
-          this.ls.setCategories(categoryFromLS)
+          this.categoryService.setCategories(categoryFromLS)
           this.closeAndCleanForm()
         }
       }

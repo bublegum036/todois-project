@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { CategoryService } from 'src/app/shared/services/category.service';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { CategoryAddType } from 'src/types/category-add.type';
 
@@ -16,21 +17,22 @@ export class TaskCategoryComponent implements OnInit {
 
   constructor(private ls: LocalStorageService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private categoryService: CategoryService
   ) { }
 
   ngOnInit() {
-    this.ls.getCategories().subscribe((data: CategoryAddType[] | null) => {
+    this.categoryService.getCategories().subscribe((data: CategoryAddType[] | null) => {
       this.categories = data as CategoryAddType[];
     })
 
-    this.ls.categories$.subscribe((data: CategoryAddType[] | '{}' | null) => {
+    this.categoryService.categories$.subscribe((data: CategoryAddType[] | '{}' | null) => {
       this.categories = data as CategoryAddType[]
     })
   }
 
   editCategory(category: any) {
-    this.ls.setEditCategory(category);
+    this.categoryService.setEditCategory(category);
     this.editCategoryVisible = !this.editCategoryVisible;
   }
 
@@ -48,7 +50,7 @@ export class TaskCategoryComponent implements OnInit {
         if (indexCategoryInArray !== -1) {
           this.categories.splice(indexCategoryInArray, 1);
           let categoriesArrayForLS = this.categories;
-          this.ls.setCategories(categoriesArrayForLS)
+          this.categoryService.setCategories(categoriesArrayForLS)
         }
         this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Категория удалена' });
       },
@@ -67,7 +69,7 @@ export class TaskCategoryComponent implements OnInit {
 
   openAddCategoryMenu() {
     this.addCategoryVisible = !this.addCategoryVisible;
-    this.ls.setEditCategory(null)
+    this.categoryService.setEditCategory(null)
   }
 
   closeAddCategory(value: boolean) {

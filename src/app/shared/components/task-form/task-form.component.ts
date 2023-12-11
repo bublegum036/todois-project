@@ -8,6 +8,7 @@ import { CategoryAddType } from '../../../../types/category-add.type';
 import { PRIORITY_TASKS } from '../../constants/constants';
 import { PriorityType } from '../../../../types/priority.type';
 import { TaskFormInterface } from '../../interfaces/task-form-interface';
+import { CategoryService } from '../../services/category.service';
 
 @Component({
   selector: 'task-form',
@@ -35,6 +36,7 @@ export class TaskFormComponent implements OnInit {
   constructor(private messageService: MessageService,
     private ls: LocalStorageService,
     private idService: IdService,
+    private categoryService: CategoryService
   ) { }
 
 
@@ -75,13 +77,13 @@ export class TaskFormComponent implements OnInit {
       this.taskForEdit = data;
     })
 
-    this.ls.getCategories().subscribe(data => {
+    this.categoryService.getCategories().subscribe(data => {
       if (data !== null) {
         this.taskCategory = data;
       }
     })
 
-    this.ls.categories$.subscribe((data: CategoryAddType[] | null) => {
+    this.categoryService.categories$.subscribe((data: CategoryAddType[] | null) => {
       if (data !== null) {
         this.taskCategory = data;
       }

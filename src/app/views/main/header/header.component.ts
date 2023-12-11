@@ -33,7 +33,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.ls.getUserName().subscribe(name => {
+    this.auth.getUserName().subscribe(name => {
       if (name) {
         this.userName = name[0];
       } else {
@@ -75,7 +75,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       header: 'Удаление',
       icon: 'pi pi-info-circle',
       accept: () => {
-        this.ls.removeUserProfile()
+        this.auth.removeUserProfile()
         this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Профиль удален' });
         setTimeout(() => {
           this.router.navigate(['/']);

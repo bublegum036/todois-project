@@ -4,6 +4,7 @@ import { TaskAddType } from "../../../../types/task-add.type";
 import { LocalStorageService } from "../../../shared/services/local-storage.service";
 import { CategoryAddType } from 'src/types/category-add.type';
 import { TASKS_COLUMNS } from '../../../shared/constants/constants'
+import { CategoryService } from 'src/app/shared/services/category.service';
 
 @Component({
     selector: 'tasks',
@@ -25,6 +26,7 @@ export class TasksComponent implements OnInit {
     constructor(private messageService: MessageService,
         private ls: LocalStorageService,
         private confirmationService: ConfirmationService,
+        private categoryService: CategoryService
     ) {
     }
 
@@ -38,11 +40,11 @@ export class TasksComponent implements OnInit {
             this.tasks = data || [];
         });
 
-        this.ls.getCategories().subscribe((data: CategoryAddType[] | null) => {
+        this.categoryService.getCategories().subscribe((data: CategoryAddType[] | null) => {
             this.categories = data || [];
         });
 
-        this.ls.categories$.subscribe((data: CategoryAddType[] | null) => {
+        this.categoryService.categories$.subscribe((data: CategoryAddType[] | null) => {
             this.categories = data || [];
         });
 
@@ -70,7 +72,7 @@ export class TasksComponent implements OnInit {
 
     openAddCategoryMenu() {
         this.addCategoryVisible = !this.addCategoryVisible;
-        this.ls.setEditCategory(null)
+        this.categoryService.setEditCategory(null)
     }
 
     closeAddCategory(value: boolean) {
