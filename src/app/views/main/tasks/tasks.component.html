@@ -12,8 +12,8 @@
         <div class="tasks-table-action">
             <p-button label="Создать задачу" severity="warning" (click)="openAddTaskMenu()"></p-button>
         </div>
-        <p-table [value]="tasks" [columns]="column" responsiveLayout="stack" [breakpoint]="'890px'"
-            [tableStyle]="{'min-width': '80vw'}" [sortMode]="'single'" (sortFunction)="customSort($event)">
+        <p-table [value]="tasks" [columns]="column" responsiveLayout="stack" [breakpoint]="'630px'"
+            [tableStyle]="{'min-width': '60vw'}" [sortMode]="'single'" (sortFunction)="customSort($event)">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th pSortableColumn="{{column.field}}" *ngFor="let column of columns">{{column.header}}
