@@ -27,7 +27,7 @@
   <div class="task-form-input">
     <div class="card flex justify-content-center">
       <span class="p-float-label">
-        <p-calendar [showIcon]="true" formControlName="taskDateSet"
+        <p-calendar [showIcon]="true" [touchUI]="true" formControlName="taskDateSet"
           [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskDateSet')?.invalid && (taskForm.get('taskDateSet')?.dirty || taskForm.get('taskDateSet')?.touched) ?  true : ''}"
           id="taskDateSet" dateFormat="dd.mm.yy"></p-calendar>
         <label htmlFor="taskDateSet">Дата постановки</label>
@@ -37,7 +37,7 @@
   <div class="task-form-input">
     <div class="card flex justify-content-center">
       <span class="p-float-label">
-        <p-calendar [showIcon]="true" formControlName="taskDeadline"
+        <p-calendar [showIcon]="true" [touchUI]="true" formControlName="taskDeadline"
           [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskDeadline')?.invalid && (taskForm.get('taskDeadline')?.dirty || taskForm.get('taskDeadline')?.touched) ?  true : ''}"
           id="taskDeadline" dateFormat="dd.mm.yy"></p-calendar>
         <label htmlFor="taskDeadline">Срок выполнения</label>

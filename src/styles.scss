@@ -28,6 +28,9 @@ body {
   border-color: #D97706;
 }
 
+.p-component-overlay.p-datepicker-mask.p-datepicker-mask-scrollblocker.p-component-overlay-enter {
+  display: none;
+}
 
 .p-datatable .p-datatable-thead>tr>th {
   padding: 8px 5px;
