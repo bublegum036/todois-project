@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TaskAddType } from '../../../../types/task-add.type';
 import { TasksService } from '../../services/tasks.service';
 
@@ -7,7 +8,7 @@ import { TasksService } from '../../services/tasks.service';
   templateUrl: './task-info.component.html',
   styleUrls: ['./task-info.component.scss']
 })
-export class TaskInfoComponent implements OnInit {
+export class TaskInfoComponent implements OnInit, OnDestroy {
   taskForAction: TaskAddType | null = null;
   taskName: string | null = null;
   taskDescription: string | null = null;
@@ -15,16 +16,16 @@ export class TaskInfoComponent implements OnInit {
   taskDeadline: string | null = null;
   taskPriority: string | null = null;
   taskCategory?: string | null = null;
+  subscriptionTaskInfo: Subscription | null = null;
 
-  constructor(private tasksService: TasksService) { }
+  constructor(private tasksService: TasksService) {
 
-  ngOnInit(): void {
-    this.tasksService.taskInfo$.subscribe(task => {
-      this.taskForAction = task;
-    })
+  }
 
-    this.tasksService.taskInfo$.subscribe(task => {
-      if (task) {
+  ngOnInit() {
+    this.subscriptionTaskInfo = this.tasksService.taskInfo$.subscribe(task => {
+      this.taskForAction = task
+      if (this.taskForAction) {
         this.taskName = (this.taskForAction as TaskAddType).taskName;
         this.taskDescription = (this.taskForAction as TaskAddType).taskDescription;
         this.taskDateSet = (this.taskForAction as TaskAddType).taskDateSet;
@@ -33,5 +34,9 @@ export class TaskInfoComponent implements OnInit {
         this.taskCategory = (this.taskForAction as TaskAddType).taskCategory;
       }
     })
+  }
+
+  ngOnDestroy() {
+    this.subscriptionTaskInfo?.unsubscribe()
   }
 }

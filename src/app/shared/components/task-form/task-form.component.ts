@@ -1,4 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Subscription } from 'rxjs';
+import {
+  Component,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { TaskAddType } from '../../../../types/task-add.type';
@@ -15,14 +22,19 @@ import { CategoryService } from '../../services/category.service';
   templateUrl: './task-form.component.html',
   styleUrls: ['./task-form.component.scss'],
 })
-export class TaskFormComponent implements OnInit {
-  priority: PriorityType[] = PRIORITY_TASKS;
+export class TaskFormComponent implements OnInit, OnDestroy {
+  tasks: TaskAddType[] | null = null;
+  taskForEdit: TaskAddType | null = null;
   taskCategory: CategoryAddType[] | [] = [];
   taskId: number = 0;
-  taskForEdit: TaskAddType | null = null;
-  tasks: TaskAddType[] | null = null;
+  priority: PriorityType[] = PRIORITY_TASKS;
   isButton: boolean = true;
+  subscriptionTasks: Subscription;
+  subscriptionTaskForEdit: Subscription;
+  subscriptionTaskCategory: Subscription;
+
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   taskForm: FormGroup = new FormGroup<TaskFormInterface>({
     taskName: new FormControl(null, [
       Validators.required,
@@ -45,24 +57,34 @@ export class TaskFormComponent implements OnInit {
     private tasksService: TasksService,
     private idService: IdService,
     private categoryService: CategoryService
-  ) {}
+  ) {
+    this.subscriptionTasks = this.tasksService.getTasks().subscribe((data) => {
+      this.tasks = data;
+    });
+
+    this.subscriptionTaskForEdit = this.tasksService
+      .getEditTask()
+      .subscribe((data: TaskAddType | null) => {
+        if (data === null) {
+          this.isButton = true;
+        } else {
+          this.isButton = false;
+        }
+        this.taskForEdit = data;
+      });
+
+    this.subscriptionTaskCategory = this.categoryService
+      .getCategories()
+      .subscribe((data) => {
+        if (data !== null) {
+          this.taskCategory = data;
+        }
+      });
+  }
 
   ngOnInit() {
-    this.tasksService.getTasks().subscribe((data) => {
-      this.tasks = data;
-    });
-
     this.tasksService.tasks$.subscribe((data: TaskAddType[] | null) => {
       this.tasks = data;
-    });
-
-    this.tasksService.getEditTask().subscribe((data: TaskAddType | null) => {
-      if (data === null) {
-        this.isButton = true;
-      } else {
-        this.isButton = false;
-      }
-      this.taskForEdit = data;
     });
 
     this.tasksService.taskForEdit$.subscribe((data: TaskAddType | null) => {
@@ -87,12 +109,6 @@ export class TaskFormComponent implements OnInit {
       this.taskForEdit = data;
     });
 
-    this.categoryService.getCategories().subscribe((data) => {
-      if (data !== null) {
-        this.taskCategory = data;
-      }
-    });
-
     this.categoryService.categories$.subscribe(
       (data: CategoryAddType[] | null) => {
         if (data !== null) {
@@ -104,6 +120,12 @@ export class TaskFormComponent implements OnInit {
     this.idService.taskId$.subscribe((taskId) => {
       this.taskId = taskId;
     });
+  }
+
+  ngOnDestroy() {
+    this.subscriptionTasks.unsubscribe();
+    this.subscriptionTaskForEdit.unsubscribe();
+    this.subscriptionTaskCategory.unsubscribe();
   }
 
   createTask() {

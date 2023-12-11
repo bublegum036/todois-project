@@ -1,5 +1,6 @@
+import { Subscription } from 'rxjs';
 import { CategoryService } from './../../services/category.service';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { CategoryAddType } from '../../../../types/category-add.type';
@@ -11,17 +12,31 @@ import { CategoryAddFormInterface } from '../../interfaces/category-add-form.int
   templateUrl: './category-add-form.component.html',
   styleUrls: ['./category-add-form.component.scss']
 })
-export class CategoryAddFormComponent implements OnInit {
+export class CategoryAddFormComponent implements OnInit, OnDestroy {
   categories: CategoryAddType[] | null = [];
   categoryId: number = 0;
   categoryForEdit: CategoryAddType | null = null;
   isButton: boolean = true;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  subscriptionCategories: Subscription;
+  subscriptionCategoryForEdit: Subscription;
 
 
   constructor(private categoryService: CategoryService,
     private messageService: MessageService,
     private idService: IdService) {
+      this.subscriptionCategories = this.categoryService.getCategories().subscribe((data: CategoryAddType[] | null) => {
+        this.categories = data;
+      })
+
+      this.subscriptionCategoryForEdit = this.categoryService.getEditCategory().subscribe((data: CategoryAddType | null) => {
+        if (typeof data === 'object') {
+          this.isButton = false;
+        } else {
+          this.isButton = true;
+        }
+        this.categoryForEdit = data;
+      })
   }
 
   categoryAddForm: FormGroup = new FormGroup<CategoryAddFormInterface>({
@@ -29,21 +44,8 @@ export class CategoryAddFormComponent implements OnInit {
   })
 
   ngOnInit() {
-    this.categoryService.getCategories().subscribe((data: CategoryAddType[] | null) => {
-      this.categories = data;
-    })
-
     this.categoryService.categories$.subscribe((data: CategoryAddType[] | null) => {
       this.categories = data;
-    })
-
-    this.categoryService.getEditCategory().subscribe((data: CategoryAddType | null) => {
-      if (typeof data === 'object') {
-        this.isButton = false;
-      } else {
-        this.isButton = true;
-      }
-      this.categoryForEdit = data;
     })
 
     this.categoryService.categoryForEdit$.subscribe((data: CategoryAddType | null) => {
@@ -67,6 +69,11 @@ export class CategoryAddFormComponent implements OnInit {
       .subscribe(categoryId => {
         this.categoryId = categoryId
       })
+  }
+
+  ngOnDestroy() {
+    this.subscriptionCategories.unsubscribe();
+    this.subscriptionCategoryForEdit.unsubscribe();
   }
 
   createCategory() {
