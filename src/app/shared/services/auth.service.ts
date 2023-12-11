@@ -42,7 +42,7 @@ export class AuthService {
     this.router.navigate(['/'])
   }
 
-  public isAuthorized() {
+  isAuthorized() {
     return this.isAuth;
   }
 }

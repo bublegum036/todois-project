@@ -11,7 +11,6 @@ import { MainModule } from "./views/main/main.module";
 import { LayoutComponent } from './views/layout/layout.component';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from "primeng/api";
-import { DialogModule } from "primeng/dialog";
 import { LocalStorageService } from "./shared/services/local-storage.service";
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { IdService } from './shared/services/id.service';
@@ -38,9 +37,9 @@ import { TabMenuModule } from 'primeng/tabmenu';
     SidebarModule,
     MenuModule,
     TabMenuModule,
-    FormsModule
+    FormsModule,
   ],
-  exports: [DialogModule],
+  exports: [],
   providers: [MessageService, LocalStorageService, IdService, AuthGuard],
   bootstrap: [AppComponent],
   
