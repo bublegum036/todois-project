@@ -9,6 +9,8 @@ export class CategoryService {
 
   constructor() { }
 
+  public categoriesKey: string = 'categories';
+  public categoriesForEditKey: string = 'categoryForEdit';
   private categories: CategoryAddType[] | null = null;
   public categories$: Subject<CategoryAddType[] | null> = new Subject<CategoryAddType[] | null>();
   private categoryForEdit: CategoryAddType | null = null;
@@ -16,7 +18,7 @@ export class CategoryService {
 
 
   getCategories(): Observable<CategoryAddType[] | null> {
-    const categories = localStorage.getItem('categories');
+    const categories = localStorage.getItem(this.categoriesKey);
     if (categories) {
       this.categories = JSON.parse(categories);
     } else {
@@ -27,12 +29,12 @@ export class CategoryService {
   }
 
   setCategories(categories: CategoryAddType[] | null) {
-    localStorage.setItem('categories', JSON.stringify(categories));
+    localStorage.setItem(this.categoriesKey, JSON.stringify(categories));
     this.categories$.next(categories);
   }
 
   getEditCategory(): Observable<CategoryAddType | null> {
-    const categoryForEdit = localStorage.getItem('categoryForEdit');
+    const categoryForEdit = localStorage.getItem(this.categoriesForEditKey);
     if (categoryForEdit) {
       this.categoryForEdit = JSON.parse(categoryForEdit);
     } else {
@@ -43,7 +45,7 @@ export class CategoryService {
   }
 
   setEditCategory(categoryForEdit: CategoryAddType | null) {
-    localStorage.setItem('categoryForEdit', JSON.stringify(categoryForEdit));
+    localStorage.setItem(this.categoriesForEditKey, JSON.stringify(categoryForEdit));
     this.categoryForEdit$.next(categoryForEdit);
   }
 }

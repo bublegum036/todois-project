@@ -6,6 +6,10 @@ import { TaskAddType } from '../../../types/task-add.type';
   providedIn: 'root',
 })
 export class TasksService {
+  public tasksKey: string = 'tasks';
+  public taskInfoKey: string = 'infoTask';
+  public tasksCompleteKey: string = 'tasksComplete';
+  public tasksForEditKey: string = 'taskForEdit';
   private tasks: TaskAddType[] | null = null;
   public tasks$: Subject<TaskAddType[] | null> = new Subject<TaskAddType[] | null>();
   private tasksComplete: TaskAddType[] | null = null;
@@ -19,7 +23,7 @@ export class TasksService {
   constructor() {}
 
   getTasks(): Observable<TaskAddType[] | null> {
-    const tasks = localStorage.getItem('tasks');
+    const tasks = localStorage.getItem(this.tasksKey);
     if (tasks) {
       this.tasks = JSON.parse(tasks);
     } else {
@@ -30,12 +34,12 @@ export class TasksService {
   }
 
   setTasks(tasks: TaskAddType[] | null) {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+    localStorage.setItem(this.tasksKey, JSON.stringify(tasks));
     this.tasks$.next(tasks);
   }
 
   getInfoTask(): Observable<TaskAddType | null> {
-    const task = localStorage.getItem('infoTask');
+    const task = localStorage.getItem(this.taskInfoKey);
     if (task) {
       this.taskInfo = JSON.parse(task);
     } else {
@@ -46,12 +50,12 @@ export class TasksService {
   }
 
   setInfoTask(infoTask: TaskAddType | null) {
-    localStorage.setItem('infoTask', JSON.stringify(infoTask));
+    localStorage.setItem(this.taskInfoKey, JSON.stringify(infoTask));
     this.taskInfo$.next(infoTask);
   }
 
   getCompleteTasks(): Observable<TaskAddType[] | null> {
-    const tasksComplete = localStorage.getItem('tasksComplete');
+    const tasksComplete = localStorage.getItem(this.tasksCompleteKey);
     if (tasksComplete) {
       this.tasksComplete = JSON.parse(tasksComplete);
     } else {
@@ -62,12 +66,12 @@ export class TasksService {
   }
 
   setCompleteTasks(tasksComplete: TaskAddType[] | null) {
-    localStorage.setItem('tasksComplete', JSON.stringify(tasksComplete));
+    localStorage.setItem(this.tasksCompleteKey, JSON.stringify(tasksComplete));
     this.tasksComplete$.next(tasksComplete);
   }
 
   getEditTask(): Observable<TaskAddType | null> {
-    const taskForEdit = localStorage.getItem('taskForEdit');
+    const taskForEdit = localStorage.getItem(this.tasksForEditKey);
     if (taskForEdit) {
       this.taskForEdit = JSON.parse(taskForEdit);
     } else {
@@ -78,7 +82,7 @@ export class TasksService {
   }
 
   setEditTask(taskForEdit: TaskAddType | null) {
-    localStorage.setItem('taskForEdit', JSON.stringify(taskForEdit));
+    localStorage.setItem(this.tasksForEditKey, JSON.stringify(taskForEdit));
     this.taskForEdit$.next(taskForEdit);
   }
 }
