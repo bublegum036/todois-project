@@ -17,6 +17,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userMenu: { label: string, icon: string, command?: any }[] = [];
   navMenu: { label: string, routerLink: [string] }[] = NAV_MENU;
   private subscriptionSidebarVisible: Subscription;
+  private subscriptionUserName: Subscription;
 
 
   constructor(private auth: AuthService,
@@ -28,10 +29,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.sidebarVisible = false;
       }
     });
-  }
 
-  ngOnInit(): void {
-    this.auth.getUserName().subscribe(name => {
+    this.subscriptionUserName = this.auth.getUserName().subscribe(name => {
       if (name) {
         this.userName = name[0];
       } else {
@@ -39,7 +38,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     });
 
+  }
 
+  ngOnInit(): void {
     this.userMenu = [
       {
         label: 'Удалить профиль',
@@ -61,6 +62,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptionSidebarVisible.unsubscribe();
+    this.subscriptionUserName.unsubscribe();
   }
 
   sidebarOpen() {
