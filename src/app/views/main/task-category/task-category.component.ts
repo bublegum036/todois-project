@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { CategoryService } from '../../../shared/services/category.service';
 import { CategoryAddType } from '../../../../types/category-add.type';
@@ -9,27 +10,32 @@ import { CategoryAddType } from '../../../../types/category-add.type';
   styleUrls: ['./task-category.component.scss'],
   providers: [MessageService, ConfirmationService]
 })
-export class TaskCategoryComponent implements OnInit {
+export class TaskCategoryComponent implements OnInit, OnDestroy {
   categories: CategoryAddType[] = [];
   addCategoryVisible: boolean = false;
   editCategoryVisible: boolean = false;
+  subscriptionCategories: Subscription;
 
   constructor(private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private categoryService: CategoryService
-  ) { }
-
-  ngOnInit() {
-    this.categoryService.getCategories().subscribe((data: CategoryAddType[] | null) => {
+  ) {
+    this.subscriptionCategories = this.categoryService.getCategories().subscribe((data: CategoryAddType[] | null) => {
       this.categories = data as CategoryAddType[];
     })
+   }
 
+  ngOnInit() {
     this.categoryService.categories$.subscribe((data: CategoryAddType[] | '{}' | null) => {
       this.categories = data as CategoryAddType[]
     })
   }
 
-  editCategory(category: any) {
+  ngOnDestroy() {
+    this.subscriptionCategories.unsubscribe()
+  }
+
+  editCategory(category: CategoryAddType) {
     this.categoryService.setEditCategory(category);
     this.editCategoryVisible = !this.editCategoryVisible;
   }
