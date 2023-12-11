@@ -2,9 +2,8 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { UserType } from "../../../../types/user.type";
 import { Router } from "@angular/router";
-import { AuthService } from 'src/app/shared/services/auth.service';
-import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
-import { SignupFormInterface } from 'src/app/shared/interfaces/signup-form-interface';
+import { AuthService } from '../../../shared/services/auth.service';
+import { SignupFormInterface } from '../../../shared/interfaces/signup-form-interface';
 
 @Component({
   selector: 'signup',
@@ -14,8 +13,7 @@ import { SignupFormInterface } from 'src/app/shared/interfaces/signup-form-inter
 export class SignupComponent {
 
   constructor(private router: Router,
-    private auth: AuthService,
-    private ls: LocalStorageService) {
+    private auth: AuthService) {
   }
 
 

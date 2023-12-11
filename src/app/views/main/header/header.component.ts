@@ -4,7 +4,6 @@ import { ConfirmEventType, ConfirmationService, MenuItemCommandEvent, MessageSer
 import { Subscription } from 'rxjs';
 import { NAV_MENU } from '../../../shared/constants/constants';
 import { AuthService } from '../../../shared/services/auth.service';
-import { LocalStorageService } from '../../../shared/services/local-storage.service';
 
 @Component({
   selector: 'header-component',
@@ -20,8 +19,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private subscriptionSidebarVisible: Subscription;
 
 
-  constructor(private ls: LocalStorageService,
-    private auth: AuthService,
+  constructor(private auth: AuthService,
     private router: Router,
     private confirmationService: ConfirmationService,
     private messageService: MessageService) {

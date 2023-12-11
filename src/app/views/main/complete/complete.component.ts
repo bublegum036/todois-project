@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { TASKS_COLUMNS } from 'src/app/shared/constants/constants';
-import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
+import { TasksService } from 'src/app/shared/services/tasks.service';
 import { TaskAddType } from 'src/types/task-add.type';
 
 @Component({
@@ -15,17 +15,17 @@ export class CompleteComponent implements OnInit {
   column: { field: string; header: string }[] = TASKS_COLUMNS;
 
   constructor(
-    private ls: LocalStorageService,
+    private tasksService: TasksService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit() {
-    this.ls.getCompleteTasks().subscribe((data: TaskAddType[] | null) => {
+    this.tasksService.getCompleteTasks().subscribe((data: TaskAddType[] | null) => {
       this.tasksComplete = data;
     });
 
-    this.ls.tasksComplete$.subscribe((data: TaskAddType[] | null) => {
+    this.tasksService.tasksComplete$.subscribe((data: TaskAddType[] | null) => {
       this.tasksComplete = data;
     });
   }
@@ -36,7 +36,7 @@ export class CompleteComponent implements OnInit {
       header: 'Выполнение',
       icon: 'pi pi-info-circle',
       accept: () => {
-        this.ls.setCompleteTasks([]);
+        this.tasksService.setCompleteTasks([]);
         this.messageService.add({
           severity: 'info',
           summary: 'Успешно',

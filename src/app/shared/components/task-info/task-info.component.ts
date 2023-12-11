@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TaskAddType } from '../../../../types/task-add.type';
-import { LocalStorageService } from '../../services/local-storage.service';
+import { TasksService } from '../../services/tasks.service';
 
 @Component({
   selector: 'task-info',
@@ -16,14 +16,14 @@ export class TaskInfoComponent implements OnInit {
   taskPriority: string | null = null;
   taskCategory?: string | null = null;
 
-  constructor(private ls: LocalStorageService) { }
+  constructor(private tasksService: TasksService) { }
 
   ngOnInit(): void {
-    this.ls.taskInfo$.subscribe(task => {
+    this.tasksService.taskInfo$.subscribe(task => {
       this.taskForAction = task;
     })
 
-    this.ls.taskInfo$.subscribe(task => {
+    this.tasksService.taskInfo$.subscribe(task => {
       if (task) {
         this.taskName = (this.taskForAction as TaskAddType).taskName;
         this.taskDescription = (this.taskForAction as TaskAddType).taskDescription;

@@ -1,9 +1,8 @@
 import { CategoryService } from './../../services/category.service';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { LocalStorageService } from '../../services/local-storage.service';
 import { MessageService } from 'primeng/api';
-import { CategoryAddType } from 'src/types/category-add.type';
+import { CategoryAddType } from '../../../../types/category-add.type';
 import { IdService } from '../../services/id.service';
 import { CategoryAddFormInterface } from '../../interfaces/category-add-form.interface';
 

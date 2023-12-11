@@ -1,8 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { MessageService } from "primeng/api";
-import { TaskAddType } from "../../../../types/task-add.type";
-import { LocalStorageService } from '../../services/local-storage.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
+import { TaskAddType } from '../../../../types/task-add.type';
+import { TasksService } from '../../services/tasks.service';
 import { IdService } from '../../services/id.service';
 import { CategoryAddType } from '../../../../types/category-add.type';
 import { PRIORITY_TASKS } from '../../constants/constants';
@@ -24,42 +24,48 @@ export class TaskFormComponent implements OnInit {
   isButton: boolean = true;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   taskForm: FormGroup = new FormGroup<TaskFormInterface>({
-    taskName: new FormControl(null, [Validators.required, Validators.maxLength(30), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]),
-    taskDescription: new FormControl(null, [Validators.required, Validators.maxLength(256), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]),
+    taskName: new FormControl(null, [
+      Validators.required,
+      Validators.maxLength(30),
+      Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$'),
+    ]),
+    taskDescription: new FormControl(null, [
+      Validators.required,
+      Validators.maxLength(256),
+      Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$'),
+    ]),
     taskDateSet: new FormControl(null, Validators.required),
     taskDeadline: new FormControl(null, Validators.required),
     taskPriority: new FormControl(null, Validators.required),
     taskCategory: new FormControl(null),
-  })
+  });
 
-
-  constructor(private messageService: MessageService,
-    private ls: LocalStorageService,
+  constructor(
+    private messageService: MessageService,
+    private tasksService: TasksService,
     private idService: IdService,
     private categoryService: CategoryService
-  ) { }
-
+  ) {}
 
   ngOnInit() {
-    this.ls.getTasks().subscribe((data => {
-      this.tasks = data;
-    }));
-
-    this.ls.tasks$.subscribe((data: TaskAddType[] | null) => {
+    this.tasksService.getTasks().subscribe((data) => {
       this.tasks = data;
     });
 
+    this.tasksService.tasks$.subscribe((data: TaskAddType[] | null) => {
+      this.tasks = data;
+    });
 
-    this.ls.getEditTask().subscribe((data: TaskAddType | null) => {
+    this.tasksService.getEditTask().subscribe((data: TaskAddType | null) => {
       if (data === null) {
         this.isButton = true;
       } else {
         this.isButton = false;
       }
       this.taskForEdit = data;
-    })
+    });
 
-    this.ls.taskForEdit$.subscribe((data: TaskAddType | null) => {
+    this.tasksService.taskForEdit$.subscribe((data: TaskAddType | null) => {
       if (data) {
         this.isButton = false;
         this.taskForm.patchValue({
@@ -67,61 +73,71 @@ export class TaskFormComponent implements OnInit {
           taskDescription: data.taskDescription,
           taskDateSet: data.taskDateSet,
           taskDeadline: data.taskDeadline,
-          taskPriority: this.priority.find(item => item.label === data.taskPriority),
-          taskCategory: this.taskCategory?.find(item => item.label === data.taskCategory),
-        })
+          taskPriority: this.priority.find(
+            (item) => item.label === data.taskPriority
+          ),
+          taskCategory: this.taskCategory?.find(
+            (item) => item.label === data.taskCategory
+          ),
+        });
       } else {
         this.isButton = true;
         this.taskForm.reset();
       }
       this.taskForEdit = data;
-    })
+    });
 
-    this.categoryService.getCategories().subscribe(data => {
+    this.categoryService.getCategories().subscribe((data) => {
       if (data !== null) {
         this.taskCategory = data;
       }
-    })
+    });
 
-    this.categoryService.categories$.subscribe((data: CategoryAddType[] | null) => {
-      if (data !== null) {
-        this.taskCategory = data;
+    this.categoryService.categories$.subscribe(
+      (data: CategoryAddType[] | null) => {
+        if (data !== null) {
+          this.taskCategory = data;
+        }
       }
-    })
+    );
 
-    this.idService.taskId$.subscribe(taskId => {
-      this.taskId = taskId
-    })
+    this.idService.taskId$.subscribe((taskId) => {
+      this.taskId = taskId;
+    });
   }
 
   createTask() {
-    if (this.taskForm.valid
-      && this.taskForm.value.taskName
-      && this.taskForm.value.taskDescription
-      && this.taskForm.value.taskDateSet
-      && this.taskForm.value.taskDeadline
-      && this.taskForm.value.taskPriority
+    if (
+      this.taskForm.valid &&
+      this.taskForm.value.taskName &&
+      this.taskForm.value.taskDescription &&
+      this.taskForm.value.taskDateSet &&
+      this.taskForm.value.taskDeadline &&
+      this.taskForm.value.taskPriority
     ) {
-
       let task: TaskAddType = {
         taskName: this.taskForm.value.taskName,
         taskDescription: this.taskForm.value.taskDescription,
-        taskDateSet: new Date(this.taskForm.value.taskDateSet).toLocaleDateString(),
-        taskDeadline: new Date(this.taskForm.value.taskDeadline).toLocaleDateString(),
+        taskDateSet: new Date(
+          this.taskForm.value.taskDateSet
+        ).toLocaleDateString(),
+        taskDeadline: new Date(
+          this.taskForm.value.taskDeadline
+        ).toLocaleDateString(),
         taskPriority: Object(this.taskForm.value.taskPriority).label,
         taskCategory: Object(this.taskForm.value.taskCategory).label,
-        taskId: this.taskId
-      }
+        taskId: this.taskId,
+      };
 
       if (this.tasks === null) {
-        this.ls.setTasks([task])
-        this.saveNewId()
+        this.tasksService.setTasks([task]);
+        this.saveNewId();
         this.closeAndCleanForm();
       } else {
-        let tasksFromLS: TaskAddType[] = this.tasks!
+        let tasksFromLS: TaskAddType[] = this.tasks!;
         let tasksArrayForLS = tasksFromLS.concat([task]);
-        this.ls.setTasks(tasksArrayForLS)
-        this.saveNewId()
+        this.tasksService.setTasks(tasksArrayForLS);
+        this.saveNewId();
         this.closeAndCleanForm();
       }
     }
@@ -129,24 +145,29 @@ export class TaskFormComponent implements OnInit {
 
   editTask() {
     if (this.taskForEdit !== null) {
-      if (this.taskForm.valid
-        && this.taskForm.value.taskName
-        && this.taskForm.value.taskDescription
-        && this.taskForm.value.taskDateSet
-        && this.taskForm.value.taskDeadline
-        && this.taskForm.value.taskPriority
+      if (
+        this.taskForm.valid &&
+        this.taskForm.value.taskName &&
+        this.taskForm.value.taskDescription &&
+        this.taskForm.value.taskDateSet &&
+        this.taskForm.value.taskDeadline &&
+        this.taskForm.value.taskPriority
       ) {
         let taskDateSet = null;
         let taskDeadline = null;
         if (typeof this.taskForm.value.taskDateSet === 'string') {
-          taskDateSet = this.taskForm.value.taskDateSet
+          taskDateSet = this.taskForm.value.taskDateSet;
         } else {
-          taskDateSet = new Date(this.taskForm.value.taskDateSet).toLocaleDateString()
+          taskDateSet = new Date(
+            this.taskForm.value.taskDateSet
+          ).toLocaleDateString();
         }
         if (typeof this.taskForm.value.taskDeadline === 'string') {
-          taskDeadline = this.taskForm.value.taskDeadline
+          taskDeadline = this.taskForm.value.taskDeadline;
         } else {
-          taskDeadline = new Date(this.taskForm.value.taskDeadline).toLocaleDateString()
+          taskDeadline = new Date(
+            this.taskForm.value.taskDeadline
+          ).toLocaleDateString();
         }
         let task: TaskAddType = {
           taskName: this.taskForm.value.taskName,
@@ -155,15 +176,17 @@ export class TaskFormComponent implements OnInit {
           taskDeadline: taskDeadline,
           taskPriority: Object(this.taskForm.value.taskPriority).label,
           taskCategory: Object(this.taskForm.value.taskCategory)?.label,
-          taskId: this.taskForEdit.taskId
-        }
+          taskId: this.taskForEdit.taskId,
+        };
 
         let tasksFromLS: TaskAddType[] = this.tasks!;
-        let indexTaskInArray: number = tasksFromLS.findIndex(taskFromLS => taskFromLS.taskId === task.taskId);
+        let indexTaskInArray: number = tasksFromLS.findIndex(
+          (taskFromLS) => taskFromLS.taskId === task.taskId
+        );
         if (indexTaskInArray !== -1) {
           tasksFromLS.splice(indexTaskInArray, 1, task);
-          this.ls.setTasks(tasksFromLS)
-          this.closeAndCleanForm()
+          this.tasksService.setTasks(tasksFromLS);
+          this.closeAndCleanForm();
         }
       }
     }
@@ -171,9 +194,17 @@ export class TaskFormComponent implements OnInit {
 
   closeAndCleanForm() {
     if (!this.isButton) {
-      this.messageService.add({ severity: 'success', summary: 'Успешно!', detail: 'Задача отредактирована' })
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Успешно!',
+        detail: 'Задача отредактирована',
+      });
     } else {
-      this.messageService.add({ severity: 'success', summary: 'Успешно!', detail: 'Задача создана' })
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Успешно!',
+        detail: 'Задача создана',
+      });
     }
     setTimeout(() => {
       this.visibleChange.emit(false);
@@ -182,11 +213,13 @@ export class TaskFormComponent implements OnInit {
   }
 
   saveNewId() {
-    this.idService.saveTaskId()
+    this.idService.saveTaskId();
   }
 
   findPriorityByLabel(label: string) {
-    const foundPriority = this.priority?.find(priority => priority.label === label);
+    const foundPriority = this.priority?.find(
+      (priority) => priority.label === label
+    );
     return foundPriority ? foundPriority.data : null;
   }
 }

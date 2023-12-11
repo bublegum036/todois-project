@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
-import { CategoryService } from 'src/app/shared/services/category.service';
-import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
-import { CategoryAddType } from 'src/types/category-add.type';
+import { CategoryService } from '../../../shared/services/category.service';
+import { CategoryAddType } from '../../../../types/category-add.type';
 
 @Component({
   selector: 'task-category',
@@ -15,8 +14,7 @@ export class TaskCategoryComponent implements OnInit {
   addCategoryVisible: boolean = false;
   editCategoryVisible: boolean = false;
 
-  constructor(private ls: LocalStorageService,
-    private messageService: MessageService,
+  constructor(private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private categoryService: CategoryService
   ) { }

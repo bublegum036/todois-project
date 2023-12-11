@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService, SortEvent } from "primeng/api";
 import { TaskAddType } from "../../../../types/task-add.type";
-import { LocalStorageService } from "../../../shared/services/local-storage.service";
-import { CategoryAddType } from 'src/types/category-add.type';
+import { TasksService } from "../../../shared/services/tasks.service";
+import { CategoryAddType } from '../../../../types/category-add.type';
 import { TASKS_COLUMNS } from '../../../shared/constants/constants'
-import { CategoryService } from 'src/app/shared/services/category.service';
+import { CategoryService } from '../../../shared/services/category.service';
 
 @Component({
     selector: 'tasks',
@@ -24,7 +24,7 @@ export class TasksComponent implements OnInit {
 
 
     constructor(private messageService: MessageService,
-        private ls: LocalStorageService,
+        private tasksService: TasksService,
         private confirmationService: ConfirmationService,
         private categoryService: CategoryService
     ) {
@@ -32,11 +32,11 @@ export class TasksComponent implements OnInit {
 
 
     ngOnInit() {
-        this.ls.getTasks().subscribe((data => {
+        this.tasksService.getTasks().subscribe((data => {
             this.tasks = data || [];
         }));
 
-        this.ls.tasks$.subscribe((data: TaskAddType[] | null) => {
+        this.tasksService.tasks$.subscribe((data: TaskAddType[] | null) => {
             this.tasks = data || [];
         });
 
@@ -48,18 +48,18 @@ export class TasksComponent implements OnInit {
             this.categories = data || [];
         });
 
-        this.ls.getCompleteTasks().subscribe((data: TaskAddType[] | null) => {
+        this.tasksService.getCompleteTasks().subscribe((data: TaskAddType[] | null) => {
             this.tasksComplete = data || [];
         });
 
-        this.ls.tasksComplete$.subscribe((data: TaskAddType[] | null) => {
+        this.tasksService.tasksComplete$.subscribe((data: TaskAddType[] | null) => {
             this.tasksComplete = data || [];
         });
     }
 
     openAddTaskMenu() {
         this.addTaskVisible = !this.addTaskVisible;
-        this.ls.setEditTask(null)
+        this.tasksService.setEditTask(null)
     }
 
     closeEditTaskMenu(value: boolean) {
@@ -85,11 +85,11 @@ export class TasksComponent implements OnInit {
 
     infoTask(task: TaskAddType) {
         this.infoTaskVisible = !this.infoTaskVisible;
-        this.ls.setInfoTask(task)
+        this.tasksService.setInfoTask(task)
     }
 
     editTask(task: TaskAddType) {
-        this.ls.setEditTask(task);
+        this.tasksService.setEditTask(task);
         this.editTaskVisible = !this.editTaskVisible;
     }
 
@@ -104,7 +104,7 @@ export class TasksComponent implements OnInit {
                     if (indexTaskInArray !== -1) {
                         this.tasks.splice(indexTaskInArray, 1);
                         let tasksArrayForLS = this.tasks;
-                        this.ls.setTasks(tasksArrayForLS)
+                        this.tasksService.setTasks(tasksArrayForLS)
                     }
                     this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Задача удалена' });
                 },
@@ -136,13 +136,13 @@ export class TasksComponent implements OnInit {
                 if (indexTaskInArray !== -1) {
                     this.tasks.splice(indexTaskInArray, 1);
                     let tasksArrayForLS = this.tasks;
-                    this.ls.setTasks(tasksArrayForLS)
+                    this.tasksService.setTasks(tasksArrayForLS)
                     if (!this.tasksComplete) {
-                        this.ls.setCompleteTasks([task])
+                        this.tasksService.setCompleteTasks([task])
                     } else {
                         let tasksFromLS: TaskAddType[] = this.tasksComplete;
                         let tasksArrayForLS = tasksFromLS.concat([task]);
-                        this.ls.setCompleteTasks(tasksArrayForLS)
+                        this.tasksService.setCompleteTasks(tasksArrayForLS)
                     }
                 }
                 this.messageService.add({
