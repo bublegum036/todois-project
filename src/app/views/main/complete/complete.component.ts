@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
-import { TASKS_COLUMNS } from 'src/app/shared/constants/constants';
+import { TASKS_COMPLETE_COLUMNS } from 'src/app/shared/constants/constants';
 import { TasksService } from 'src/app/shared/services/tasks.service';
 import { TaskAddType } from 'src/types/task-add.type';
 
@@ -12,7 +12,7 @@ import { TaskAddType } from 'src/types/task-add.type';
 })
 export class CompleteComponent implements OnInit {
   tasksComplete: TaskAddType[] | null = null;
-  column: { field: string; header: string }[] = TASKS_COLUMNS;
+  column: { field: string; header: string }[] = TASKS_COMPLETE_COLUMNS;
 
   constructor(
     private tasksService: TasksService,

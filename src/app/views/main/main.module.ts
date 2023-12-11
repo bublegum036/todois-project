@@ -18,9 +18,7 @@ import { HeaderComponent } from './header/header.component';
 import { MenuModule } from 'primeng/menu';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { CompleteComponent } from './complete/complete.component';
-
-
-
+import { InputTextModule } from "primeng/inputtext";
 
 @NgModule({
   declarations: [
@@ -46,9 +44,10 @@ import { CompleteComponent } from './complete/complete.component';
     SidebarModule,
     MenuModule,
     TabMenuModule,
+    InputTextModule
   ],
   exports: [
-    SidebarComponent, 
+    SidebarComponent,
     TasksComponent,
     HeaderComponent
   ],
