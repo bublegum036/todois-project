@@ -19,6 +19,7 @@ import { MenuModule } from 'primeng/menu';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { CompleteComponent } from './complete/complete.component';
 import { InputTextModule } from "primeng/inputtext";
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { InputTextModule } from "primeng/inputtext";
     SidebarModule,
     MenuModule,
     TabMenuModule,
-    InputTextModule
+    InputTextModule,
+    FormsModule
   ],
   exports: [
     SidebarComponent,

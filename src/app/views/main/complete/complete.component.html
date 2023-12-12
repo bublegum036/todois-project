@@ -1,32 +1,75 @@
 <section class="complete">
-    <div class="complete-empty" *ngIf="!tasksComplete || tasksComplete.length < 1">
-        <div>Отсутствую выполненные задачи! </div>
-    </div>
+  <div
+    class="complete-empty"
+    *ngIf="!tasksComplete || tasksComplete.length < 1"
+  >
+    <div>Отсутствую выполненные задачи!</div>
+  </div>
 
-    <div class="complete-tasks-table" *ngIf="tasksComplete && tasksComplete.length>0">
-        <div class="tasks-table-action">
-            <p-button label="Очистить" severity="warning" (click)="removeCompleteTasks()"></p-button>
+  <!--  -->
+  <!-- (click)="clear(dt1)" -->
+
+  <div
+    class="complete-tasks-table"
+    *ngIf="tasksComplete && tasksComplete.length > 0"
+  >
+    <div class="tasks-table-action">
+      <p-button
+        label="Очистить"
+        severity="warning"
+        (click)="removeCompleteTasks()"
+      ></p-button>
+    </div>
+    <p-table
+      #complete
+      [value]="tasksComplete"
+      [columns]="column"
+      [globalFilterFields]="['taskName', 'taskPriority', 'taskCategory']"
+      responsiveLayout="stack"
+      [breakpoint]="'672px'"
+      [tableStyle]="{ 'min-width': '50vw' }"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex">
+          <p-button
+            label="Сбросить"
+            [outlined]="true"
+            severity="warning"
+          ></p-button>
+          <span class="p-input-icon-left ml-auto">
+            <i class="pi pi-search"></i>
+            <input
+              pInputText
+              type="text"
+              placeholder="Поиск"
+              [(ngModel)]="globalFilter"
+              (input)="complete.filterGlobal(globalFilter, 'contains')"
+            />
+          </span>
         </div>
-        <p-table [value]="tasksComplete" [columns]="column" responsiveLayout="stack" [breakpoint]="'672px'"
-            [tableStyle]="{'min-width': '50vw'}">
-            <ng-template pTemplate="header" let-columns>
-                <tr>
-                    <th *ngFor="let column of columns">{{column.header}}</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-currentTask let-columns="columns">
-                <tr>
-                    <td *ngFor="let col of columns">
-                        <span class="p-column-title">{{[col.header]}}</span>
-                        {{ currentTask[col.field] | trimText }}
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let column of columns">{{ column.header }}</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-currentTask let-columns="columns">
+        <tr>
+          <td *ngFor="let col of columns">
+            <span class="p-column-title">{{ [col.header] }}</span>
+            {{ currentTask[col.field] | trimText }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
 
-
-    <p-toast></p-toast>
-    <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Да" acceptIcon=" " rejectLabel="Нет"
-        rejectIcon=" "></p-confirmDialog>
+  <p-toast></p-toast>
+  <p-confirmDialog
+    [style]="{ width: '50vw' }"
+    acceptLabel="Да"
+    acceptIcon=" "
+    rejectLabel="Нет"
+    rejectIcon=" "
+  ></p-confirmDialog>
 </section>

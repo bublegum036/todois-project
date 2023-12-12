@@ -5,6 +5,7 @@ import { TASKS_COMPLETE_COLUMNS } from 'src/app/shared/constants/constants';
 import { TasksService } from 'src/app/shared/services/tasks.service';
 import { TaskAddType } from 'src/types/task-add.type';
 
+
 @Component({
   selector: 'app-complete',
   templateUrl: './complete.component.html',
@@ -14,6 +15,7 @@ import { TaskAddType } from 'src/types/task-add.type';
 export class CompleteComponent implements OnInit, OnDestroy {
   tasksComplete: TaskAddType[] | null = null;
   column: { field: string; header: string }[] = TASKS_COMPLETE_COLUMNS;
+  globalFilter: string = '';
   subscriptionTasksComplete: Subscription;
 
   constructor(
