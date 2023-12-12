@@ -31,7 +31,7 @@
       ></p-button>
     </div>
     <p-table
-      #dt1
+      #tasksTable
       [value]="tasks"
       [columns]="column"
       responsiveLayout="stack"
@@ -39,8 +39,22 @@
       [tableStyle]="{ 'min-width': '50vw' }"
       [sortMode]="'single'"
       (sortFunction)="customSort($event)"
+      [globalFilterFields]="['taskName', 'taskPriority', 'taskCategory']"
     >
-
+    <ng-template pTemplate="caption">
+      <div class="flex">
+        <span class="p-input-icon-left ml-auto">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            placeholder="Поиск"
+            [(ngModel)]="globalFilter"
+            (input)="tasksTable.filterGlobal(globalFilter, 'contains')"
+          />
+        </span>
+      </div>
+    </ng-template>
 
       <ng-template pTemplate="header" let-columns>
         <tr>

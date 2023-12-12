@@ -25,6 +25,7 @@ export class TasksComponent implements OnInit, OnDestroy {
   private subscriptionTasks: Subscription;
   private subscriptionCategories: Subscription;
   private subscriptionTasksComplete: Subscription;
+  globalFilter: string | null = null;
 
   constructor(
     private messageService: MessageService,
