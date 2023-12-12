@@ -1,10 +1,13 @@
 import { Subscription } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import {
+  ConfirmEventType,
+  ConfirmationService,
+  MessageService,
+} from 'primeng/api';
 import { TASKS_COMPLETE_COLUMNS } from 'src/app/shared/constants/constants';
 import { TasksService } from 'src/app/shared/services/tasks.service';
 import { TaskAddType } from 'src/types/task-add.type';
-
 
 @Component({
   selector: 'app-complete',
@@ -15,7 +18,7 @@ import { TaskAddType } from 'src/types/task-add.type';
 export class CompleteComponent implements OnInit, OnDestroy {
   tasksComplete: TaskAddType[] | null = null;
   column: { field: string; header: string }[] = TASKS_COMPLETE_COLUMNS;
-  globalFilter: string = '';
+  globalFilter: string | null = null;
   subscriptionTasksComplete: Subscription;
 
   constructor(
@@ -23,9 +26,11 @@ export class CompleteComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {
-    this.subscriptionTasksComplete = this.tasksService.getCompleteTasks().subscribe((data: TaskAddType[] | null) => {
-      this.tasksComplete = data;
-    });
+    this.subscriptionTasksComplete = this.tasksService
+      .getCompleteTasks()
+      .subscribe((data: TaskAddType[] | null) => {
+        this.tasksComplete = data;
+      });
   }
 
   ngOnInit() {
@@ -35,7 +40,7 @@ export class CompleteComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptionTasksComplete.unsubscribe()
+    this.subscriptionTasksComplete.unsubscribe();
   }
 
   removeCompleteTasks() {
