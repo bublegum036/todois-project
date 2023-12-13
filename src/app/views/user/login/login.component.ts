@@ -16,12 +16,13 @@ export class LoginComponent {
   loginUserName: string | null = null;
   loginPassword: string | null = null;
   user: UserType | null = null;
+  activeUser: string | null = null;
 
   constructor(
     private router: Router,
     private auth: AuthService,
     private messageService: MessageService
-  ) {}
+  ) { }
 
   loginForm: FormGroup = new FormGroup<LoginFormInterface>({
     userName: new FormControl(null, [
@@ -32,44 +33,44 @@ export class LoginComponent {
   });
 
   login() {
-    this.auth.getUser().subscribe((data) => {
-      this.user = data;
-    });
-    if (this.user !== null) {
-      this.loginUserName = this.user.email;
-      this.loginPassword = this.user.password;
-      if (
-        this.loginForm.value.userName === this.loginUserName &&
-        this.loginForm.value.password !== this.loginPassword
-      ) {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Ошибка',
-          detail: 'Неверный пароль!',
-        });
-      }
-      if (this.loginForm.value.userName !== this.loginUserName) {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Ошибка',
-          detail: 'Пользователь не существует!',
-        });
-      }
-      if (
-        this.loginForm.value.userName === this.loginUserName &&
-        this.loginForm.value.password === this.loginPassword
-      ) {
-        this.loginForm.reset();
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Успешно',
-          detail: 'Вы авторизованы!',
-        });
-        setTimeout(() => {
-          this.auth.login();
-          this.router.navigate(['/tasks']);
-        }, 500);
-      }
+    this.auth.getUser(this.loginForm.value.userName).subscribe(user => {
+      this.user = user
+    })
+    if (this.user && this.user.userInfo.email && this.user.userInfo.password) {
+      this.loginUserName = this.user.userInfo.email;
+      this.loginPassword = this.user.userInfo.password;
+    if (
+      this.loginForm.value.userName === this.loginUserName &&
+      this.loginForm.value.password !== this.loginPassword
+    ) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Ошибка',
+        detail: 'Неверный пароль!',
+      });
+    }
+    if (this.loginForm.value.userName !== this.loginUserName) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Ошибка',
+        detail: 'Пользователь не существует!',
+      });
+    }
+    if (
+      this.loginForm.value.userName === this.loginUserName &&
+      this.loginForm.value.password === this.loginPassword
+    ) {
+      this.loginForm.reset();
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Успешно',
+        detail: 'Вы авторизованы!',
+      });
+      setTimeout(() => {
+        this.auth.login();
+        this.router.navigate(['/tasks']);
+      }, 500);
+    }
     }
   }
 }

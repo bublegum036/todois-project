@@ -8,29 +8,64 @@ import { UserType } from 'src/types/user.type';
 })
 export class AuthService {
   public userKey: string = 'user';
+  public activeUserKey: string = 'activeUser';
   private user: UserType | null = null;
   public user$: Subject<UserType | null> = new Subject<UserType | null>();
+  public activeUser: string | null = null;
+  public activeUser$: Subject<string | undefined> = new Subject<string | undefined>();
   private isAuth: boolean = false;
   public isAuth$: Subject<boolean> = new Subject<boolean>();
   public userName: string | null = null;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
-  setUser(user: UserType | null) {
-    localStorage.setItem(this.userKey, JSON.stringify(user));
+  setUser(user: UserType | null, userKey: string) {
+    this.setActiveUser(userKey)
+    localStorage.setItem(userKey, JSON.stringify([user]));
     this.user$.next(user);
   }
 
-  getUser(): Observable<UserType | null> {
-    const user = localStorage.getItem(this.userKey);
-    if (user) {
-      this.user = JSON.parse(user);
-    } else {
-      this.setUser(null);
-      this.user = null;
+  getUser(activeUser: string): Observable<UserType | null> {
+    const userArrayFromLS = localStorage.getItem(activeUser);
+    if (userArrayFromLS && userArrayFromLS.length > 0) {
+      const userArray = JSON.parse(userArrayFromLS)
+      this.user = userArray.find((item: UserType) => {
+        return item.hasOwnProperty("userInfo")
+      })
     }
     return of(this.user);
   }
+
+
+  // [{
+  //   userInfo: {
+  //     "name": "Andrey",
+  //     "email": "bublegum036@gmail.com",
+  //     "password": "Qq12345678"
+  //   },
+  //   {categories: [
+  //     {
+  //       "name": "Andrey",
+  //       "email": "bublegum036@gmail.com",
+  //       "password": "Qq12345678"
+  //     }
+  //   ]}
+  // }];
+
+  setActiveUser(userLogin: string) {
+    localStorage.setItem(this.activeUserKey, userLogin);
+  }
+
+  getActiveUser(): Observable<string | null> {
+    const user = localStorage.getItem(this.activeUserKey);
+    if (user && user.length > 0) {
+      this.activeUser = user
+    } else {
+      localStorage.removeItem(this.activeUserKey)
+    }
+    return of(this.activeUser)
+  }
+
 
   login() {
     this.isAuth = true;
@@ -39,6 +74,7 @@ export class AuthService {
 
   logout() {
     this.isAuth = false;
+    localStorage.removeItem(this.activeUserKey);
     this.isAuth$.next(false);
     this.router.navigate(['/']);
   }
@@ -47,17 +83,19 @@ export class AuthService {
     return this.isAuth;
   }
 
-  removeUserProfile() {
-    localStorage.clear();
+  removeUserProfile(activeUser: string) {
+    localStorage.removeItem(activeUser);
+    localStorage.removeItem(this.activeUserKey);
+
   }
 
   getUserName(): Observable<string | null> {
     const user = localStorage.getItem(this.userKey);
-    if(user) {
-        this.userName = JSON.parse(user).name
+    if (user) {
+      this.userName = JSON.parse(user).name
     } else {
-        this.userName = null
+      this.userName = null
     }
     return of(this.userName)
-}
+  }
 }

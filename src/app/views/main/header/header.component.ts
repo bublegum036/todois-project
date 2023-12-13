@@ -14,10 +14,12 @@ import { AuthService } from '../../../shared/services/auth.service';
 export class HeaderComponent implements OnInit, OnDestroy {
   sidebarVisible: boolean = false;
   userName: string | null = null;
+  activeUser: string;
   userMenu: { label: string, icon: string, command?: any }[] = [];
   navMenu: { label: string, routerLink: [string] }[] = NAV_MENU;
   private subscriptionSidebarVisible: Subscription;
   private subscriptionUserName: Subscription;
+  private subscriptionActiveUser: Subscription;
 
 
   constructor(private auth: AuthService,
@@ -38,6 +40,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.activeUser = ''
+    this.subscriptionActiveUser = this.auth.getActiveUser().subscribe(user => {
+      if (user && user.length > 0) {
+        this.activeUser = user
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -75,7 +83,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       header: 'Удаление',
       icon: 'pi pi-info-circle',
       accept: () => {
-        this.auth.removeUserProfile()
+        if (this.auth.activeUser)
+          this.auth.removeUserProfile(this.activeUser)
         this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Профиль удален' });
         setTimeout(() => {
           this.router.navigate(['/']);
