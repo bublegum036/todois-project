@@ -62,8 +62,8 @@ export class TasksComponent implements OnInit, OnDestroy {
       this.tasks = data || [];
     });
 
-    this.categoryService.categories$.subscribe((data: CategoryAddType[] | null) => {
-        this.categories = data || [];
+    this.categoryService.categories$.subscribe((data: CategoryAddType[] | []) => {
+        this.categories = data;
       }
     );
 

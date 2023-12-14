@@ -5,7 +5,7 @@
     <div class="task-category-action">
         <p-button label="Создать категорию" severity="warning" (click)="openAddCategoryMenu()"></p-button>
     </div>
-    <div class="task-category-table" *ngIf="categories && categories.length>0">
+    <div class="task-category-table" *ngIf="categories && categories.length > 0">
         <p-table [value]="categories" responsiveLayout="single">
             <ng-template pTemplate="header">
                 <tr>

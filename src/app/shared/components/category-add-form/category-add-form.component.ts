@@ -55,7 +55,7 @@ export class CategoryAddFormComponent implements OnInit, OnDestroy {
   })
 
   ngOnInit() {
-    this.categoryService.categories$.subscribe((data: CategoryAddType[] | null) => {
+    this.categoryService.categories$.subscribe((data: CategoryAddType[] | []) => {
       this.categories = data;
     })
 
@@ -114,24 +114,31 @@ export class CategoryAddFormComponent implements OnInit, OnDestroy {
           })]
           let arrayForUpdate = removeCategoryFromLS.concat(categoriesFromLS)
           localStorage.setItem(this.activeUser, JSON.stringify(arrayForUpdate))
-          this.categoryService.categories$.next(categoriesFromLS)
-
           this.saveCategoryNewId();
           this.closeAndCleanForm();
+          this.categoryService.categories$.next(categoriesFromLS.categories)
+        }
+      } else if (this.categories && this.categories.length > 0) {
+        let addCategory = this.categories.concat([category])
+        const userArrayFromLS = localStorage.getItem(this.activeUser);
+        if (userArrayFromLS !== null && userArrayFromLS.length > 0) {
+          let userArray = JSON.parse(userArrayFromLS);
+          let categoriesFromLS = userArray.find((item: { categories: CategoryAddType[] | [] }) => {
+            return item.hasOwnProperty('categories');
+          })
+          if (categoriesFromLS.categories && categoriesFromLS.categories.length !== 0) {
+            categoriesFromLS.categories = addCategory
+          }
+          let removeCategoryFromLS = [userArray.find((item: { categories: CategoryAddType[] | [] }) => {
+            return !item.hasOwnProperty('categories');
+          })]
+          let arrayForUpdate = removeCategoryFromLS.concat(categoriesFromLS)
+          localStorage.setItem(this.activeUser, JSON.stringify(arrayForUpdate))
+          this.saveCategoryNewId();
+          this.closeAndCleanForm();
+          this.categoryService.categories$.next(categoriesFromLS.categories)
         }
       }
-
-      // {
-
-      // } else {
-      //   if(this.categories === null) {
-      //     this.categories = []
-      //   }
-      //   let tasksArrayForLS = this.categories.concat(category);
-      //   this.categoryService.setCategories(tasksArrayForLS, this.activeUser);
-      //   this.saveCategoryNewId();
-      //   this.closeAndCleanForm();
-      // }
     }
   }
 

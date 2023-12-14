@@ -13,7 +13,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class TaskCategoryComponent implements OnInit, OnDestroy {
   activeUser: string;
-  categories: CategoryAddType[] | null = [];
+  categories: CategoryAddType[] | [] = [];
   addCategoryVisible: boolean = false;
   editCategoryVisible: boolean = false;
   subscriptionCategories: Subscription;
@@ -33,14 +33,14 @@ export class TaskCategoryComponent implements OnInit, OnDestroy {
       }
     })
 
-    this.subscriptionCategories = this.categoryService.getCategories(this.activeUser).subscribe((data: CategoryAddType[] | null) => {
+    this.subscriptionCategories = this.categoryService.getCategories(this.activeUser).subscribe((data: CategoryAddType[] | []) => {
       this.categories = data;
     })
   }
 
   ngOnInit() {
-    this.categoryService.categories$.subscribe((data: CategoryAddType[] | '{}' | null) => {
-      this.categories = data as CategoryAddType[]
+    this.categoryService.categories$.subscribe((data: CategoryAddType[] | []) => {
+      this.categories = data
     })
   }
 
