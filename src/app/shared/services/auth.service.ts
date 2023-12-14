@@ -74,9 +74,13 @@ export class AuthService {
   }
 
   getUserName(): Observable<string | null> {
-    const user = localStorage.getItem(this.userKey);
-    if (user) {
-      this.userName = JSON.parse(user).name
+    const activeUser = localStorage.getItem(this.activeUserKey);
+    if (activeUser) {
+      this.getUser(activeUser).subscribe(user => {
+        if(user && user.userInfo) {
+          this.userName = user.userInfo.name
+        }
+      })
     } else {
       this.userName = null
     }

@@ -26,6 +26,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private router: Router,
     private confirmationService: ConfirmationService,
     private messageService: MessageService) {
+      
     this.subscriptionSidebarVisible = this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         this.sidebarVisible = false;
@@ -71,6 +72,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptionSidebarVisible.unsubscribe();
     this.subscriptionUserName.unsubscribe();
+    this.subscriptionActiveUser.unsubscribe();
   }
 
   sidebarOpen() {

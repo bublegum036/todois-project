@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject, of } from 'rxjs';
 import { TaskAddType } from '../../../types/task-add.type';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,7 @@ export class TasksService {
   public taskForEdit$: Subject<TaskAddType | null> = new Subject<TaskAddType | null>();
 
 
-  constructor() {}
+  constructor(private auth: AuthService) {}
 
   getTasks(): Observable<TaskAddType[] | null> {
     const tasks = localStorage.getItem(this.tasksKey);
