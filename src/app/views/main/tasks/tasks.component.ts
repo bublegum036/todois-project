@@ -6,6 +6,7 @@ import { TasksService } from '../../../shared/services/tasks.service';
 import { CategoryAddType } from '../../../../types/category-add.type';
 import { TASKS_COLUMNS } from '../../../shared/constants/constants';
 import { CategoryService } from '../../../shared/services/category.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'tasks',
@@ -14,6 +15,7 @@ import { CategoryService } from '../../../shared/services/category.service';
   providers: [MessageService, ConfirmationService],
 })
 export class TasksComponent implements OnInit, OnDestroy {
+  activeUser: string;
   tasks: TaskAddType[] = [];
   categories: CategoryAddType[] = [];
   tasksComplete: TaskAddType[] = [];
@@ -25,19 +27,28 @@ export class TasksComponent implements OnInit, OnDestroy {
   private subscriptionTasks: Subscription;
   private subscriptionCategories: Subscription;
   private subscriptionTasksComplete: Subscription;
+  private subscriptionActiveUser: Subscription;
   globalFilter: string | null = null;
 
   constructor(
     private messageService: MessageService,
     private tasksService: TasksService,
     private confirmationService: ConfirmationService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private auth: AuthService
   ) {
+    this.activeUser = ''
+    this.subscriptionActiveUser = this.auth.getActiveUser().subscribe(user => {
+      if (user && user.length > 0) {
+        this.activeUser = user
+      }
+    })
+
     this.subscriptionTasks = this.tasksService.getTasks().subscribe((data) => {
       this.tasks = data || [];
     });
 
-    this.subscriptionCategories = this.categoryService.getCategories().subscribe((data: CategoryAddType[] | null) => {
+    this.subscriptionCategories = this.categoryService.getCategories(this.activeUser).subscribe((data: CategoryAddType[] | null) => {
       this.categories = data || [];
     });
 
@@ -65,6 +76,7 @@ export class TasksComponent implements OnInit, OnDestroy {
     this.subscriptionTasks.unsubscribe();
     this.subscriptionCategories.unsubscribe();
     this.subscriptionTasksComplete.unsubscribe();
+    this.subscriptionActiveUser.unsubscribe()
   }
 
   openAddTaskMenu() {

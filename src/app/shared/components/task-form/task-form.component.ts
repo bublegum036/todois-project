@@ -29,9 +29,9 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   taskId: number = 0;
   priority: PriorityType[] = PRIORITY_TASKS;
   isButton: boolean = true;
-  subscriptionTasks: Subscription;
-  subscriptionTaskForEdit: Subscription;
-  subscriptionTaskCategory: Subscription;
+  // subscriptionTasks: Subscription;
+  // subscriptionTaskForEdit: Subscription;
+  // subscriptionTaskCategory: Subscription;
 
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -58,28 +58,28 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     private idService: IdService,
     private categoryService: CategoryService
   ) {
-    this.subscriptionTasks = this.tasksService.getTasks().subscribe((data) => {
-      this.tasks = data;
-    });
+    // this.subscriptionTasks = this.tasksService.getTasks().subscribe((data) => {
+    //   this.tasks = data;
+    // });
 
-    this.subscriptionTaskForEdit = this.tasksService
-      .getEditTask()
-      .subscribe((data: TaskAddType | null) => {
-        if (data === null) {
-          this.isButton = true;
-        } else {
-          this.isButton = false;
-        }
-        this.taskForEdit = data;
-      });
+    // this.subscriptionTaskForEdit = this.tasksService
+    //   .getEditTask()
+    //   .subscribe((data: TaskAddType | null) => {
+    //     if (data === null) {
+    //       this.isButton = true;
+    //     } else {
+    //       this.isButton = false;
+    //     }
+    //     this.taskForEdit = data;
+    //   });
 
-    this.subscriptionTaskCategory = this.categoryService
-      .getCategories()
-      .subscribe((data) => {
-        if (data !== null) {
-          this.taskCategory = data;
-        }
-      });
+    // this.subscriptionTaskCategory = this.categoryService
+    //   .getCategories()
+    //   .subscribe((data) => {
+    //     if (data !== null) {
+    //       this.taskCategory = data;
+    //     }
+    //   });
   }
 
   ngOnInit() {
@@ -87,27 +87,27 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       this.tasks = data;
     });
 
-    this.tasksService.taskForEdit$.subscribe((data: TaskAddType | null) => {
-      if (data) {
-        this.isButton = false;
-        this.taskForm.patchValue({
-          taskName: data.taskName,
-          taskDescription: data.taskDescription,
-          taskDateSet: data.taskDateSet,
-          taskDeadline: data.taskDeadline,
-          taskPriority: this.priority.find(
-            (item) => item.label === data.taskPriority
-          ),
-          taskCategory: this.taskCategory?.find(
-            (item) => item.label === data.taskCategory
-          ),
-        });
-      } else {
-        this.isButton = true;
-        this.taskForm.reset();
-      }
-      this.taskForEdit = data;
-    });
+    // this.tasksService.taskForEdit$.subscribe((data: TaskAddType | null) => {
+    //   if (data) {
+    //     this.isButton = false;
+    //     this.taskForm.patchValue({
+    //       taskName: data.taskName,
+    //       taskDescription: data.taskDescription,
+    //       taskDateSet: data.taskDateSet,
+    //       taskDeadline: data.taskDeadline,
+    //       taskPriority: this.priority.find(
+    //         (item) => item.label === data.taskPriority
+    //       ),
+    //       taskCategory: this.taskCategory?.find(
+    //         (item) => item.label === data.taskCategory
+    //       ),
+    //     });
+    //   } else {
+    //     this.isButton = true;
+    //     this.taskForm.reset();
+    //   }
+    //   this.taskForEdit = data;
+    // });
 
     this.categoryService.categories$.subscribe(
       (data: CategoryAddType[] | null) => {
@@ -123,9 +123,9 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptionTasks.unsubscribe();
-    this.subscriptionTaskForEdit.unsubscribe();
-    this.subscriptionTaskCategory.unsubscribe();
+    // this.subscriptionTasks.unsubscribe();
+    // this.subscriptionTaskForEdit.unsubscribe();
+    // this.subscriptionTaskCategory.unsubscribe();
   }
 
   createTask() {

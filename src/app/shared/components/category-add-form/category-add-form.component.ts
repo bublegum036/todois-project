@@ -6,6 +6,7 @@ import { MessageService } from 'primeng/api';
 import { CategoryAddType } from '../../../../types/category-add.type';
 import { IdService } from '../../services/id.service';
 import { CategoryAddFormInterface } from '../../interfaces/category-add-form.interface';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'category-add-form',
@@ -13,30 +14,40 @@ import { CategoryAddFormInterface } from '../../interfaces/category-add-form.int
   styleUrls: ['./category-add-form.component.scss']
 })
 export class CategoryAddFormComponent implements OnInit, OnDestroy {
-  categories: CategoryAddType[] | null = [];
+  activeUser: string;
+  categories: CategoryAddType[] | null = null;
   categoryId: number = 0;
   categoryForEdit: CategoryAddType | null = null;
   isButton: boolean = true;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   subscriptionCategories: Subscription;
   subscriptionCategoryForEdit: Subscription;
+  private subscriptionActiveUser: Subscription;
 
 
   constructor(private categoryService: CategoryService,
     private messageService: MessageService,
-    private idService: IdService) {
-      this.subscriptionCategories = this.categoryService.getCategories().subscribe((data: CategoryAddType[] | null) => {
-        this.categories = data;
-      })
+    private idService: IdService,
+    private auth: AuthService) {
 
-      this.subscriptionCategoryForEdit = this.categoryService.getEditCategory().subscribe((data: CategoryAddType | null) => {
-        if (typeof data === 'object') {
-          this.isButton = false;
-        } else {
-          this.isButton = true;
-        }
-        this.categoryForEdit = data;
-      })
+    this.activeUser = ''
+    this.subscriptionActiveUser = this.auth.getActiveUser().subscribe(user => {
+      if (user && user.length > 0) {
+        this.activeUser = user
+      }
+    })
+    this.subscriptionCategories = this.categoryService.getCategories(this.activeUser).subscribe((data: CategoryAddType[] | null) => {
+      this.categories = data;
+    })
+
+    this.subscriptionCategoryForEdit = this.categoryService.getEditCategory().subscribe((data: CategoryAddType | null) => {
+      if (typeof data === 'object') {
+        this.isButton = false;
+      } else {
+        this.isButton = true;
+      }
+      this.categoryForEdit = data;
+    })
   }
 
   categoryAddForm: FormGroup = new FormGroup<CategoryAddFormInterface>({
@@ -74,6 +85,7 @@ export class CategoryAddFormComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptionCategories.unsubscribe();
     this.subscriptionCategoryForEdit.unsubscribe();
+    this.subscriptionActiveUser.unsubscribe();
   }
 
   createCategory() {
@@ -85,16 +97,41 @@ export class CategoryAddFormComponent implements OnInit, OnDestroy {
         label: this.categoryAddForm.value.categoryName,
         categoryId: this.categoryId
       }
-      if (!this.categories) {
-        this.categoryService.setCategories([category])
-        this.saveCategoryNewId();
-        this.closeAndCleanForm();
-      } else {
-        let tasksArrayForLS = this.categories.concat([category]);
-        this.categoryService.setCategories(tasksArrayForLS);
-        this.saveCategoryNewId();
-        this.closeAndCleanForm();
+
+      if (this.categories && this.categories.length === 0) {
+        let addCategory = this.categories.concat([category])
+        const userArrayFromLS = localStorage.getItem(this.activeUser);
+        if (userArrayFromLS !== null && userArrayFromLS.length > 0) {
+          let userArray = JSON.parse(userArrayFromLS);
+          let categoriesFromLS = userArray.find((item: { categories: CategoryAddType[] | [] }) => {
+            return item.hasOwnProperty('categories');
+          })
+          if (categoriesFromLS.categories && categoriesFromLS.categories.length === 0) {
+            categoriesFromLS.categories = addCategory
+          }
+          let removeCategoryFromLS = [userArray.find((item: { categories: CategoryAddType[] | [] }) => {
+            return !item.hasOwnProperty('categories');
+          })]
+          let arrayForUpdate = removeCategoryFromLS.concat(categoriesFromLS)
+          localStorage.setItem(this.activeUser, JSON.stringify(arrayForUpdate))
+          this.categoryService.categories$.next(categoriesFromLS)
+
+          this.saveCategoryNewId();
+          this.closeAndCleanForm();
+        }
       }
+
+      // {
+
+      // } else {
+      //   if(this.categories === null) {
+      //     this.categories = []
+      //   }
+      //   let tasksArrayForLS = this.categories.concat(category);
+      //   this.categoryService.setCategories(tasksArrayForLS, this.activeUser);
+      //   this.saveCategoryNewId();
+      //   this.closeAndCleanForm();
+      // }
     }
   }
 
@@ -111,7 +148,7 @@ export class CategoryAddFormComponent implements OnInit, OnDestroy {
         let indexCategoryInArray: number = categoryFromLS.findIndex(categoryFromLS => categoryFromLS.categoryId === category.categoryId);
         if (indexCategoryInArray !== -1) {
           categoryFromLS.splice(indexCategoryInArray, 1, category);
-          this.categoryService.setCategories(categoryFromLS)
+          // this.categoryService.setCategories(categoryFromLS)
           this.closeAndCleanForm()
         }
       }

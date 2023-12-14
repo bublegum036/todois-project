@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { CategoryService } from '../../../shared/services/category.service';
 import { CategoryAddType } from '../../../../types/category-add.type';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'task-category',
@@ -11,19 +12,31 @@ import { CategoryAddType } from '../../../../types/category-add.type';
   providers: [MessageService, ConfirmationService]
 })
 export class TaskCategoryComponent implements OnInit, OnDestroy {
-  categories: CategoryAddType[] = [];
+  activeUser: string;
+  categories: CategoryAddType[] | null = [];
   addCategoryVisible: boolean = false;
   editCategoryVisible: boolean = false;
   subscriptionCategories: Subscription;
+  private subscriptionActiveUser: Subscription;
+
 
   constructor(private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private auth: AuthService
   ) {
-    this.subscriptionCategories = this.categoryService.getCategories().subscribe((data: CategoryAddType[] | null) => {
-      this.categories = data as CategoryAddType[];
+
+    this.activeUser = ''
+    this.subscriptionActiveUser = this.auth.getActiveUser().subscribe(user => {
+      if (user && user.length > 0) {
+        this.activeUser = user
+      }
     })
-   }
+
+    this.subscriptionCategories = this.categoryService.getCategories(this.activeUser).subscribe((data: CategoryAddType[] | null) => {
+      this.categories = data;
+    })
+  }
 
   ngOnInit() {
     this.categoryService.categories$.subscribe((data: CategoryAddType[] | '{}' | null) => {
@@ -33,6 +46,7 @@ export class TaskCategoryComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptionCategories.unsubscribe()
+    this.subscriptionActiveUser.unsubscribe()
   }
 
   editCategory(category: CategoryAddType) {
@@ -45,30 +59,30 @@ export class TaskCategoryComponent implements OnInit, OnDestroy {
   }
 
   removeCategory(category: any) {
-    let indexCategoryInArray: number = this.categories.findIndex(categoryFromLS => categoryFromLS.categoryId === category.categoryId);
-    this.confirmationService.confirm({
-      message: 'Вы действительно хотите удалить данную категорию?',
-      header: 'Удаление',
-      icon: 'pi pi-info-circle',
-      accept: () => {
-        if (indexCategoryInArray !== -1) {
-          this.categories.splice(indexCategoryInArray, 1);
-          let categoriesArrayForLS = this.categories;
-          this.categoryService.setCategories(categoriesArrayForLS)
-        }
-        this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Категория удалена' });
-      },
-      reject: (type: ConfirmEventType) => {
-        switch (type) {
-          case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Отклонено', detail: 'Вы отменили удаление категории' });
-            break;
-          case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: 'Отмена', detail: 'Отменено' });
-            break;
-        }
-      }
-    });
+    // let indexCategoryInArray: number = this.categories.findIndex(categoryFromLS => categoryFromLS.categoryId === category.categoryId);
+    // this.confirmationService.confirm({
+    //   message: 'Вы действительно хотите удалить данную категорию?',
+    //   header: 'Удаление',
+    //   icon: 'pi pi-info-circle',
+    //   accept: () => {
+    //     if (indexCategoryInArray !== -1) {
+    //       this.categories.splice(indexCategoryInArray, 1);
+    //       let categoriesArrayForLS = this.categories;
+    //       this.categoryService.setCategories(categoriesArrayForLS)
+    //     }
+    //     this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Категория удалена' });
+    //   },
+    //   reject: (type: ConfirmEventType) => {
+    //     switch (type) {
+    //       case ConfirmEventType.REJECT:
+    //         this.messageService.add({ severity: 'error', summary: 'Отклонено', detail: 'Вы отменили удаление категории' });
+    //         break;
+    //       case ConfirmEventType.CANCEL:
+    //         this.messageService.add({ severity: 'warn', summary: 'Отмена', detail: 'Отменено' });
+    //         break;
+    //     }
+    //   }
+    // });
   }
 
   openAddCategoryMenu() {
