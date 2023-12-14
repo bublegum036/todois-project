@@ -60,6 +60,7 @@ export class LoginComponent {
       this.loginForm.value.userName === this.loginUserName &&
       this.loginForm.value.password === this.loginPassword
     ) {
+      this.auth.setActiveUser(this.loginForm.value.userName);
       this.loginForm.reset();
       this.messageService.add({
         severity: 'success',

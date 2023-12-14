@@ -36,22 +36,6 @@ export class AuthService {
     return of(this.user);
   }
 
-
-  // [{
-  //   userInfo: {
-  //     "name": "Andrey",
-  //     "email": "bublegum036@gmail.com",
-  //     "password": "Qq12345678"
-  //   },
-  //   {categories: [
-  //     {
-  //       "name": "Andrey",
-  //       "email": "bublegum036@gmail.com",
-  //       "password": "Qq12345678"
-  //     }
-  //   ]}
-  // }];
-
   setActiveUser(userLogin: string) {
     localStorage.setItem(this.activeUserKey, userLogin);
   }
