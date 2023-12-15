@@ -15,7 +15,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class CategoryAddFormComponent implements OnInit, OnDestroy {
   activeUser: string;
-  categories: CategoryAddType[] | null = null;
+  categories: CategoryAddType[] | [] = [];
   categoryId: number = 0;
   categoryForEdit: CategoryAddType | null = null;
   isButton: boolean = true;
@@ -37,7 +37,7 @@ export class CategoryAddFormComponent implements OnInit, OnDestroy {
       }
     })
     
-    this.subscriptionCategories = this.categoryService.getCategories(this.activeUser).subscribe((data: CategoryAddType[] | null) => {
+    this.subscriptionCategories = this.categoryService.getCategories(this.activeUser).subscribe((data: CategoryAddType[] | []) => {
       this.categories = data;
     })
 
@@ -100,7 +100,8 @@ export class CategoryAddFormComponent implements OnInit, OnDestroy {
       }
 
       if (this.categories) {
-        let addCategory = this.categories.concat([category])
+        let categoriesFromLS: CategoryAddType[] = this.categories
+        let addCategory = categoriesFromLS.concat([category])
         this.categoryService.setCategories(addCategory, this.activeUser)
         this.saveCategoryNewId();
         this.closeAndCleanForm();
@@ -117,7 +118,7 @@ export class CategoryAddFormComponent implements OnInit, OnDestroy {
           label: this.categoryAddForm.value.categoryName,
           categoryId: this.categoryForEdit.categoryId
         }
-        let categoryFromLS: CategoryAddType[] = this.categories!;
+        let categoryFromLS: CategoryAddType[] | [] = this.categories;
         let indexCategoryInArray: number = categoryFromLS.findIndex(categoryFromLS => categoryFromLS.categoryId === category.categoryId);
         if (indexCategoryInArray !== -1) {
           categoryFromLS.splice(indexCategoryInArray, 1, category);

@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject, of } from 'rxjs';
-import { CategoryAddType } from 'src/types/category-add.type';
-import { TaskAddType } from 'src/types/task-add.type';
 import { UserType } from 'src/types/user.type';
 
 @Injectable({
@@ -39,8 +37,8 @@ export class AuthService {
     return of(this.user);
   }
 
-  updateUser(activeUser: string, updateArray:any) {
-    localStorage.setItem(activeUser, JSON.stringify(updateArray))
+  updateUser(activeUser: string, updateArray: string) {
+    localStorage.setItem(activeUser, updateArray)
   }
 
   setActiveUser(userLogin: string) {

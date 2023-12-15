@@ -48,7 +48,6 @@ export class CompleteComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptionTasksComplete.unsubscribe();
     this.subscriptionActiveUser.unsubscribe()
-
   }
 
   removeCompleteTasks() {

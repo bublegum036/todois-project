@@ -145,12 +145,8 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       let task: TaskAddType = {
         taskName: this.taskForm.value.taskName,
         taskDescription: this.taskForm.value.taskDescription,
-        taskDateSet: new Date(
-          this.taskForm.value.taskDateSet
-        ).toLocaleDateString(),
-        taskDeadline: new Date(
-          this.taskForm.value.taskDeadline
-        ).toLocaleDateString(),
+        taskDateSet: new Date(this.taskForm.value.taskDateSet).toLocaleDateString(),
+        taskDeadline: new Date(this.taskForm.value.taskDeadline).toLocaleDateString(),
         taskPriority: Object(this.taskForm.value.taskPriority).label,
         taskCategory: Object(this.taskForm.value.taskCategory).label,
         taskId: this.taskId,
@@ -161,7 +157,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
         this.saveNewId();
         this.closeAndCleanForm();
       } else {
-        let tasksFromLS: TaskAddType[] = this.tasks!;
+        let tasksFromLS: TaskAddType[] = this.tasks;
         let tasksArrayForLS = tasksFromLS.concat([task]);
         this.tasksService.setTasks(tasksArrayForLS, this.activeUser);
         this.saveNewId();
@@ -185,16 +181,12 @@ export class TaskFormComponent implements OnInit, OnDestroy {
         if (typeof this.taskForm.value.taskDateSet === 'string') {
           taskDateSet = this.taskForm.value.taskDateSet;
         } else {
-          taskDateSet = new Date(
-            this.taskForm.value.taskDateSet
-          ).toLocaleDateString();
+          taskDateSet = new Date(this.taskForm.value.taskDateSet).toLocaleDateString();
         }
         if (typeof this.taskForm.value.taskDeadline === 'string') {
           taskDeadline = this.taskForm.value.taskDeadline;
         } else {
-          taskDeadline = new Date(
-            this.taskForm.value.taskDeadline
-          ).toLocaleDateString();
+          taskDeadline = new Date(this.taskForm.value.taskDeadline).toLocaleDateString();
         }
         let task: TaskAddType = {
           taskName: this.taskForm.value.taskName,
@@ -206,7 +198,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
           taskId: this.taskForEdit.taskId,
         };
 
-        let tasksFromLS: TaskAddType[] = this.tasks!;
+        let tasksFromLS: TaskAddType[] | []= this.tasks;
         let indexTaskInArray: number = tasksFromLS.findIndex(
           (taskFromLS) => taskFromLS.taskId === task.taskId
         );

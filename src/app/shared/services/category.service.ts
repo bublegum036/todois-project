@@ -42,8 +42,8 @@ export class CategoryService {
       let removeCategoryFromLS = userArray.filter((item: { categories: CategoryAddType[] | [] }) => {
         return !item.hasOwnProperty(this.categoriesKey);
       })
-      let arrayForUpdate = removeCategoryFromLS.concat(newCategoryArray)
-      localStorage.setItem(activeUser, JSON.stringify(arrayForUpdate))
+      let arrayForUpdate = JSON.stringify(removeCategoryFromLS.concat(newCategoryArray))
+      this.auth.updateUser(activeUser, arrayForUpdate)
       this.categories$.next(newCategories)
     }
   }
