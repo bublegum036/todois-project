@@ -14,8 +14,8 @@ export class TasksService {
 
   private tasks: TaskAddType[] | [] = [];
   public tasks$: Subject<TaskAddType[] | []> = new Subject<TaskAddType[] | []>();
-  private tasksComplete: TaskAddType[] | null = null;
-  public tasksComplete$: Subject<TaskAddType[] | null> = new Subject<TaskAddType[] | null>();
+  private tasksComplete: TaskAddType[] | [] = [];
+  public tasksComplete$: Subject<TaskAddType[] | []> = new Subject<TaskAddType[] | []>();
   private taskInfo: TaskAddType | null = null;
   public taskInfo$: Subject<TaskAddType | null> = new Subject<TaskAddType | null>();
   private taskForEdit: TaskAddType | null = null;
@@ -71,18 +71,39 @@ export class TasksService {
     this.taskInfo$.next(infoTask);
   }
 
-  getCompleteTasks(): Observable<TaskAddType[] | null> {
-    const tasksComplete = localStorage.getItem(this.tasksCompleteKey);
-    if (tasksComplete) {
-      this.tasksComplete = JSON.parse(tasksComplete);
-    } else {
-      this.setCompleteTasks(null);
-      this.tasksComplete = null;
+  getCompleteTasks(activeUser: string): Observable<TaskAddType[] | []> {
+    const userArrayFromLS = localStorage.getItem(activeUser);
+    if (userArrayFromLS && userArrayFromLS.length > 0) {
+      const userArray = JSON.parse(userArrayFromLS)
+      const activeUserTasksComplete = userArray.find((item: TaskAddType | []) => {
+        return item.hasOwnProperty(this.tasksCompleteKey)
+      })
+      if (activeUserTasksComplete && activeUserTasksComplete.tasksComplete) {
+        this.tasksComplete = activeUserTasksComplete.tasksComplete
+      } else {
+        const arrayWithCategories = userArray.concat({ tasksComplete: [] })
+        this.auth.updateUser(activeUser, arrayWithCategories)
+      }
     }
     return of(this.tasksComplete);
   }
 
-  setCompleteTasks(tasksComplete: TaskAddType[] | null) {
+  setCompleteTasks(tasksComplete: TaskAddType[] | [], activeUser: string) {
+    const userArrayFromLS = localStorage.getItem(activeUser);
+    if (userArrayFromLS !== null && userArrayFromLS.length > 0) {
+      let userArray = JSON.parse(userArrayFromLS);
+      let newTasksCompleteArray =  {tasksComplete: tasksComplete}
+      let removeTasksCompleteFromLS = userArray.filter((item: { tasksComplete: TaskAddType[] | [] }) => {
+        return !item.hasOwnProperty(this.tasksCompleteKey);
+      })  
+      let arrayForUpdate = removeTasksCompleteFromLS.concat(newTasksCompleteArray)
+      localStorage.setItem(activeUser, JSON.stringify(arrayForUpdate))
+      this.tasksComplete$.next(tasksComplete)
+    }
+
+
+
+
     localStorage.setItem(this.tasksCompleteKey, JSON.stringify(tasksComplete));
     this.tasksComplete$.next(tasksComplete);
   }

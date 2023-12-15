@@ -52,7 +52,7 @@ export class TasksComponent implements OnInit, OnDestroy {
       this.categories = data || [];
     });
 
-    this.subscriptionTasksComplete = this.tasksService.getCompleteTasks().subscribe((data: TaskAddType[] | null) => {
+    this.subscriptionTasksComplete = this.tasksService.getCompleteTasks(this.activeUser).subscribe((data: TaskAddType[] | null) => {
       this.tasksComplete = data || [];
     });
   }
@@ -172,11 +172,11 @@ export class TasksComponent implements OnInit, OnDestroy {
           let tasksArrayForLS = this.tasks;
           this.tasksService.setTasks(tasksArrayForLS, this.activeUser);
           if (!this.tasksComplete) {
-            this.tasksService.setCompleteTasks([task]);
+            this.tasksService.setCompleteTasks([task], this.activeUser);
           } else {
             let tasksFromLS: TaskAddType[] = this.tasksComplete;
             let tasksArrayForLS = tasksFromLS.concat([task]);
-            this.tasksService.setCompleteTasks(tasksArrayForLS);
+            this.tasksService.setCompleteTasks(tasksArrayForLS, this.activeUser);
           }
         }
         this.messageService.add({
