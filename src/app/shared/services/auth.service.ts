@@ -57,18 +57,6 @@ export class AuthService {
     return of(this.activeUser)
   }
 
-  // getActiveUserData(activeUser: string): Observable<[] | null> {
-  //   const userDataFromLS = localStorage.getItem(activeUser);
-  //   if (userDataFromLS !== null && userDataFromLS !== undefined && userDataFromLS.length > 0) {
-  //     const userData = JSON.parse(userDataFromLS)
-  //     this.activeUserData = userData;
-  //   } else {
-  //     this.activeUserData = null
-  //   }
-  //   return of(this.activeUserData)
-  // }
-
-
   login() {
     this.isAuth = true;
     this.isAuth$.next(true);

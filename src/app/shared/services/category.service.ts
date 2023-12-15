@@ -22,11 +22,10 @@ export class CategoryService {
     if (userArrayFromLS && userArrayFromLS.length > 0) {
       const userArray = JSON.parse(userArrayFromLS)
       const activeUserCategories = userArray.find((item: CategoryAddType | []) => {
-        return item.hasOwnProperty("categories")
+        return item.hasOwnProperty(this.categoriesKey)
       })
-      if(activeUserCategories && activeUserCategories.categories) {
+      if (activeUserCategories && activeUserCategories.categories) {
         this.categories = activeUserCategories.categories
-        console.log(this.categories)
       } else {
         const arrayWithCategories = userArray.concat({ categories: [] })
         this.auth.updateUser(activeUser, arrayWithCategories)
@@ -35,8 +34,23 @@ export class CategoryService {
     return of(this.categories);
   }
 
-  setCategories(categoriesArray: CategoryAddType[], activeUser: string) {
-    
+  setCategories(newCategories: CategoryAddType[], activeUser: string) {
+    const userArrayFromLS = localStorage.getItem(activeUser);
+    if (userArrayFromLS !== null && userArrayFromLS.length > 0) {
+      let userArray = JSON.parse(userArrayFromLS);
+      let categoriesFromLS = userArray.find((item: { categories: CategoryAddType[] | [] }) => {
+        return item.hasOwnProperty('categories');
+      })
+      if (categoriesFromLS.categories) {
+        categoriesFromLS.categories = newCategories
+      }
+      let removeCategoryFromLS = [userArray.find((item: { categories: CategoryAddType[] | [] }) => {
+        return !item.hasOwnProperty('categories');
+      })]
+      let arrayForUpdate = removeCategoryFromLS.concat(categoriesFromLS)
+      localStorage.setItem(activeUser, JSON.stringify(arrayForUpdate))
+      this.categories$.next(newCategories)
+    }
   }
 
   getEditCategory(): Observable<CategoryAddType | null> {
