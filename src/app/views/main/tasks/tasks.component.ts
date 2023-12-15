@@ -6,7 +6,7 @@ import { TasksService } from '../../../shared/services/tasks.service';
 import { CategoryAddType } from '../../../../types/category-add.type';
 import { TASKS_COLUMNS } from '../../../shared/constants/constants';
 import { CategoryService } from '../../../shared/services/category.service';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'tasks',

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject, of } from 'rxjs';
-import { UserType } from 'src/types/user.type';
+import { UserType } from '../../../types/user.type';
 
 @Injectable({
   providedIn: 'root',

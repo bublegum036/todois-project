@@ -1,42 +1,21 @@
 <section class="complete">
-  <div
-    class="complete-empty"
-    *ngIf="!tasksComplete || tasksComplete.length < 1"
-  >
+  <div class="complete-empty" *ngIf="!tasksComplete || tasksComplete.length < 1">
     <div>Отсутствую выполненные задачи!</div>
   </div>
 
-  <div
-    class="complete-tasks-table"
-    *ngIf="tasksComplete && tasksComplete.length > 0"
-  >
+  <div class="complete-tasks-table" *ngIf="tasksComplete && tasksComplete.length > 0">
     <div class="tasks-table-action">
-      <p-button
-        label="Очистить"
-        severity="warning"
-        (click)="removeCompleteTasks()"
-      ></p-button>
+      <p-button label="Очистить" severity="warning" (click)="removeCompleteTasks()"></p-button>
     </div>
-    <p-table
-      #complete
-      [value]="tasksComplete"
-      [columns]="column"
-      [globalFilterFields]="['taskName', 'taskPriority', 'taskCategory']"
-      responsiveLayout="stack"
-      [breakpoint]="'672px'"
-      [tableStyle]="{ 'min-width': '50vw' }"
-    >
+    <p-table #complete [value]="tasksComplete" [columns]="column"
+      [globalFilterFields]="['taskName', 'taskPriority', 'taskCategory']" responsiveLayout="stack"
+      [breakpoint]="'672px'" [tableStyle]="{ 'min-width': '50vw' }">
       <ng-template pTemplate="caption">
         <div class="flex">
           <span class="p-input-icon-left ml-auto">
             <i class="pi pi-search"></i>
-            <input
-              pInputText
-              type="text"
-              placeholder="Поиск"
-              [(ngModel)]="globalFilter"
-              (input)="complete.filterGlobal(globalFilter, 'contains')"
-            />
+            <input pInputText type="text" placeholder="Поиск" [(ngModel)]="globalFilter"
+              (input)="complete.filterGlobal(globalFilter, 'contains')" />
           </span>
         </div>
       </ng-template>
@@ -57,11 +36,6 @@
   </div>
 
   <p-toast></p-toast>
-  <p-confirmDialog
-    [style]="{ width: '50vw' }"
-    acceptLabel="Да"
-    acceptIcon=" "
-    rejectLabel="Нет"
-    rejectIcon=" "
-  ></p-confirmDialog>
+  <p-confirmDialog [style]="{ width: '50vw' }" acceptLabel="Да" acceptIcon=" " rejectLabel="Нет"
+    rejectIcon=" "></p-confirmDialog>
 </section>

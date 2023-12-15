@@ -4,7 +4,7 @@ import { NavigationStart, Router } from '@angular/router';
 import { MenuItem, MenuItemCommandEvent } from "primeng/api";
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../../shared/services/auth.service';
-import { CategoryService } from '../../..//shared/services/category.service';
+import { CategoryService } from '../../../shared/services/category.service';
 
 @Component({
   selector: 'sidebar-menu',

@@ -8,8 +8,8 @@ const routes: Routes = [
     path: '', component: LayoutComponent,
     children: [
       { path: '', loadChildren: () => import('./views/user/user.module').then(m => m.UserModule) },
-      // { path: '', loadChildren: () => import('./views/main/main.module').then(m => m.MainModule), canActivate: [AuthGuard] },
-      { path: '', loadChildren: () => import('./views/main/main.module').then(m => m.MainModule)},
+      { path: '', loadChildren: () => import('./views/main/main.module').then(m => m.MainModule), canActivate: [AuthGuard] },
+      // { path: '', loadChildren: () => import('./views/main/main.module').then(m => m.MainModule)},
     ]
   },
 

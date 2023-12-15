@@ -1,67 +1,33 @@
 <section class="tasks">
-  <div
-    class="task-category-empty"
-    *ngIf="categories.length < 1 && tasks.length < 1"
-  >
+  <div class="task-category-empty" *ngIf="categories.length < 1 && tasks.length < 1">
     <div>Отсутствую категории задач! Создайте сначала категорию задач</div>
-    <p-button
-      label="Создать категорию"
-      severity="warning"
-      (click)="openAddCategoryMenu()"
-    ></p-button>
+    <p-button label="Создать категорию" severity="warning" (click)="openAddCategoryMenu()"></p-button>
   </div>
-  <div
-    class="tasks-empty"
-    *ngIf="(!tasks || tasks.length < 1) && categories && categories.length > 0"
-  >
+  <div class="tasks-empty" *ngIf="(!tasks || tasks.length < 1) && categories && categories.length > 0">
     <div>Отсутствую задачи!</div>
     <div>Создайте свою первую задачу</div>
-    <p-button
-      label="Создать задачу"
-      severity="warning"
-      (click)="openAddTaskMenu()"
-    ></p-button>
+    <p-button label="Создать задачу" severity="warning" (click)="openAddTaskMenu()"></p-button>
   </div>
   <div class="tasks-table" *ngIf="tasks && tasks.length > 0">
     <div class="tasks-table-action">
-      <p-button
-        label="Создать задачу"
-        severity="warning"
-        (click)="openAddTaskMenu()"
-      ></p-button>
+      <p-button label="Создать задачу" severity="warning" (click)="openAddTaskMenu()"></p-button>
     </div>
-    <p-table
-      #tasksTable
-      [value]="tasks"
-      [columns]="column"
-      responsiveLayout="stack"
-      [breakpoint]="'630px'"
-      [tableStyle]="{ 'min-width': '50vw' }"
-      [sortMode]="'single'"
-      (sortFunction)="customSort($event)"
-      [globalFilterFields]="['taskName', 'taskPriority', 'taskCategory']"
-    >
-    <ng-template pTemplate="caption">
-      <div class="flex">
-        <span class="p-input-icon-left ml-auto">
-          <i class="pi pi-search"></i>
-          <input
-            pInputText
-            type="text"
-            placeholder="Поиск"
-            [(ngModel)]="globalFilter"
-            (input)="tasksTable.filterGlobal(globalFilter, 'contains')"
-          />
-        </span>
-      </div>
-    </ng-template>
+    <p-table #tasksTable [value]="tasks" [columns]="column" responsiveLayout="stack" [breakpoint]="'630px'"
+      [tableStyle]="{ 'min-width': '50vw' }" [sortMode]="'single'" (sortFunction)="customSort($event)"
+      [globalFilterFields]="['taskName', 'taskPriority', 'taskCategory']">
+      <ng-template pTemplate="caption">
+        <div class="flex">
+          <span class="p-input-icon-left ml-auto">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" placeholder="Поиск" [(ngModel)]="globalFilter"
+              (input)="tasksTable.filterGlobal(globalFilter, 'contains')" />
+          </span>
+        </div>
+      </ng-template>
 
       <ng-template pTemplate="header" let-columns>
         <tr>
-          <th
-            pSortableColumn="{{ column.field }}"
-            *ngFor="let column of columns"
-          >
+          <th pSortableColumn="{{ column.field }}" *ngFor="let column of columns">
             {{ column.header }}
             <p-sortIcon field="{{ column.field }}"></p-sortIcon>
           </th>
@@ -76,26 +42,10 @@
           </td>
           <td>
             <div class="tasks-table-action-group">
-              <p-button
-                (click)="infoTask(currentTask)"
-                icon="pi pi-info"
-                severity="info"
-              ></p-button>
-              <p-button
-                (click)="completeTask(currentTask)"
-                icon="pi pi-check"
-                severity="success"
-              ></p-button>
-              <p-button
-                (click)="editTask(currentTask)"
-                icon="pi pi-pencil"
-                severity="help"
-              ></p-button>
-              <p-button
-                (click)="removeTask(currentTask)"
-                icon="pi pi-trash"
-                severity="danger"
-              ></p-button>
+              <p-button (click)="infoTask(currentTask)" icon="pi pi-info" severity="info"></p-button>
+              <p-button (click)="completeTask(currentTask)" icon="pi pi-check" severity="success"></p-button>
+              <p-button (click)="editTask(currentTask)" icon="pi pi-pencil" severity="help"></p-button>
+              <p-button (click)="removeTask(currentTask)" icon="pi pi-trash" severity="danger"></p-button>
             </div>
           </td>
         </tr>
@@ -103,50 +53,27 @@
     </p-table>
   </div>
 
-  <p-dialog
-    [(visible)]="infoTaskVisible"
-    (visibleChange)="closeInfoTaskMenu($event)"
-    header="Подробнее"
-    [style]="{ width: '300px', height: '90%' }"
-  >
+  <p-dialog [(visible)]="infoTaskVisible" (visibleChange)="closeInfoTaskMenu($event)" header="Подробнее"
+    [style]="{ width: '300px', height: '90%' }">
     <task-info></task-info>
   </p-dialog>
 
-  <p-dialog
-    [(visible)]="editTaskVisible"
-    (visibleChange)="closeEditTaskMenu($event)"
-    header="Редактировать задачу"
-    [style]="{ width: '300px', height: '90%' }"
-  >
+  <p-dialog [(visible)]="editTaskVisible" (visibleChange)="closeEditTaskMenu($event)" header="Редактировать задачу"
+    [style]="{ width: '300px', height: '90%' }">
     <task-form (visibleChange)="closeEditTaskMenu($event)"></task-form>
   </p-dialog>
 
-  <p-dialog
-    [(visible)]="addTaskVisible"
-    (visibleChange)="closeAddTaskMenu($event)"
-    header="Создать новую задачу"
-    [style]="{ width: '300px', height: '90%' }"
-  >
+  <p-dialog [(visible)]="addTaskVisible" (visibleChange)="closeAddTaskMenu($event)" header="Создать новую задачу"
+    [style]="{ width: '300px', height: '90%' }">
     <task-form (visibleChange)="closeAddTaskMenu($event)"></task-form>
   </p-dialog>
 
-  <p-dialog
-    [(visible)]="addCategoryVisible"
-    (visibleChange)="closeAddCategory($event)"
-    header="Создать категорию задач"
-    [style]="{ width: '300px', height: '90%' }"
-  >
-    <category-add-form
-      (visibleChange)="closeAddCategory($event)"
-    ></category-add-form>
+  <p-dialog [(visible)]="addCategoryVisible" (visibleChange)="closeAddCategory($event)" header="Создать категорию задач"
+    [style]="{ width: '300px', height: '90%' }">
+    <category-add-form (visibleChange)="closeAddCategory($event)"></category-add-form>
   </p-dialog>
 
   <p-toast></p-toast>
-  <p-confirmDialog
-    [style]="{ width: '300px' }"
-    acceptLabel="Да"
-    acceptIcon=" "
-    rejectLabel="Нет"
-    rejectIcon=" "
-  ></p-confirmDialog>
+  <p-confirmDialog [style]="{ width: '300px' }" acceptLabel="Да" acceptIcon=" " rejectLabel="Нет"
+    rejectIcon=" "></p-confirmDialog>
 </section>
