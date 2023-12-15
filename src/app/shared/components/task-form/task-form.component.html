@@ -51,13 +51,13 @@
       <label htmlFor="taskPriority">Приоритет</label>
     </span>
   </div>
-  <!-- <div class="task-form-input" *ngIf="taskCategory.length>0">
+  <div class="task-form-input" *ngIf="taskCategory.length>0">
     <span class="p-float-label">
       <p-treeSelect [options]="taskCategory" formControlName="taskCategory"
         [ngClass]="{'ng-invalid ng-dirty': taskForm.get('taskCategory')?.invalid && (taskForm.get('taskCategory')?.dirty || taskForm.get('taskCategory')?.touched) ?  true : ''}"></p-treeSelect>
       <label htmlFor="taskCategory">Категория</label>
     </span>
-  </div> -->
+  </div>
   <div class="task-form-action">
     <p-button [disabled]="!taskForm.valid" *ngIf="isButton" label="Создать" severity="warning" (click)="createTask()"></p-button>
     <p-button [disabled]="!taskForm.valid" *ngIf="!isButton" label="Редактировать" severity="warning" (click)="editTask()"></p-button>

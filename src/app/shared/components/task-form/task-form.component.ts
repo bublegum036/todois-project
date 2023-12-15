@@ -1,11 +1,5 @@
 import { Subscription } from 'rxjs';
-import {
-  Component,
-  EventEmitter,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { TaskAddType } from '../../../../types/task-add.type';
@@ -16,6 +10,7 @@ import { PRIORITY_TASKS } from '../../constants/constants';
 import { PriorityType } from '../../../../types/priority.type';
 import { TaskFormInterface } from '../../interfaces/task-form-interface';
 import { CategoryService } from '../../services/category.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'task-form',
@@ -23,15 +18,18 @@ import { CategoryService } from '../../services/category.service';
   styleUrls: ['./task-form.component.scss'],
 })
 export class TaskFormComponent implements OnInit, OnDestroy {
-  tasks: TaskAddType[] | null = null;
+  activeUser: string;
+  tasks: TaskAddType[] | [] = [];
   taskForEdit: TaskAddType | null = null;
   taskCategory: CategoryAddType[] | [] = [];
   taskId: number = 0;
   priority: PriorityType[] = PRIORITY_TASKS;
   isButton: boolean = true;
-  // subscriptionTasks: Subscription;
-  // subscriptionTaskForEdit: Subscription;
-  // subscriptionTaskCategory: Subscription;
+  subscriptionTasks: Subscription;
+  subscriptionTaskForEdit: Subscription;
+  subscriptionTaskCategory: Subscription;
+  private subscriptionActiveUser: Subscription;
+
 
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -56,58 +54,64 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private tasksService: TasksService,
     private idService: IdService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private auth: AuthService
   ) {
-    // this.subscriptionTasks = this.tasksService.getTasks().subscribe((data) => {
-    //   this.tasks = data;
-    // });
+    this.activeUser = ''
+    this.subscriptionActiveUser = this.auth.getActiveUser().subscribe(user => {
+      if (user && user.length > 0) {
+        this.activeUser = user
+      }
+    })
 
-    // this.subscriptionTaskForEdit = this.tasksService
-    //   .getEditTask()
-    //   .subscribe((data: TaskAddType | null) => {
-    //     if (data === null) {
-    //       this.isButton = true;
-    //     } else {
-    //       this.isButton = false;
-    //     }
-    //     this.taskForEdit = data;
-    //   });
-
-    // this.subscriptionTaskCategory = this.categoryService
-    //   .getCategories()
-    //   .subscribe((data) => {
-    //     if (data !== null) {
-    //       this.taskCategory = data;
-    //     }
-    //   });
-  }
-
-  ngOnInit() {
-    this.tasksService.tasks$.subscribe((data: TaskAddType[] | null) => {
+    this.subscriptionTasks = this.tasksService.getTasks(this.activeUser).subscribe((data) => {
       this.tasks = data;
     });
 
-    // this.tasksService.taskForEdit$.subscribe((data: TaskAddType | null) => {
-    //   if (data) {
-    //     this.isButton = false;
-    //     this.taskForm.patchValue({
-    //       taskName: data.taskName,
-    //       taskDescription: data.taskDescription,
-    //       taskDateSet: data.taskDateSet,
-    //       taskDeadline: data.taskDeadline,
-    //       taskPriority: this.priority.find(
-    //         (item) => item.label === data.taskPriority
-    //       ),
-    //       taskCategory: this.taskCategory?.find(
-    //         (item) => item.label === data.taskCategory
-    //       ),
-    //     });
-    //   } else {
-    //     this.isButton = true;
-    //     this.taskForm.reset();
-    //   }
-    //   this.taskForEdit = data;
-    // });
+    this.subscriptionTaskForEdit = this.tasksService
+      .getEditTask()
+      .subscribe((data: TaskAddType | null) => {
+        if (data === null) {
+          this.isButton = true;
+        } else {
+          this.isButton = false;
+        }
+        this.taskForEdit = data;
+      });
+
+    this.subscriptionTaskCategory = this.categoryService.getCategories(this.activeUser).subscribe((data) => {
+      if (data !== null) {
+        this.taskCategory = data;
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.tasksService.tasks$.subscribe((data: TaskAddType[] | []) => {
+      this.tasks = data;
+    });
+
+    this.tasksService.taskForEdit$.subscribe((data: TaskAddType | null) => {
+      if (data) {
+        this.isButton = false;
+        this.taskForm.patchValue({
+          taskName: data.taskName,
+          taskDescription: data.taskDescription,
+          taskDateSet: data.taskDateSet,
+          taskDeadline: data.taskDeadline,
+          taskPriority: this.priority.find(
+            (item) => item.label === data.taskPriority
+          ),
+          taskCategory: this.taskCategory?.find(
+            (item) => item.label === data.taskCategory
+          ),
+        });
+      } else {
+        this.isButton = true;
+        this.taskForm.reset();
+      }
+      this.taskForEdit = data;
+    });
 
     this.categoryService.categories$.subscribe(
       (data: CategoryAddType[] | null) => {
@@ -123,9 +127,10 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // this.subscriptionTasks.unsubscribe();
-    // this.subscriptionTaskForEdit.unsubscribe();
-    // this.subscriptionTaskCategory.unsubscribe();
+    this.subscriptionTasks.unsubscribe();
+    this.subscriptionTaskForEdit.unsubscribe();
+    this.subscriptionTaskCategory.unsubscribe();
+    this.subscriptionActiveUser.unsubscribe();
   }
 
   createTask() {
@@ -152,13 +157,13 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       };
 
       if (this.tasks === null) {
-        this.tasksService.setTasks([task]);
+        this.tasksService.setTasks([task], this.activeUser);
         this.saveNewId();
         this.closeAndCleanForm();
       } else {
         let tasksFromLS: TaskAddType[] = this.tasks!;
         let tasksArrayForLS = tasksFromLS.concat([task]);
-        this.tasksService.setTasks(tasksArrayForLS);
+        this.tasksService.setTasks(tasksArrayForLS, this.activeUser);
         this.saveNewId();
         this.closeAndCleanForm();
       }
@@ -207,7 +212,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
         );
         if (indexTaskInArray !== -1) {
           tasksFromLS.splice(indexTaskInArray, 1, task);
-          this.tasksService.setTasks(tasksFromLS);
+          this.tasksService.setTasks(tasksFromLS, this.activeUser);
           this.closeAndCleanForm();
         }
       }

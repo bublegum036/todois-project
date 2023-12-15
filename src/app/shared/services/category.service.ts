@@ -38,16 +38,11 @@ export class CategoryService {
     const userArrayFromLS = localStorage.getItem(activeUser);
     if (userArrayFromLS !== null && userArrayFromLS.length > 0) {
       let userArray = JSON.parse(userArrayFromLS);
-      let categoriesFromLS = userArray.find((item: { categories: CategoryAddType[] | [] }) => {
-        return item.hasOwnProperty('categories');
+      let newCategoryArray =  {categories: newCategories}
+      let removeCategoryFromLS = userArray.filter((item: { categories: CategoryAddType[] | [] }) => {
+        return !item.hasOwnProperty(this.categoriesKey);
       })
-      if (categoriesFromLS.categories) {
-        categoriesFromLS.categories = newCategories
-      }
-      let removeCategoryFromLS = [userArray.find((item: { categories: CategoryAddType[] | [] }) => {
-        return !item.hasOwnProperty('categories');
-      })]
-      let arrayForUpdate = removeCategoryFromLS.concat(categoriesFromLS)
+      let arrayForUpdate = removeCategoryFromLS.concat(newCategoryArray)
       localStorage.setItem(activeUser, JSON.stringify(arrayForUpdate))
       this.categories$.next(newCategories)
     }

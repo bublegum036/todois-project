@@ -44,7 +44,7 @@ export class TasksComponent implements OnInit, OnDestroy {
       }
     })
 
-    this.subscriptionTasks = this.tasksService.getTasks().subscribe((data) => {
+    this.subscriptionTasks = this.tasksService.getTasks(this.activeUser).subscribe((data) => {
       this.tasks = data || [];
     });
 
@@ -128,7 +128,7 @@ export class TasksComponent implements OnInit, OnDestroy {
           if (indexTaskInArray !== -1) {
             this.tasks.splice(indexTaskInArray, 1);
             let tasksArrayForLS = this.tasks;
-            this.tasksService.setTasks(tasksArrayForLS);
+            this.tasksService.setTasks(tasksArrayForLS, this.activeUser);
           }
           this.messageService.add({
             severity: 'info',
@@ -170,7 +170,7 @@ export class TasksComponent implements OnInit, OnDestroy {
         if (indexTaskInArray !== -1) {
           this.tasks.splice(indexTaskInArray, 1);
           let tasksArrayForLS = this.tasks;
-          this.tasksService.setTasks(tasksArrayForLS);
+          this.tasksService.setTasks(tasksArrayForLS, this.activeUser);
           if (!this.tasksComplete) {
             this.tasksService.setCompleteTasks([task]);
           } else {

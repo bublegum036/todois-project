@@ -36,6 +36,7 @@ export class CategoryAddFormComponent implements OnInit, OnDestroy {
         this.activeUser = user
       }
     })
+    
     this.subscriptionCategories = this.categoryService.getCategories(this.activeUser).subscribe((data: CategoryAddType[] | null) => {
       this.categories = data;
     })

@@ -12,8 +12,8 @@ export class TasksService {
   public tasksCompleteKey: string = 'tasksComplete';
   public tasksForEditKey: string = 'taskForEdit';
 
-  private tasks: TaskAddType[] | null = null;
-  public tasks$: Subject<TaskAddType[] | null> = new Subject<TaskAddType[] | null>();
+  private tasks: TaskAddType[] | [] = [];
+  public tasks$: Subject<TaskAddType[] | []> = new Subject<TaskAddType[] | []>();
   private tasksComplete: TaskAddType[] | null = null;
   public tasksComplete$: Subject<TaskAddType[] | null> = new Subject<TaskAddType[] | null>();
   private taskInfo: TaskAddType | null = null;
@@ -22,22 +22,37 @@ export class TasksService {
   public taskForEdit$: Subject<TaskAddType | null> = new Subject<TaskAddType | null>();
 
 
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService) { }
 
-  getTasks(): Observable<TaskAddType[] | null> {
-    const tasks = localStorage.getItem(this.tasksKey);
-    if (tasks) {
-      this.tasks = JSON.parse(tasks);
-    } else {
-      this.setTasks(null);
-      this.tasks = null;
+  getTasks(activeUser: string): Observable<TaskAddType[] | []> {
+    const userArrayFromLS = localStorage.getItem(activeUser);
+    if (userArrayFromLS && userArrayFromLS.length > 0) {
+      const userArray = JSON.parse(userArrayFromLS)
+      const activeUserTasks = userArray.find((item: TaskAddType[] | []) => {
+        return item.hasOwnProperty(this.tasksKey)
+      })
+      if (activeUserTasks && activeUserTasks.tasks) {
+        this.tasks = activeUserTasks.tasks
+      } else {
+        const arrayWithTasks = userArray.concat({ tasks: [] })
+        this.auth.updateUser(activeUser, arrayWithTasks)
+      }
     }
     return of(this.tasks);
   }
 
-  setTasks(tasks: TaskAddType[] | null) {
-    localStorage.setItem(this.tasksKey, JSON.stringify(tasks));
-    this.tasks$.next(tasks);
+  setTasks(newTasks: TaskAddType[] | [], activeUser: string) {
+    const userArrayFromLS = localStorage.getItem(activeUser);
+    if (userArrayFromLS !== null && userArrayFromLS.length > 0) {
+      let userArray = JSON.parse(userArrayFromLS);
+      let newCategoryArray =  {tasks: newTasks}
+      let removeCategoryFromLS = userArray.filter((item: { tasks: TaskAddType[] | [] }) => {
+        return !item.hasOwnProperty(this.tasksKey);
+      })
+      let arrayForUpdate = removeCategoryFromLS.concat(newCategoryArray)
+      localStorage.setItem(activeUser, JSON.stringify(arrayForUpdate))
+      this.tasks$.next(newTasks)
+    }
   }
 
   getInfoTask(): Observable<TaskAddType | null> {
