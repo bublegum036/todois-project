@@ -120,7 +120,7 @@ export class CategoryAddFormComponent implements OnInit, OnDestroy {
         let indexCategoryInArray: number = categoryFromLS.findIndex(categoryFromLS => categoryFromLS.categoryId === category.categoryId);
         if (indexCategoryInArray !== -1) {
           categoryFromLS.splice(indexCategoryInArray, 1, category);
-          // this.categoryService.setCategories(categoryFromLS)
+          this.categoryService.setCategories(categoryFromLS, this.activeUser)
           this.closeAndCleanForm()
         }
       }

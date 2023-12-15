@@ -58,31 +58,31 @@ export class TaskCategoryComponent implements OnInit, OnDestroy {
     this.editCategoryVisible = value;
   }
 
-  removeCategory(category: any) {
-    // let indexCategoryInArray: number = this.categories.findIndex(categoryFromLS => categoryFromLS.categoryId === category.categoryId);
-    // this.confirmationService.confirm({
-    //   message: 'Вы действительно хотите удалить данную категорию?',
-    //   header: 'Удаление',
-    //   icon: 'pi pi-info-circle',
-    //   accept: () => {
-    //     if (indexCategoryInArray !== -1) {
-    //       this.categories.splice(indexCategoryInArray, 1);
-    //       let categoriesArrayForLS = this.categories;
-    //       this.categoryService.setCategories(categoriesArrayForLS)
-    //     }
-    //     this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Категория удалена' });
-    //   },
-    //   reject: (type: ConfirmEventType) => {
-    //     switch (type) {
-    //       case ConfirmEventType.REJECT:
-    //         this.messageService.add({ severity: 'error', summary: 'Отклонено', detail: 'Вы отменили удаление категории' });
-    //         break;
-    //       case ConfirmEventType.CANCEL:
-    //         this.messageService.add({ severity: 'warn', summary: 'Отмена', detail: 'Отменено' });
-    //         break;
-    //     }
-    //   }
-    // });
+  removeCategory(category: CategoryAddType) {
+    let indexCategoryInArray: number = this.categories.findIndex(categoryFromLS => categoryFromLS.categoryId === category.categoryId);
+    this.confirmationService.confirm({
+      message: 'Вы действительно хотите удалить данную категорию?',
+      header: 'Удаление',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        if (indexCategoryInArray !== -1) {
+          this.categories.splice(indexCategoryInArray, 1);
+          let categoriesArrayForLS = this.categories;
+          this.categoryService.setCategories(categoriesArrayForLS, this.activeUser)
+        }
+        this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Категория удалена' });
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({ severity: 'error', summary: 'Отклонено', detail: 'Вы отменили удаление категории' });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({ severity: 'warn', summary: 'Отмена', detail: 'Отменено' });
+            break;
+        }
+      }
+    });
   }
 
   openAddCategoryMenu() {
