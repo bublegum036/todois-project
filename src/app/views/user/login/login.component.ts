@@ -39,39 +39,37 @@ export class LoginComponent {
     if (this.user && this.user.userInfo.email && this.user.userInfo.password) {
       this.loginUserName = this.user.userInfo.email;
       this.loginPassword = this.user.userInfo.password;
-    if (
-      this.loginForm.value.userName === this.loginUserName &&
-      this.loginForm.value.password !== this.loginPassword
-    ) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Ошибка',
-        detail: 'Неверный пароль!',
-      });
-    }
-    if (this.loginForm.value.userName !== this.loginUserName) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Ошибка',
-        detail: 'Пользователь не существует!',
-      });
-    }
-    if (
-      this.loginForm.value.userName === this.loginUserName &&
-      this.loginForm.value.password === this.loginPassword
-    ) {
-      this.auth.setActiveUser(this.loginForm.value.userName);
-      this.loginForm.reset();
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Успешно',
-        detail: 'Вы авторизованы!',
-      });
-      setTimeout(() => {
-        this.auth.login();
-        this.router.navigate(['/tasks']);
-      }, 500);
-    }
+      if (this.loginForm.value.userName === this.loginUserName && this.loginForm.value.password !== this.loginPassword
+      ) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Ошибка',
+          detail: 'Неверный пароль!',
+        });
+      }
+      if (this.loginForm.value.userName !== this.loginUserName) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Ошибка',
+          detail: 'Пользователь не существует!',
+        });
+      }
+      if (
+        this.loginForm.value.userName === this.loginUserName &&
+        this.loginForm.value.password === this.loginPassword
+      ) {
+        this.auth.setActiveUser(this.loginForm.value.userName);
+        this.loginForm.reset();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Успешно',
+          detail: 'Вы авторизованы!',
+        });
+        setTimeout(() => {
+          this.auth.login();
+          this.router.navigate(['/tasks']);
+        }, 500);
+      }
     }
   }
 }

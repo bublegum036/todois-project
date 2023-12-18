@@ -34,7 +34,7 @@ export class TasksService {
       if (activeUserTasks && activeUserTasks.tasks) {
         this.tasks = activeUserTasks.tasks
       } else {
-        const arrayWithTasks = userArray.concat({ tasks: [] })
+        const arrayWithTasks = JSON.stringify(userArray.concat([{ tasks: [] }]))
         this.auth.updateUser(activeUser, arrayWithTasks)
       }
     }
@@ -81,8 +81,8 @@ export class TasksService {
       if (activeUserTasksComplete && activeUserTasksComplete.tasksComplete) {
         this.tasksComplete = activeUserTasksComplete.tasksComplete
       } else {
-        const arrayWithCategories = userArray.concat({ tasksComplete: [] })
-        this.auth.updateUser(activeUser, arrayWithCategories)
+        const arrayWithTasks = JSON.stringify(userArray.concat([{ tasksComplete: [] }]))
+        this.auth.updateUser(activeUser, arrayWithTasks)
       }
     }
     return of(this.tasksComplete);

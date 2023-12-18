@@ -27,7 +27,7 @@ export class CategoryService {
       if (activeUserCategories && activeUserCategories.categories) {
         this.categories = activeUserCategories.categories
       } else {
-        const arrayWithCategories = userArray.concat({ categories: [] })
+        const arrayWithCategories = JSON.stringify(userArray.concat([{ categories: [] }]))
         this.auth.updateUser(activeUser, arrayWithCategories)
       }
     }
