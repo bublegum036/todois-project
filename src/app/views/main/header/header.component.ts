@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MenuItemCommandEvent, MessageService } from 'primeng/api';
-import { Subscription } from 'rxjs';
+import { Subject, filter, takeUntil, tap } from 'rxjs';
 import { NAV_MENU } from '../../../shared/constants/constants';
 import { AuthService } from '../../../shared/services/auth.service';
 
@@ -12,41 +12,43 @@ import { AuthService } from '../../../shared/services/auth.service';
   providers: [MessageService, ConfirmationService]
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  activeUser: string | null = null;
   sidebarVisible: boolean = false;
   userName: string | null = null;
-  activeUser: string;
   userMenu: { label: string, icon: string, command?: any }[] = [];
   navMenu: { label: string, routerLink: [string] }[] = NAV_MENU;
-  private subscriptionSidebarVisible: Subscription;
-  private subscriptionUserName: Subscription;
-  private subscriptionActiveUser: Subscription;
+  private unsubscribe$ = new Subject<void>();
 
 
   constructor(private auth: AuthService,
     private router: Router,
     private confirmationService: ConfirmationService,
     private messageService: MessageService) {
-      
-    this.subscriptionSidebarVisible = this.router.events.subscribe(event => {
-      if (event instanceof NavigationStart) {
-        this.sidebarVisible = false;
-      }
-    });
 
-    this.subscriptionUserName = this.auth.getUserName().subscribe(name => {
-      if (name) {
-        this.userName = name[0];
-      } else {
-        this.userName = null
-      }
-    });
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationStart),
+      tap(event => this.sidebarVisible = false),
+      takeUntil(this.unsubscribe$)
+    ).subscribe();
 
-    this.activeUser = ''
-    this.subscriptionActiveUser = this.auth.getActiveUser().subscribe(user => {
-      if (user && user.length > 0) {
-        this.activeUser = user
-      }
-    })
+    this.auth.getUserName().pipe(
+      tap(userName => {
+        if (userName) {
+          this.userName = userName[0]
+        } else {
+          this.userName = null
+        }
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe()
+
+
+
+    this.auth.getActiveUser().pipe(
+      filter(user => !!user),
+      tap(user => this.activeUser = user),
+      takeUntil(this.unsubscribe$)
+    ).subscribe()
   }
 
   ngOnInit(): void {
@@ -66,13 +68,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
       },
     ]
-
   }
 
   ngOnDestroy() {
-    this.subscriptionSidebarVisible.unsubscribe();
-    this.subscriptionUserName.unsubscribe();
-    this.subscriptionActiveUser.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   sidebarOpen() {
@@ -85,7 +85,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       header: 'Удаление',
       icon: 'pi pi-info-circle',
       accept: () => {
-        if (this.auth.activeUser)
+        if (this.activeUser)
           this.auth.removeUserProfile(this.activeUser)
         this.messageService.add({ severity: 'info', summary: 'Успешно', detail: 'Профиль удален' });
         setTimeout(() => {
