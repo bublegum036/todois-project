@@ -1,14 +1,14 @@
 <div class="task-info" *ngIf="taskForAction">
     <div class="task-info-name">Название:</div>
-    <div class="task-info-name-description">{{ taskName }}</div>
+    <div class="task-info-name-description">{{ taskForAction.taskName }}</div>
     <div class="task-info-name">Описание:</div>
-    <div class="task-info-name-description">{{taskDescription}}</div>
+    <div class="task-info-name-description">{{ taskForAction.taskDescription }}</div>
     <div class="task-info-name">Дата постановки:</div>
-    <div class="task-info-name-description">{{taskDateSet}}</div>
+    <div class="task-info-name-description">{{ taskForAction.taskDateSet }}</div>
     <div class="task-info-name">Срок выполнения:</div>
-    <div class="task-info-name-description">{{taskDeadline}}</div>
+    <div class="task-info-name-description">{{ taskForAction.taskDeadline }}</div>
     <div class="task-info-name">Приоритет:</div>
-    <div class="task-info-name-description">{{taskPriority}}</div>
-    <div class="task-info-name" *ngIf="taskCategory">Категория:</div>
-    <div class="task-info-name-description" *ngIf="taskCategory">{{taskCategory}}</div>
+    <div class="task-info-name-description">{{taskForAction.taskPriority}}</div>
+    <div class="task-info-name" *ngIf="taskForAction.taskCategory">Категория:</div>
+    <div class="task-info-name-description" *ngIf="taskForAction.taskCategory">{{ taskForAction.taskCategory }}</div>
 </div>
