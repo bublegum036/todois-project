@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs';
+import { Subject, filter, map, switchMap, takeUntil, tap } from 'rxjs';
 import { CategoryService } from './../../services/category.service';
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -14,41 +14,43 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./category-add-form.component.scss']
 })
 export class CategoryAddFormComponent implements OnInit, OnDestroy {
-  activeUser: string;
-  categories: CategoryAddType[] | [] = [];
+  activeUser: string | null = null;
+  categories: CategoryAddType[] = [];
   categoryId: number = 0;
   categoryForEdit: CategoryAddType | null = null;
-  isButton: boolean = true;
+  isCreate: boolean = true;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-  subscriptionCategories: Subscription;
-  subscriptionCategoryForEdit: Subscription;
-  private subscriptionActiveUser: Subscription;
-
-
+  private unsubscribe$ = new Subject<void>();
   constructor(private categoryService: CategoryService,
     private messageService: MessageService,
     private idService: IdService,
     private auth: AuthService) {
 
-    this.activeUser = ''
-    this.subscriptionActiveUser = this.auth.getActiveUser().subscribe(user => {
-      if (user && user.length > 0) {
-        this.activeUser = user
-      }
-    })
-    
-    this.subscriptionCategories = this.categoryService.getCategories(this.activeUser).subscribe((data: CategoryAddType[] | []) => {
-      this.categories = data;
-    })
+    this.auth.getActiveUser().pipe(
+      filter(user => !!user),
+      tap(user => this.activeUser = user),
+      switchMap(user => this.categoryService.getCategories(user!)),
+      map((data: CategoryAddType[]) => {
+        this.categories = data;
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe()
 
-    this.subscriptionCategoryForEdit = this.categoryService.getEditCategory().subscribe((data: CategoryAddType | null) => {
-      if (typeof data === 'object') {
-        this.isButton = false;
-      } else {
-        this.isButton = true;
-      }
-      this.categoryForEdit = data;
-    })
+
+    this.categoryService.getEditCategory().pipe(
+      map((data: CategoryAddType | null) => {
+        if (typeof data === 'object') {
+          this.isCreate = false;
+        } else {
+          this.isCreate = true;
+        }
+        return data;
+      }),
+      tap((data: CategoryAddType | null) => {
+        this.categoryForEdit = data;
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe()
   }
 
   categoryAddForm: FormGroup = new FormGroup<CategoryAddFormInterface>({
@@ -56,53 +58,60 @@ export class CategoryAddFormComponent implements OnInit, OnDestroy {
   })
 
   ngOnInit() {
-    this.categoryService.categories$.subscribe((data: CategoryAddType[] | []) => {
-      this.categories = data;
-    })
+    this.categoryService.categories$.pipe(
+      tap((data: CategoryAddType[]) => {
+        this.categories = data;
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe();
 
-    this.categoryService.categoryForEdit$.subscribe((data: CategoryAddType | null) => {
-      if (data) {
-        this.isButton = false;
-        this.categoryAddForm.setValue({
-          categoryName: data.label,
-        })
-      } else {
-        this.isButton = true;
-        this.categoryAddForm.reset()
-      }
-      if (data !== null) {
-        this.categoryForEdit = data;
-      } else {
-        this.categoryForEdit = null
-      }
-    })
 
-    this.idService.categoryId$
-      .subscribe(categoryId => {
-        this.categoryId = categoryId
-      })
+
+    this.categoryService.categoryForEdit$.pipe(
+      map((data: CategoryAddType | null) => {
+        if (data && typeof data === 'object') {
+          this.categoryForEdit = data;
+          this.isCreate = false;
+          this.categoryAddForm.setValue({
+            categoryName: data.label,
+          })
+        } else {
+          this.categoryForEdit = null
+          this.isCreate = true;
+          this.categoryAddForm.reset()
+        }
+        return data;
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe()
+
+
+    this.idService.categoryId$.pipe(
+      map((id:number) => {
+        this.categoryId = id
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe()
+
   }
 
   ngOnDestroy() {
-    this.subscriptionCategories.unsubscribe();
-    this.subscriptionCategoryForEdit.unsubscribe();
-    this.subscriptionActiveUser.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   createCategory() {
-    if (this.categoryAddForm.valid
-      && this.categoryAddForm.value.categoryName) {
-
+    if (this.categoryAddForm.valid) {
+      const formValue = this.categoryAddForm.getRawValue();
       let category: CategoryAddType = {
-        categoryName: this.categoryAddForm.value.categoryName,
-        label: this.categoryAddForm.value.categoryName,
+        categoryName: formValue.categoryName,
+        label: formValue.categoryName,
         categoryId: this.categoryId
       }
 
-      if (this.categories) {
-        let categoriesFromLS: CategoryAddType[] = this.categories
-        let addCategory = categoriesFromLS.concat([category])
-        this.categoryService.setCategories(addCategory, this.activeUser)
+      if (this.categories && this.activeUser) {
+        this.categories.push(category)
+        this.categoryService.setCategories(this.categories, this.activeUser)
         this.saveCategoryNewId();
         this.closeAndCleanForm();
       }
@@ -110,19 +119,18 @@ export class CategoryAddFormComponent implements OnInit, OnDestroy {
   }
 
   editCategory() {
-    if (this.categoryForEdit !== null) {
-      if (this.categoryAddForm.valid
-        && this.categoryAddForm.value.categoryName) {
+    if (this.categoryForEdit) {
+      if (this.categoryAddForm.valid) {
+      const formValue = this.categoryAddForm.getRawValue();
         let category: CategoryAddType = {
-          categoryName: this.categoryAddForm.value.categoryName,
-          label: this.categoryAddForm.value.categoryName,
+          categoryName:formValue.categoryName,
+          label: formValue.categoryName,
           categoryId: this.categoryForEdit.categoryId
         }
-        let categoryFromLS: CategoryAddType[] | [] = this.categories;
-        let indexCategoryInArray: number = categoryFromLS.findIndex(categoryFromLS => categoryFromLS.categoryId === category.categoryId);
-        if (indexCategoryInArray !== -1) {
-          categoryFromLS.splice(indexCategoryInArray, 1, category);
-          this.categoryService.setCategories(categoryFromLS, this.activeUser)
+        let indexCategoryInArray: number = this.categories.findIndex(categoryFromLS => categoryFromLS.categoryId === category.categoryId);
+        if (indexCategoryInArray !== -1 && this.activeUser) {
+          this.categories.splice(indexCategoryInArray, 1, category);
+          this.categoryService.setCategories(this.categories, this.activeUser)
           this.closeAndCleanForm()
         }
       }
@@ -130,7 +138,7 @@ export class CategoryAddFormComponent implements OnInit, OnDestroy {
   }
 
   closeAndCleanForm() {
-    if (!this.isButton) {
+    if (!this.isCreate) {
       this.messageService.add({ severity: 'success', summary: 'Успешно!', detail: 'Категория отредактирована' })
     } else {
       this.messageService.add({ severity: 'success', summary: 'Успешно!', detail: 'Категория создана' })

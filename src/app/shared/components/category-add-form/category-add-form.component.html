@@ -6,13 +6,17 @@
                 id="task-name" />
             <label htmlFor="task-name">Название категории</label>
         </span>
-        <small class="category-add-form-input-help" *ngIf="categoryAddForm.get('categoryName')?.errors?.['pattern']">Только буквы,
+        <small class="category-add-form-input-help"
+            *ngIf="categoryAddForm.get('categoryName')?.errors?.['pattern']">Только буквы,
             цифры, знаки препинания</small>
-        <small class="category-add-form-input-help" *ngIf="categoryAddForm.get('categoryName')?.hasError('maxlength')">Максимум 20
+        <small class="category-add-form-input-help"
+            *ngIf="categoryAddForm.get('categoryName')?.hasError('maxlength')">Максимум 20
             символов</small>
     </div>
     <div class="category-add-form-action">
-        <p-button *ngIf="isButton" [disabled]="!categoryAddForm.valid" label="Создать" severity="warning" (click)="createCategory()"></p-button> 
-        <p-button *ngIf="!isButton" [disabled]="!categoryAddForm.valid" label="Редактировать" severity="warning" (click)="editCategory()"></p-button> 
-      </div>
+        <p-button *ngIf="isCreate" [disabled]="!categoryAddForm.valid" label="Создать" severity="warning"
+            (click)="createCategory()"></p-button>
+        <p-button *ngIf="!isCreate" [disabled]="!categoryAddForm.valid" label="Редактировать" severity="warning"
+            (click)="editCategory()"></p-button>
+    </div>
 </div>

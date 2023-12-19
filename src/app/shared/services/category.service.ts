@@ -11,13 +11,13 @@ export class CategoryService {
   constructor(private auth: AuthService) { }
   public categoriesKey: string = 'categories';
   public categoriesForEditKey: string = 'categoryForEdit';
-  private categories: CategoryAddType[] | [] = [];
-  public categories$: Subject<CategoryAddType[] | []> = new Subject<CategoryAddType[] | []>();
+  private categories: CategoryAddType[] = [];
+  public categories$: Subject<CategoryAddType[]> = new Subject<CategoryAddType[]>();
   private categoryForEdit: CategoryAddType | null = null;
   public categoryForEdit$: Subject<CategoryAddType | null> = new Subject<CategoryAddType | null>();
 
 
-  getCategories(activeUser: string): Observable<CategoryAddType[] | []> {
+  getCategories(activeUser: string): Observable<CategoryAddType[]> {
     const userArrayFromLS = localStorage.getItem(activeUser);
     if (userArrayFromLS && userArrayFromLS.length > 0) {
       const userArray = JSON.parse(userArrayFromLS)

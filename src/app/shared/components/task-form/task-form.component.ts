@@ -18,19 +18,17 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./task-form.component.scss'],
 })
 export class TaskFormComponent implements OnInit, OnDestroy {
-  activeUser: string;
-  tasks: TaskAddType[] | [] = [];
+  activeUser: string | null = null;
+  tasks: TaskAddType[] = [];
   taskForEdit: TaskAddType | null = null;
-  taskCategory: CategoryAddType[] | [] = [];
+  taskCategory: CategoryAddType[] = [];
   taskId: number = 0;
   priority: PriorityType[] = PRIORITY_TASKS;
-  isButton: boolean = true;
-  subscriptionTasks: Subscription;
-  subscriptionTaskForEdit: Subscription;
-  subscriptionTaskCategory: Subscription;
-  private subscriptionActiveUser: Subscription;
-
-
+  isCreate: boolean = true;
+  subscriptionTasks: Subscription = new Subscription();
+  subscriptionTaskForEdit: Subscription = new Subscription();
+  subscriptionTaskCategory: Subscription = new Subscription();
+  private subscriptionActiveUser: Subscription = new Subscription();
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   taskForm: FormGroup = new FormGroup<TaskFormInterface>({
@@ -57,32 +55,30 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     private categoryService: CategoryService,
     private auth: AuthService
   ) {
-    this.activeUser = ''
     this.subscriptionActiveUser = this.auth.getActiveUser().subscribe(user => {
       if (user && user.length > 0) {
-        this.activeUser = user
+        this.activeUser = user;
+
+        this.subscriptionTasks = this.tasksService.getTasks(this.activeUser).subscribe((data) => {
+          this.tasks = data;
+        });
+
+        this.subscriptionTaskCategory = this.categoryService.getCategories(this.activeUser).subscribe((data) => {
+          if (data) {
+            this.taskCategory = data;
+          }
+        });
       }
     })
 
-    this.subscriptionTasks = this.tasksService.getTasks(this.activeUser).subscribe((data) => {
-      this.tasks = data;
-    });
 
-    this.subscriptionTaskForEdit = this.tasksService
-      .getEditTask()
-      .subscribe((data: TaskAddType | null) => {
-        if (data === null) {
-          this.isButton = true;
-        } else {
-          this.isButton = false;
-        }
-        this.taskForEdit = data;
-      });
-
-    this.subscriptionTaskCategory = this.categoryService.getCategories(this.activeUser).subscribe((data) => {
-      if (data !== null) {
-        this.taskCategory = data;
+    this.subscriptionTaskForEdit = this.tasksService.getEditTask().subscribe((data: TaskAddType | null) => {
+      if (data === null) {
+        this.isCreate = true;
+      } else {
+        this.isCreate = false;
       }
+      this.taskForEdit = data;
     });
   }
 
@@ -93,7 +89,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
 
     this.tasksService.taskForEdit$.subscribe((data: TaskAddType | null) => {
       if (data) {
-        this.isButton = false;
+        this.isCreate = false;
         this.taskForm.patchValue({
           taskName: data.taskName,
           taskDescription: data.taskDescription,
@@ -107,7 +103,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
           ),
         });
       } else {
-        this.isButton = true;
+        this.isCreate = true;
         this.taskForm.reset();
       }
       this.taskForEdit = data;
@@ -152,17 +148,18 @@ export class TaskFormComponent implements OnInit, OnDestroy {
         taskId: this.taskId,
       };
 
-      if (this.tasks === null) {
-        this.tasksService.setTasks([task], this.activeUser);
-        this.saveNewId();
-        this.closeAndCleanForm();
-      } else {
-        let tasksFromLS: TaskAddType[] = this.tasks;
-        let tasksArrayForLS = tasksFromLS.concat([task]);
-        this.tasksService.setTasks(tasksArrayForLS, this.activeUser);
-        this.saveNewId();
-        this.closeAndCleanForm();
-      }
+      if (this.activeUser)
+        if (this.tasks === null) {
+          this.tasksService.setTasks([task], this.activeUser);
+          this.saveNewId();
+          this.closeAndCleanForm();
+        } else {
+          let tasksFromLS: TaskAddType[] = this.tasks;
+          let tasksArrayForLS = tasksFromLS.concat([task]);
+          this.tasksService.setTasks(tasksArrayForLS, this.activeUser);
+          this.saveNewId();
+          this.closeAndCleanForm();
+        }
     }
   }
 
@@ -198,11 +195,11 @@ export class TaskFormComponent implements OnInit, OnDestroy {
           taskId: this.taskForEdit.taskId,
         };
 
-        let tasksFromLS: TaskAddType[] | []= this.tasks;
+        let tasksFromLS: TaskAddType[] | [] = this.tasks;
         let indexTaskInArray: number = tasksFromLS.findIndex(
           (taskFromLS) => taskFromLS.taskId === task.taskId
         );
-        if (indexTaskInArray !== -1) {
+        if (indexTaskInArray !== -1 && this.activeUser) {
           tasksFromLS.splice(indexTaskInArray, 1, task);
           this.tasksService.setTasks(tasksFromLS, this.activeUser);
           this.closeAndCleanForm();
@@ -212,7 +209,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   }
 
   closeAndCleanForm() {
-    if (!this.isButton) {
+    if (!this.isCreate) {
       this.messageService.add({
         severity: 'success',
         summary: 'Успешно!',
