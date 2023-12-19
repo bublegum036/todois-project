@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs';
+import { Subject, filter, map, switchMap, takeUntil, tap } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { CategoryService } from '../../../shared/services/category.service';
@@ -12,13 +12,12 @@ import { AuthService } from '../../../shared/services/auth.service';
   providers: [MessageService, ConfirmationService]
 })
 export class TaskCategoryComponent implements OnInit, OnDestroy {
-  activeUser: string;
-  categories: CategoryAddType[] | [] = [];
+  activeUser: string | null = null;
+  categories: CategoryAddType[] = [];
   addCategoryVisible: boolean = false;
   editCategoryVisible: boolean = false;
-  subscriptionCategories: Subscription;
-  private subscriptionActiveUser: Subscription;
-
+  private unsubscribe$ = new Subject<void>();
+  
 
   constructor(private messageService: MessageService,
     private confirmationService: ConfirmationService,
@@ -26,27 +25,29 @@ export class TaskCategoryComponent implements OnInit, OnDestroy {
     private auth: AuthService
   ) {
 
-    this.activeUser = ''
-    this.subscriptionActiveUser = this.auth.getActiveUser().subscribe(user => {
-      if (user && user.length > 0) {
-        this.activeUser = user
-      }
-    })
-
-    this.subscriptionCategories = this.categoryService.getCategories(this.activeUser).subscribe((data: CategoryAddType[] | []) => {
-      this.categories = data;
-    })
+    this.auth.getActiveUser().pipe(
+      filter(user => !!user),
+      tap(user => this.activeUser = user),
+      switchMap(user => this.categoryService.getCategories(user!)),
+      map((data: CategoryAddType[]) => {
+        this.categories = data;
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe()
   }
 
   ngOnInit() {
-    this.categoryService.categories$.subscribe((data: CategoryAddType[] | []) => {
-      this.categories = data
-    })
+    this.categoryService.categories$.pipe(
+      tap((data: CategoryAddType[]) => {
+        this.categories = data;
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe();
   }
 
   ngOnDestroy() {
-    this.subscriptionCategories.unsubscribe()
-    this.subscriptionActiveUser.unsubscribe()
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   editCategory(category: CategoryAddType) {
@@ -65,7 +66,7 @@ export class TaskCategoryComponent implements OnInit, OnDestroy {
       header: 'Удаление',
       icon: 'pi pi-info-circle',
       accept: () => {
-        if (indexCategoryInArray !== -1) {
+        if (indexCategoryInArray !== -1 && this.activeUser) {
           this.categories.splice(indexCategoryInArray, 1);
           let categoriesArrayForLS = this.categories;
           this.categoryService.setCategories(categoriesArrayForLS, this.activeUser)

@@ -2,7 +2,7 @@ import { TasksService } from './../../../shared/services/tasks.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { MenuItem, MenuItemCommandEvent } from "primeng/api";
-import { Subscription } from 'rxjs';
+import { Subject, filter, takeUntil, tap } from 'rxjs';
 import { AuthService } from '../../../shared/services/auth.service';
 import { CategoryService } from '../../../shared/services/category.service';
 
@@ -15,25 +15,21 @@ export class SidebarComponent implements OnInit, OnDestroy {
   items: MenuItem[] = [];
   addTaskVisible: boolean = false;
   addCategoryVisible: boolean = false;
-  private subscriptionOpenAddTaskMenu: Subscription;
-  private subscriptionAddCategoryMenu: Subscription;
+  private unsubscribe$ = new Subject<void>();
+  
 
 
   constructor(private tasksService: TasksService,
     private auth: AuthService,
     private router: Router,
     private categoryService: CategoryService) {
-      this.subscriptionOpenAddTaskMenu = this.router.events.subscribe(event => {
-        if (event instanceof NavigationStart) {
-          this.addTaskVisible = false;
-        }
-      });
 
-      this.subscriptionAddCategoryMenu = this.router.events.subscribe(event => {
-        if (event instanceof NavigationStart) {
-          this.addCategoryVisible = false;
-        }
-      })
+      this.router.events.pipe(
+        filter(event => event instanceof NavigationStart),
+        tap(event => this.addTaskVisible = false),
+        tap(event => this.addCategoryVisible = false),
+        takeUntil(this.unsubscribe$)
+      ).subscribe();
     }
 
   ngOnInit() {
@@ -78,8 +74,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptionOpenAddTaskMenu.unsubscribe();
-    this.subscriptionAddCategoryMenu.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   openAddTaskMenu() {
