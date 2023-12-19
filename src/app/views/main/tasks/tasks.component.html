@@ -1,9 +1,9 @@
 <section class="tasks">
-  <div class="task-category-empty" *ngIf="categories.length < 1 && tasks.length < 1">
+  <div class="task-category-empty" *ngIf="taskCategory.length < 1 && tasks.length < 1">
     <div>Отсутствую категории задач! Создайте сначала категорию задач</div>
     <p-button label="Создать категорию" severity="warning" (click)="openAddCategoryMenu()"></p-button>
   </div>
-  <div class="tasks-empty" *ngIf="(!tasks || tasks.length < 1) && categories && categories.length > 0">
+  <div class="tasks-empty" *ngIf="(!tasks || tasks.length < 1) && taskCategory && taskCategory.length > 0">
     <div>Отсутствую задачи!</div>
     <div>Создайте свою первую задачу</div>
     <p-button label="Создать задачу" severity="warning" (click)="openAddTaskMenu()"></p-button>

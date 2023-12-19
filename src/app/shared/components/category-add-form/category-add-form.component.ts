@@ -69,7 +69,6 @@ export class CategoryAddFormComponent implements OnInit, OnDestroy {
     ).subscribe();
 
 
-
     this.categoryService.categoryForEdit$.pipe(
       map((data: CategoryAddType | null) => {
         if (data && typeof data === 'object') {

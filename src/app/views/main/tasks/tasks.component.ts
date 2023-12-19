@@ -1,6 +1,6 @@
-import { Subscription } from 'rxjs';
+import { Subject, filter, map, switchMap, takeUntil, tap } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {ConfirmEventType, ConfirmationService,  MessageService, SortEvent} from 'primeng/api';
+import { ConfirmEventType, ConfirmationService, MessageService, SortEvent } from 'primeng/api';
 import { TaskAddType } from '../../../../types/task-add.type';
 import { TasksService } from '../../../shared/services/tasks.service';
 import { CategoryAddType } from '../../../../types/category-add.type';
@@ -15,19 +15,16 @@ import { AuthService } from '../../../shared/services/auth.service';
   providers: [MessageService, ConfirmationService],
 })
 export class TasksComponent implements OnInit, OnDestroy {
-  activeUser: string;
+  activeUser: string | null = null;
   tasks: TaskAddType[] = [];
-  categories: CategoryAddType[] = [];
+  taskCategory: CategoryAddType[] = [];
   tasksComplete: TaskAddType[] = [];
   addTaskVisible: boolean = false;
   addCategoryVisible: boolean = false;
   editTaskVisible: boolean = false;
   infoTaskVisible: boolean = false;
   column: { field: string; header: string }[] = TASKS_COLUMNS;
-  private subscriptionTasks: Subscription;
-  private subscriptionCategories: Subscription;
-  private subscriptionTasksComplete: Subscription;
-  private subscriptionActiveUser: Subscription;
+  private unsubscribe$ = new Subject<void>();
   globalFilter: string | null = null;
 
   constructor(
@@ -37,46 +34,53 @@ export class TasksComponent implements OnInit, OnDestroy {
     private categoryService: CategoryService,
     private auth: AuthService
   ) {
-    this.activeUser = ''
-    this.subscriptionActiveUser = this.auth.getActiveUser().subscribe(user => {
-      if (user && user.length > 0) {
-        this.activeUser = user
-      }
-    })
-
-    this.subscriptionTasks = this.tasksService.getTasks(this.activeUser).subscribe((data) => {
-      this.tasks = data || [];
-    });
-
-    this.subscriptionCategories = this.categoryService.getCategories(this.activeUser).subscribe((data: CategoryAddType[] | null) => {
-      this.categories = data || [];
-    });
-
-    this.subscriptionTasksComplete = this.tasksService.getCompleteTasks(this.activeUser).subscribe((data: TaskAddType[] | null) => {
-      this.tasksComplete = data || [];
-    });
+    this.auth.getActiveUser().pipe(
+      filter(user => !!user),
+      tap(user => this.activeUser = user),
+      switchMap(user => this.categoryService.getCategories(user!)),
+      map((data: CategoryAddType[]) => {
+        this.taskCategory = data;
+      }),
+      switchMap(user => this.tasksService.getTasks(user!)),
+      map((data: TaskAddType[]) => {
+        this.tasks = data;
+      }),
+      switchMap(user => this.tasksService.getCompleteTasks(user!)),
+      map((data: TaskAddType[]) => {
+        this.tasksComplete = data;
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe()
   }
 
   ngOnInit() {
-    this.tasksService.tasks$.subscribe((data: TaskAddType[] | null) => {
-      this.tasks = data || [];
-    });
 
-    this.categoryService.categories$.subscribe((data: CategoryAddType[] | []) => {
-        this.categories = data;
-      }
-    );
+    this.tasksService.tasks$.pipe(
+      tap((data: TaskAddType[]) => {
+        this.tasks = data
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe();
 
-    this.tasksService.tasksComplete$.subscribe((data: TaskAddType[] | null) => {
-      this.tasksComplete = data || [];
-    });
+    this.categoryService.categories$.pipe(
+      tap((data: CategoryAddType[]) => {
+        this.taskCategory = data;
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe();
+
+
+    this.tasksService.tasksComplete$.pipe(
+      tap((data: TaskAddType[]) => {
+        this.tasksComplete = data
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe();
   }
 
   ngOnDestroy(): void {
-    this.subscriptionTasks.unsubscribe();
-    this.subscriptionCategories.unsubscribe();
-    this.subscriptionTasksComplete.unsubscribe();
-    this.subscriptionActiveUser.unsubscribe()
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   openAddTaskMenu() {
@@ -125,7 +129,7 @@ export class TasksComponent implements OnInit, OnDestroy {
         header: 'Удаление',
         icon: 'pi pi-info-circle',
         accept: () => {
-          if (indexTaskInArray !== -1) {
+          if (indexTaskInArray !== -1 && this.activeUser) {
             this.tasks.splice(indexTaskInArray, 1);
             let tasksArrayForLS = this.tasks;
             this.tasksService.setTasks(tasksArrayForLS, this.activeUser);
@@ -167,7 +171,7 @@ export class TasksComponent implements OnInit, OnDestroy {
       header: 'Выполнение',
       icon: 'pi pi-info-circle',
       accept: () => {
-        if (indexTaskInArray !== -1) {
+        if (indexTaskInArray !== -1 && this.activeUser) {
           this.tasks.splice(indexTaskInArray, 1);
           let tasksArrayForLS = this.tasks;
           this.tasksService.setTasks(tasksArrayForLS, this.activeUser);
