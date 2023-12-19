@@ -43,7 +43,7 @@ export class TasksService {
 
   setTasks(newTasks: TaskAddType[] | [], activeUser: string) {
     const userArrayFromLS = localStorage.getItem(activeUser);
-    if (userArrayFromLS !== null && userArrayFromLS.length > 0) {
+    if (userArrayFromLS && userArrayFromLS.length > 0) {
       let userArray = JSON.parse(userArrayFromLS);
       let newCategoryArray = { tasks: newTasks }
       let removeCategoryFromLS = userArray.filter((item: { tasks: TaskAddType[] | [] }) => {

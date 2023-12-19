@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs';
+import { Subject, filter, map, switchMap, takeUntil, tap } from 'rxjs';
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -25,10 +25,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   taskId: number = 0;
   priority: PriorityType[] = PRIORITY_TASKS;
   isCreate: boolean = true;
-  subscriptionTasks: Subscription = new Subscription();
-  subscriptionTaskForEdit: Subscription = new Subscription();
-  subscriptionTaskCategory: Subscription = new Subscription();
-  private subscriptionActiveUser: Subscription = new Subscription();
+  private unsubscribe$ = new Subject<void>();
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   taskForm: FormGroup = new FormGroup<TaskFormInterface>({
@@ -55,108 +52,111 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     private categoryService: CategoryService,
     private auth: AuthService
   ) {
-    this.subscriptionActiveUser = this.auth.getActiveUser().subscribe(user => {
-      if (user && user.length > 0) {
-        this.activeUser = user;
-
-        this.subscriptionTasks = this.tasksService.getTasks(this.activeUser).subscribe((data) => {
-          this.tasks = data;
-        });
-
-        this.subscriptionTaskCategory = this.categoryService.getCategories(this.activeUser).subscribe((data) => {
-          if (data) {
-            this.taskCategory = data;
-          }
-        });
-      }
-    })
+    this.auth.getActiveUser().pipe(
+      filter(user => !!user),
+      tap(user => this.activeUser = user),
+      switchMap(user => this.categoryService.getCategories(user!)),
+      map((data: CategoryAddType[]) => {
+        this.taskCategory = data;
+      }),
+      switchMap(user => this.tasksService.getTasks(user!)),
+      map((data: TaskAddType[]) => {
+        this.tasks = data;
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe()
 
 
-    this.subscriptionTaskForEdit = this.tasksService.getEditTask().subscribe((data: TaskAddType | null) => {
-      if (data === null) {
-        this.isCreate = true;
-      } else {
-        this.isCreate = false;
-      }
-      this.taskForEdit = data;
-    });
+    this.tasksService.getEditTask().pipe(
+      map((data: TaskAddType | null) => {
+        if (typeof data === 'object') {
+          this.isCreate = false;
+        } else {
+          this.isCreate = true;
+        }
+        return data;
+      }),
+      tap((data: TaskAddType | null) => {
+        this.taskForEdit = data;
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe();
   }
 
   ngOnInit() {
-    this.tasksService.tasks$.subscribe((data: TaskAddType[] | []) => {
-      this.tasks = data;
-    });
+    this.tasksService.tasks$.pipe(
+      tap((data: TaskAddType[]) => {
+        this.tasks = data
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe();
 
-    this.tasksService.taskForEdit$.subscribe((data: TaskAddType | null) => {
-      if (data) {
-        this.isCreate = false;
-        this.taskForm.patchValue({
-          taskName: data.taskName,
-          taskDescription: data.taskDescription,
-          taskDateSet: data.taskDateSet,
-          taskDeadline: data.taskDeadline,
-          taskPriority: this.priority.find(
-            (item) => item.label === data.taskPriority
-          ),
-          taskCategory: this.taskCategory?.find(
-            (item) => item.label === data.taskCategory
-          ),
-        });
-      } else {
-        this.isCreate = true;
-        this.taskForm.reset();
-      }
-      this.taskForEdit = data;
-    });
-
-    this.categoryService.categories$.subscribe(
-      (data: CategoryAddType[] | null) => {
-        if (data !== null) {
-          this.taskCategory = data;
+    this.tasksService.taskForEdit$.pipe(
+      map((data: TaskAddType | null) => {
+        if (data && typeof data === 'object') {
+          this.isCreate = false;
+          this.taskForm.patchValue({
+            taskName: data.taskName,
+            taskDescription: data.taskDescription,
+            taskDateSet: data.taskDateSet,
+            taskDeadline: data.taskDeadline,
+            taskPriority: this.priority.find(
+              (item) => item.label === data.taskPriority
+            ),
+            taskCategory: this.taskCategory?.find(
+              (item) => item.label === data.taskCategory
+            ),
+          });
+        } else {
+          this.isCreate = true;
+          this.taskForm.reset();
         }
-      }
-    );
+        this.taskForEdit = data
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe();
 
-    this.idService.taskId$.subscribe((taskId) => {
-      this.taskId = taskId;
-    });
+    this.categoryService.categories$.pipe(
+      tap((data: CategoryAddType[]) => {
+        this.taskCategory = data;
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe();
+
+    this.idService.taskId$.pipe(
+      map((id: number) => {
+        this.taskId = id
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe();
   }
 
   ngOnDestroy() {
-    this.subscriptionTasks.unsubscribe();
-    this.subscriptionTaskForEdit.unsubscribe();
-    this.subscriptionTaskCategory.unsubscribe();
-    this.subscriptionActiveUser.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   createTask() {
-    if (
-      this.taskForm.valid &&
-      this.taskForm.value.taskName &&
-      this.taskForm.value.taskDescription &&
-      this.taskForm.value.taskDateSet &&
-      this.taskForm.value.taskDeadline &&
-      this.taskForm.value.taskPriority
-    ) {
+    if (this.taskForm.valid) {
+      const formValue = this.taskForm.getRawValue()
       let task: TaskAddType = {
-        taskName: this.taskForm.value.taskName,
-        taskDescription: this.taskForm.value.taskDescription,
-        taskDateSet: new Date(this.taskForm.value.taskDateSet).toLocaleDateString(),
-        taskDeadline: new Date(this.taskForm.value.taskDeadline).toLocaleDateString(),
-        taskPriority: Object(this.taskForm.value.taskPriority).label,
-        taskCategory: Object(this.taskForm.value.taskCategory).label,
+        taskName: formValue.taskName,
+        taskDescription: formValue.taskDescription,
+        taskDateSet: new Date(formValue.taskDateSet).toLocaleDateString(),
+        taskDeadline: new Date(formValue.taskDeadline).toLocaleDateString(),
+        taskPriority: Object(formValue.taskPriority).label,
+        taskCategory: Object(formValue.taskCategory).label,
         taskId: this.taskId,
       };
 
       if (this.activeUser)
-        if (this.tasks === null) {
+        if (this.tasks && this.tasks.length === 0) {
           this.tasksService.setTasks([task], this.activeUser);
           this.saveNewId();
           this.closeAndCleanForm();
         } else {
-          let tasksFromLS: TaskAddType[] = this.tasks;
-          let tasksArrayForLS = tasksFromLS.concat([task]);
-          this.tasksService.setTasks(tasksArrayForLS, this.activeUser);
+          this.tasks.push(task);
+          this.tasksService.setTasks(this.tasks, this.activeUser);
           this.saveNewId();
           this.closeAndCleanForm();
         }
@@ -165,43 +165,36 @@ export class TaskFormComponent implements OnInit, OnDestroy {
 
   editTask() {
     if (this.taskForEdit !== null) {
-      if (
-        this.taskForm.valid &&
-        this.taskForm.value.taskName &&
-        this.taskForm.value.taskDescription &&
-        this.taskForm.value.taskDateSet &&
-        this.taskForm.value.taskDeadline &&
-        this.taskForm.value.taskPriority
-      ) {
+      const formValue = this.taskForm.getRawValue()
+      if (this.taskForm.valid) {
         let taskDateSet = null;
         let taskDeadline = null;
-        if (typeof this.taskForm.value.taskDateSet === 'string') {
-          taskDateSet = this.taskForm.value.taskDateSet;
+        if (typeof formValue.taskDateSet === 'string') {
+          taskDateSet = formValue.taskDateSet;
         } else {
-          taskDateSet = new Date(this.taskForm.value.taskDateSet).toLocaleDateString();
+          taskDateSet = new Date(formValue.taskDateSet).toLocaleDateString();
         }
-        if (typeof this.taskForm.value.taskDeadline === 'string') {
+        if (typeof formValue.taskDeadline === 'string') {
           taskDeadline = this.taskForm.value.taskDeadline;
         } else {
           taskDeadline = new Date(this.taskForm.value.taskDeadline).toLocaleDateString();
         }
         let task: TaskAddType = {
-          taskName: this.taskForm.value.taskName,
-          taskDescription: this.taskForm.value.taskDescription,
+          taskName: formValue.taskName,
+          taskDescription: formValue.taskDescription,
           taskDateSet: taskDateSet,
           taskDeadline: taskDeadline,
-          taskPriority: Object(this.taskForm.value.taskPriority).label,
-          taskCategory: Object(this.taskForm.value.taskCategory)?.label,
+          taskPriority: Object(formValue.taskPriority).label,
+          taskCategory: Object(formValue.taskCategory)?.label,
           taskId: this.taskForEdit.taskId,
         };
 
-        let tasksFromLS: TaskAddType[] | [] = this.tasks;
-        let indexTaskInArray: number = tasksFromLS.findIndex(
-          (taskFromLS) => taskFromLS.taskId === task.taskId
+        let indexTaskInArray: number = this.tasks.findIndex(
+          tasks => tasks.taskId === task.taskId
         );
         if (indexTaskInArray !== -1 && this.activeUser) {
-          tasksFromLS.splice(indexTaskInArray, 1, task);
-          this.tasksService.setTasks(tasksFromLS, this.activeUser);
+          this.tasks.splice(indexTaskInArray, 1, task);
+          this.tasksService.setTasks(this.tasks, this.activeUser);
           this.closeAndCleanForm();
         }
       }
@@ -230,12 +223,5 @@ export class TaskFormComponent implements OnInit, OnDestroy {
 
   saveNewId() {
     this.idService.saveTaskId();
-  }
-
-  findPriorityByLabel(label: string) {
-    const foundPriority = this.priority?.find(
-      (priority) => priority.label === label
-    );
-    return foundPriority ? foundPriority.data : null;
   }
 }

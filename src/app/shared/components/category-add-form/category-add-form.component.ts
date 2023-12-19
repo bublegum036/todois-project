@@ -22,6 +22,10 @@ export class CategoryAddFormComponent implements OnInit, OnDestroy {
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   private unsubscribe$ = new Subject<void>();
   
+  categoryAddForm: FormGroup = new FormGroup<CategoryAddFormInterface>({
+    categoryName: new FormControl(null, [Validators.required, Validators.maxLength(20), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]),
+  })
+  
   constructor(private categoryService: CategoryService,
     private messageService: MessageService,
     private idService: IdService,
@@ -54,9 +58,7 @@ export class CategoryAddFormComponent implements OnInit, OnDestroy {
     ).subscribe()
   }
 
-  categoryAddForm: FormGroup = new FormGroup<CategoryAddFormInterface>({
-    categoryName: new FormControl(null, [Validators.required, Validators.maxLength(20), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]),
-  })
+  
 
   ngOnInit() {
     this.categoryService.categories$.pipe(

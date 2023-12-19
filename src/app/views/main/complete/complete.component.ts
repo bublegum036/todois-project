@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, filter, map, switchMap, takeUntil, tap } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { TASKS_COMPLETE_COLUMNS } from 'src/app/shared/constants/constants';
@@ -13,13 +13,11 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   providers: [MessageService, ConfirmationService],
 })
 export class CompleteComponent implements OnInit, OnDestroy {
-  activeUser: string;
-  tasksComplete: TaskAddType[] | [] = [];
+  activeUser: string | null = null;
+  tasksComplete: TaskAddType[] = [];
   column: { field: string; header: string }[] = TASKS_COMPLETE_COLUMNS;
   globalFilter: string | null = null;
-  subscriptionTasksComplete: Subscription;
-  private subscriptionActiveUser: Subscription;
-
+  private unsubscribe$ = new Subject<void>();
 
   constructor(
     private tasksService: TasksService,
@@ -27,27 +25,32 @@ export class CompleteComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService,
     private auth: AuthService
   ) {
-    this.activeUser = ''
-    this.subscriptionActiveUser = this.auth.getActiveUser().subscribe(user => {
-      if (user && user.length > 0) {
-        this.activeUser = user
-      }
-    })
 
-    this.subscriptionTasksComplete = this.tasksService.getCompleteTasks(this.activeUser).subscribe((data: TaskAddType[] | []) => {
-      this.tasksComplete = data;
-    });
+
+
+    this.auth.getActiveUser().pipe(
+      filter(user => !!user),
+      tap(user => this.activeUser = user),
+      switchMap(user => tasksService.getCompleteTasks(user!)),
+      map((data: TaskAddType[]) => {
+        this.tasksComplete = data;
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe()
   }
 
   ngOnInit() {
-    this.tasksService.tasksComplete$.subscribe((data: TaskAddType[] | []) => {
-      this.tasksComplete = data;
-    });
+    this.tasksService.tasksComplete$.pipe(
+      tap((data: TaskAddType[]) => {
+        this.tasksComplete = data
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe();
   }
 
   ngOnDestroy() {
-    this.subscriptionTasksComplete.unsubscribe();
-    this.subscriptionActiveUser.unsubscribe()
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   removeCompleteTasks() {
@@ -56,6 +59,7 @@ export class CompleteComponent implements OnInit, OnDestroy {
       header: 'Выполнение',
       icon: 'pi pi-info-circle',
       accept: () => {
+        if(this.activeUser)
         this.tasksService.setCompleteTasks([], this.activeUser);
         this.messageService.add({
           severity: 'info',
