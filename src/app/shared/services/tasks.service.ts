@@ -50,7 +50,6 @@ export class TasksService {
         return !item.hasOwnProperty(this.tasksKey);
       })
       let arrayForUpdate = JSON.stringify(removeTasksFromLS.concat(newTasksArray))
-      console.log(JSON.parse(arrayForUpdate))
       this.auth.updateUser(activeUser, arrayForUpdate)
       this.tasks$.next(newTasks)
     }
