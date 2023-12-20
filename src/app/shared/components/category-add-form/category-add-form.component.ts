@@ -21,11 +21,11 @@ export class CategoryAddFormComponent implements OnInit, OnDestroy {
   isCreate: boolean = true;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   private unsubscribe$ = new Subject<void>();
-  
+
   categoryAddForm: FormGroup = new FormGroup<CategoryAddFormInterface>({
     categoryName: new FormControl(null, [Validators.required, Validators.maxLength(20), Validators.pattern('^[а-яА-Яa-zA-Z0-9\\s\\p{P}]+$')]),
   })
-  
+
   constructor(private categoryService: CategoryService,
     private messageService: MessageService,
     private idService: IdService,
@@ -58,7 +58,7 @@ export class CategoryAddFormComponent implements OnInit, OnDestroy {
     ).subscribe()
   }
 
-  
+
 
   ngOnInit() {
     this.categoryService.categories$.pipe(
@@ -89,7 +89,7 @@ export class CategoryAddFormComponent implements OnInit, OnDestroy {
 
 
     this.idService.categoryId$.pipe(
-      map((id:number) => {
+      map((id: number) => {
         this.categoryId = id
       }),
       takeUntil(this.unsubscribe$)
@@ -123,9 +123,9 @@ export class CategoryAddFormComponent implements OnInit, OnDestroy {
   editCategory() {
     if (this.categoryForEdit) {
       if (this.categoryAddForm.valid) {
-      const formValue = this.categoryAddForm.getRawValue();
+        const formValue = this.categoryAddForm.getRawValue();
         let category: CategoryAddType = {
-          categoryName:formValue.categoryName,
+          categoryName: formValue.categoryName,
           label: formValue.categoryName,
           categoryId: this.categoryForEdit.categoryId
         }

@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { LoginFormInterface } from '../../../shared/interfaces/login-form-interface';
 import { AuthService } from '../../../shared/services/auth.service';
 import { UserType } from '../../../../types/user.type';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'login',
@@ -12,11 +13,13 @@ import { UserType } from '../../../../types/user.type';
   styleUrls: ['./login.component.scss'],
   providers: [MessageService],
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy{
   loginUserName: string | null = null;
   loginPassword: string | null = null;
   user: UserType | null = null;
   activeUser: string | null = null;
+  private unsubscribe$ = new Subject<void>();
+
 
   constructor(
     private router: Router,
@@ -33,43 +36,48 @@ export class LoginComponent {
   });
 
   login() {
-    this.auth.getUser(this.loginForm.value.userName).subscribe(user => {
-      this.user = user
-    })
+    const formValue = this.loginForm.getRawValue()
+    this.auth.getUser(formValue.userName).pipe(
+      tap(user => this.user = user),
+      takeUntil(this.unsubscribe$)
+    ).subscribe()
+
     if (this.user && this.user.userInfo.email && this.user.userInfo.password) {
       this.loginUserName = this.user.userInfo.email;
       this.loginPassword = this.user.userInfo.password;
-      if (this.loginForm.value.userName === this.loginUserName && this.loginForm.value.password !== this.loginPassword
+      if (formValue.userName === this.loginUserName && formValue.password !== this.loginPassword
       ) {
         this.messageService.add({
           severity: 'error',
           summary: 'Ошибка',
           detail: 'Неверный пароль!',
         });
-      }
-      if (this.loginForm.value.userName !== this.loginUserName) {
+      } else if (formValue.userName !== this.loginUserName) {
         this.messageService.add({
           severity: 'error',
           summary: 'Ошибка',
           detail: 'Пользователь не существует!',
         });
-      }
-      if (
-        this.loginForm.value.userName === this.loginUserName &&
-        this.loginForm.value.password === this.loginPassword
+      } else if (
+        formValue.userName === this.loginUserName &&
+        formValue.password === this.loginPassword
       ) {
-        this.auth.setActiveUser(this.loginForm.value.userName);
         this.loginForm.reset();
+        this.auth.login(formValue.userName);
         this.messageService.add({
           severity: 'success',
           summary: 'Успешно',
           detail: 'Вы авторизованы!',
         });
         setTimeout(() => {
-          this.auth.login();
           this.router.navigate(['/tasks']);
         }, 500);
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete(); 
   }
 }

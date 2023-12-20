@@ -38,7 +38,7 @@ export class CategoryService {
     const userArrayFromLS = localStorage.getItem(activeUser);
     if (userArrayFromLS !== null && userArrayFromLS.length > 0) {
       let userArray = JSON.parse(userArrayFromLS);
-      let newCategoryArray =  {categories: newCategories}
+      let newCategoryArray = { categories: newCategories }
       let removeCategoryFromLS = userArray.filter((item: { categories: CategoryAddType[] | [] }) => {
         return !item.hasOwnProperty(this.categoriesKey);
       })

@@ -13,8 +13,8 @@ export class AuthService {
   public user$: Subject<UserType | null> = new Subject<UserType | null>();
   public activeUser: string | null = null;
   public activeUser$: Subject<string | undefined> = new Subject<string | undefined>();
-  private isAuth: boolean = false;
-  public isAuth$: Subject<boolean> = new Subject<boolean>();
+  // private isAuth: boolean = false;
+  // public isAuth$: Subject<boolean> = new Subject<boolean>();
   public userName: string | null = null;
   public activeUserData: [] | null = null;
 
@@ -55,21 +55,20 @@ export class AuthService {
     return of(this.activeUser)
   }
 
-  login() {
-    this.isAuth = true;
-    this.isAuth$.next(true);
+  login(activeUser: string) {
+    this.setActiveUser(activeUser)
   }
 
   logout() {
-    this.isAuth = false;
+    // this.isAuth = false;
     localStorage.removeItem(this.activeUserKey);
-    this.isAuth$.next(false);
+    // this.isAuth$.next(false);
     this.router.navigate(['/']);
   }
 
-  isAuthorized() {
-    return this.isAuth;
-  }
+  // isAuthorized() {
+  //   return this.isAuth;
+  // }
 
   removeUserProfile(activeUser: string) {
     localStorage.removeItem(activeUser);

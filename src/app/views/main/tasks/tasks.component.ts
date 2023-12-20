@@ -36,25 +36,23 @@ export class TasksComponent implements OnInit, OnDestroy {
   ) {
     this.auth.getActiveUser().pipe(
       filter(user => !!user),
-      tap(user => this.activeUser = user),
-      switchMap(user => this.categoryService.getCategories(user!)),
-      map((data: CategoryAddType[]) => {
-        this.taskCategory = data;
-      }),
+      map(user => this.activeUser = user),
       switchMap(user => this.tasksService.getTasks(user!)),
       map((data: TaskAddType[]) => {
         this.tasks = data;
+      }),
+      switchMap(user => this.categoryService.getCategories(user!)),
+      map((data: CategoryAddType[]) => {
+        this.taskCategory = data;
       }),
       switchMap(user => this.tasksService.getCompleteTasks(user!)),
       map((data: TaskAddType[]) => {
         this.tasksComplete = data;
       }),
-      takeUntil(this.unsubscribe$)
     ).subscribe()
   }
 
   ngOnInit() {
-
     this.tasksService.tasks$.pipe(
       tap((data: TaskAddType[]) => {
         this.tasks = data
@@ -121,9 +119,7 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   removeTask(task: TaskAddType) {
     if (this.tasks) {
-      let indexTaskInArray: number = this.tasks.findIndex(
-        (taskFromLS) => taskFromLS.taskId === task.taskId
-      );
+      let indexTaskInArray: number = this.tasks.findIndex((taskFromLS) => taskFromLS.taskId === task.taskId);
       this.confirmationService.confirm({
         message: 'Вы действительно хотите удалить данную задачу?',
         header: 'Удаление',

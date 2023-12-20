@@ -45,11 +45,12 @@ export class TasksService {
     const userArrayFromLS = localStorage.getItem(activeUser);
     if (userArrayFromLS && userArrayFromLS.length > 0) {
       let userArray = JSON.parse(userArrayFromLS);
-      let newCategoryArray = { tasks: newTasks }
-      let removeCategoryFromLS = userArray.filter((item: { tasks: TaskAddType[] | [] }) => {
+      let newTasksArray = { tasks: newTasks }
+      let removeTasksFromLS = userArray.filter((item: { tasks: TaskAddType[] | [] }) => {
         return !item.hasOwnProperty(this.tasksKey);
       })
-      let arrayForUpdate = JSON.stringify(removeCategoryFromLS.concat(newCategoryArray))
+      let arrayForUpdate = JSON.stringify(removeTasksFromLS.concat(newTasksArray))
+      console.log(JSON.parse(arrayForUpdate))
       this.auth.updateUser(activeUser, arrayForUpdate)
       this.tasks$.next(newTasks)
     }

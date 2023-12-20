@@ -26,16 +26,17 @@ export class SignupComponent {
 
 
   signUp() {
-    if (this.signupForm.valid && this.signupForm.value.firstName && this.signupForm.value.email && this.signupForm.value.password && this.signupForm.value.passwordRepeat) {
+    if (this.signupForm.valid) {
+      const formValue = this.signupForm.getRawValue()
       const user: UserType = {
         userInfo: {
-          name: this.signupForm.value.firstName,
-          email: this.signupForm.value.email,
-          password: this.signupForm.value.password
+          name: formValue.firstName,
+          email: formValue.email,
+          password: formValue.password
         }
       }
       this.auth.setUser(user, this.signupForm.value.email);
-      this.auth.login();
+      this.auth.login(formValue.email);
       this.router.navigate(['/tasks'])
     }
   }

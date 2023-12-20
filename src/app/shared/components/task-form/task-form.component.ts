@@ -150,13 +150,10 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       };
 
       if (this.activeUser)
-        if (this.tasks && this.tasks.length === 0) {
-          this.tasksService.setTasks([task], this.activeUser);
-          this.saveNewId();
-          this.closeAndCleanForm();
-        } else {
-          this.tasks.push(task);
-          this.tasksService.setTasks(this.tasks, this.activeUser);
+        if (this.tasks) {
+          const tasks = this.tasks;
+          const tasksarray = tasks.concat(task)
+          this.tasksService.setTasks(tasksarray, this.activeUser);
           this.saveNewId();
           this.closeAndCleanForm();
         }
